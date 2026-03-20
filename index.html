@@ -52,13 +52,26 @@
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; font-size:16px; }
 body {
-  background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  transition: background .35s, color .35s;
+  transition: color .35s;
   overflow-x: hidden;
+
+  background-image:
+    linear-gradient(rgba(8,8,8,.82), rgba(8,8,8,.82)),
+    url('fondo-dark.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+[data-theme="light"] body {
+  background-image:
+    linear-gradient(rgba(242,242,247,.78), rgba(242,242,247,.78)),
+    url('fondo-light.jpg');
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; }
