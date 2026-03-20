@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hassel BA — Todo para tus dispositivos Apple | Berazategui</title>
+<meta name="description" content="iPhone, MacBook y Apple Watch usados seleccionados en Berazategui. Atención personalizada, stock real, garantía escrita. Consultá por WhatsApp.">
+<meta property="og:title" content="Hassel BA — Usados Apple seleccionados">
+<meta property="og:description" content="Vidriera online de productos Apple usados seleccionados. Stock real, atención personalizada.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hasselba.com">
+<link rel="icon" type="image/png" href="ISOTIPO-B.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --bg:       #080808;
+  --bg2:      #0f0f0f;
+  --surface:  #141414;
+  --surface2: #1c1c1c;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.13);
+  --text:     #f0f0f2;
+  --text2:    #9a9aa4;
+  --text3:    #5a5a64;
+  --accent:   #2997ff;
+  --accent2:  #0a84ff;
+  --accent-bg:   rgba(41,151,255,0.08);
+  --accent-bdr:  rgba(41,151,255,0.22);
+  --green:  #30d158;
+  --amber:  #ffd60a;
+  --red:    #ff453a;
+  --r:  16px;
+  --r2: 12px;
+  --nav-h: 54px;
+}
+[data-theme="light"] {
+  --bg:       #f2f2f7;
+  --bg2:      #ffffff;
+  --surface:  #ffffff;
+  --surface2: #e8e8ed;
+  --border:   rgba(0,0,0,0.07);
+  --border2:  rgba(0,0,0,0.13);
+  --text:     #1c1c1e;
+  --text2:    #3a3a3c;
+  --text3:    #8e8e93;
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background .35s, color .35s;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+/* ─── NAV ─── */
+.nav {
+  position: sticky; top: 0; z-index: 500;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; gap: 16px;
+  background: rgba(8,8,8,0.75);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: background .35s;
+}
+[data-theme="light"] .nav { background: rgba(242,242,247,0.82); }
+
+.nav-logo { flex-shrink: 0; }
+.nav-logo img { height: 32px; width: auto; }
+.logo-dark  { display: block; }
+.logo-light { display: none; }
+[data-theme="light"] .logo-dark  { display: none; }
+[data-theme="light"] .logo-light { display: block; }
+
+.nav-links {
+  display: flex; align-items: center; gap: 2px;
+  list-style: none;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.nav-links a {
+  font-size: 13px; font-weight: 400; color: var(--text2);
+  padding: 6px 12px; border-radius: 8px;
+  transition: color .18s, background .18s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); background: var(--border2); }
+
+.nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.theme-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text2); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.theme-btn:hover { background: var(--border2); }
+
+.nav-wa {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 22px; padding: 8px 16px;
+  font-size: 13px; font-weight: 600;
+  transition: background .18s, transform .15s;
+}
+.nav-wa:hover { background: var(--accent2); transform: scale(1.03); }
+.nav-wa svg { width: 14px; height: 14px; fill: #fff; flex-shrink: 0; }
+
+.nav-hamburger { display: none; }
+
+/* ─── HERO ─── */
+.hero-wrap {
+  position: relative; overflow: hidden;
+  min-height: 560px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background-image: url('fondo-dark.jpg');
+  background-size: cover; background-position: center;
+  opacity: .22; transition: opacity .4s;
+  z-index: 0;
+}
+[data-theme="light"] .hero-bg-img {
+  background-image: url('fondo-light.jpg');
+  opacity: .55;
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto;
+  padding: 100px 24px 80px;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--accent-bg); border: 1px solid var(--accent-bdr);
+  color: var(--accent); font-size: 11px; font-weight: 600;
+  padding: 5px 14px; border-radius: 20px;
+  letter-spacing: .9px; text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp .6s ease both;
+}
+.hero-eyebrow::before { content: '✦'; }
+
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(58px, 9vw, 100px);
+  line-height: .92; letter-spacing: 1px;
+  color: var(--text); margin-bottom: 22px;
+  animation: fadeUp .6s .1s ease both;
+}
+.hero-h1 em { font-style: normal; color: var(--accent); }
+
+.hero-sub {
+  font-size: 17px; font-weight: 300; color: var(--text2);
+  max-width: 460px; line-height: 1.65; margin-bottom: 36px;
+  animation: fadeUp .6s .18s ease both;
+}
+
+.hero-ctas {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 44px;
+  animation: fadeUp .6s .26s ease both;
+}
+.btn-cta-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 980px; padding: 14px 26px;
+  font-size: 15px; font-weight: 600;
+  transition: background .18s, transform .14s;
+}
+.btn-cta-primary:hover { background: var(--accent2); transform: scale(1.03); }
+.btn-cta-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border2); border-radius: 980px; padding: 14px 26px;
+  font-size: 15px; font-weight: 500;
+  transition: background .18s, transform .14s;
+}
+.btn-cta-secondary:hover { background: var(--border2); transform: scale(1.03); }
+
+.hero-tagline {
+  height: 22px; width: auto; opacity: .55;
+  animation: fadeUp .6s .34s ease both;
+}
+[data-theme="light"] .hero-tagline { filter: invert(1); }
+
+/* ─── TRUST BAR ─── */
+.trust {
+  max-width: 980px; margin: 0 auto 64px; padding: 0 24px;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+}
+.trust-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px;
+  text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  transition: border-color .2s;
+}
+.trust-card:hover { border-color: var(--border2); }
+.trust-icon { font-size: 24px; }
+.trust-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.trust-desc  { font-size: 12px; color: var(--text3); line-height: 1.4; }
+
+/* ─── STOCK SECTION ─── */
+.stock-section { max-width: 980px; margin: 0 auto; padding: 0 24px 100px; }
+
+.stock-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 24px; gap: 16px;
+}
+.stock-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: .5px; color: var(--text);
+}
+
+/* cat tabs */
+.cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.cat-tab {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 980px;
+  padding: 9px 18px; font-size: 14px; font-weight: 500;
+  transition: all .2s;
+}
+.cat-tab:hover { border-color: var(--border2); color: var(--text); }
+.cat-tab.active {
+  background: var(--text); border-color: var(--text);
+  color: var(--bg); font-weight: 600;
+}
+
+/* toolbar */
+.toolbar {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  margin-bottom: 20px;
+}
+.search-wrap { position: relative; flex: 1; min-width: 200px; }
+.search-wrap svg {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 15px; height: 15px; fill: var(--text3); pointer-events: none;
+}
+.search-input {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 10px 14px 10px 36px;
+  font-size: 14px; color: var(--text); outline: none; font-family: inherit;
+  transition: border-color .2s;
+}
+.search-input::placeholder { color: var(--text3); }
+.search-input:focus { border-color: var(--accent); }
+
+.sort-select {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 10px 36px 10px 14px;
+  font-size: 13px; color: var(--text2); outline: none;
+  font-family: inherit; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236e6e73'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  transition: border-color .2s; cursor: pointer;
+}
+
+/* model filters */
+.model-filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 28px; }
+.filter-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-right: 4px; }
+.filter-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 980px; padding: 6px 14px;
+  font-size: 13px; font-family: inherit;
+  transition: all .18s; white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); font-weight: 600; }
+
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 14px;
+}
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px;
+  display: flex; flex-direction: column;
+  animation: fadeUp .4s ease both;
+  transition: border-color .22s, transform .22s, box-shadow .22s;
+  position: relative; overflow: hidden;
+}
+.card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-bdr), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 14px 44px rgba(0,0,0,.28); }
+.card:hover::after { opacity: 1; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 14px; gap: 8px;
+}
+.apple-icon { font-size: 20px; color: var(--text3); line-height: 1; flex-shrink: 0; }
+.card-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+
+.badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .6px;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+}
+.badge-cat  { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-bdr); }
+.badge-mac  { background: rgba(48,209,88,.08); color: var(--green); border: 1px solid rgba(48,209,88,.2); }
+.badge-watch{ background: rgba(255,214,10,.08); color: var(--amber); border: 1px solid rgba(255,214,10,.2); }
+.badge-new  { background: rgba(48,209,88,.12); color: var(--green); border: 1px solid rgba(48,209,88,.28); }
+
+.card-model { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 14px; line-height: 1.2; }
+
+.card-specs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.spec-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+.spec-k { color: var(--text3); }
+.spec-v { color: var(--text2); font-weight: 500; }
+
+.bat-wrap { display: flex; align-items: center; gap: 8px; }
+.bat-bar { width: 48px; height: 4px; background: var(--border2); border-radius: 3px; overflow: hidden; }
+.bat-fill { height: 100%; border-radius: 3px; }
+.bat-g { background: var(--green); }
+.bat-m { background: var(--amber); }
+.bat-r { background: var(--red); }
+
+.divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+.price-usd { font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.price-ars { font-size: 13px; color: var(--text2); }
+.price-cuo { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+.card-actions { display: flex; gap: 8px; margin-top: 14px; }
+.btn-wa {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: var(--r2); padding: 11px 14px;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  transition: background .18s, transform .14s;
+}
+.btn-wa:hover { background: var(--accent2); transform: scale(1.02); }
+.btn-wa svg { width: 14px; height: 14px; fill: #fff; flex-shrink: 0; }
+.btn-permuta {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--r2);
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+  transition: background .18s;
+}
+.btn-permuta:hover { background: var(--border2); }
+
+.empty { grid-column: 1/-1; text-align: center; padding: 80px 0; color: var(--text3); font-size: 15px; }
+.empty a { color: var(--accent); }
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 72px 24px; margin-bottom: 72px;
+}
+.how-inner { max-width: 980px; margin: 0 auto; }
+.section-t {
+  font-family: 'Bebas Neue', sans-serif; font-size: 38px;
+  color: var(--text); margin-bottom: 40px; text-align: center;
+}
+.how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 28px; }
+.how-step { display: flex; flex-direction: column; gap: 10px; }
+.how-n { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--accent); line-height: 1; }
+.how-t { font-size: 15px; font-weight: 600; color: var(--text); }
+.how-d { font-size: 13px; color: var(--text3); line-height: 1.65; }
+
+/* ─── TESTIMONIALS ─── */
+.testi-section { max-width: 980px; margin: 0 auto 80px; padding: 0 24px; }
+.testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 14px; }
+.testi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 12px;
+}
+.testi-stars { color: var(--amber); font-size: 14px; letter-spacing: 2px; }
+.testi-text { font-size: 14px; color: var(--text2); line-height: 1.65; font-style: italic; }
+.testi-author { font-size: 13px; font-weight: 600; color: var(--text3); }
+
+/* ─── FAQ ─── */
+.faq-section { max-width: 680px; margin: 0 auto 80px; padding: 0 24px; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%; background: none; border: none; color: var(--text);
+  font-size: 15px; font-weight: 500; text-align: left; padding: 18px 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font-family: inherit; transition: color .18s; cursor: pointer;
+}
+.faq-q:hover { color: var(--accent); }
+.faq-icon {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 14px; color: var(--text2); transition: transform .28s, background .2s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); background: var(--accent); color: #fff; border-color: var(--accent); }
+.faq-a { font-size: 14px; color: var(--text3); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height .32s ease, padding .28s; }
+.faq-item.open .faq-a { max-height: 220px; padding-bottom: 18px; }
+
+/* ─── CONTACT ─── */
+.contact-section {
+  background: var(--surface); border-top: 1px solid var(--border); padding: 72px 24px;
+}
+.contact-inner {
+  max-width: 980px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: start;
+}
+.contact-t { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--text); margin-bottom: 8px; }
+.contact-sub { font-size: 15px; color: var(--text3); margin-bottom: 28px; line-height: 1.55; }
+.contact-btns { display: flex; flex-direction: column; gap: 10px; }
+.contact-btn {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 14px 16px;
+  color: var(--text); font-size: 14px; font-weight: 500;
+  transition: border-color .18s, transform .18s;
+}
+.contact-btn:hover { border-color: var(--border2); transform: translateX(4px); }
+.contact-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+}
+.ci-wa   { background: rgba(37,211,102,.15); }
+.ci-ig   { background: rgba(225,48,108,.15); }
+.ci-mail { background: rgba(41,151,255,.15); }
+.ci-maps { background: rgba(255,159,10,.15); }
+.contact-btn-meta { display: flex; flex-direction: column; gap: 1px; }
+.contact-btn-label { font-size: 11px; color: var(--text3); font-weight: 400; }
+.map-wrap { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); height: 280px; }
+.map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ─── FOOTER ─── */
+footer { background: var(--bg); border-top: 1px solid var(--border); padding: 44px 24px; text-align: center; }
+.footer-inner { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.footer-logo img { height: 26px; opacity: .6; }
+[data-theme="light"] .footer-logo .logo-dark  { display: none; }
+[data-theme="light"] .footer-logo .logo-light { display: block; }
+.footer-logo .logo-light { display: none; }
+.footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-size: 13px; color: var(--text3); transition: color .18s; }
+.footer-links a:hover { color: var(--text2); }
+.footer-copy { font-size: 12px; color: var(--text3); }
+
+/* ─── WA FLOAT ─── */
+.wa-float {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: #25d366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 28px rgba(37,211,102,.38);
+  z-index: 400; animation: floatIn .6s 1.2s ease both;
+  transition: transform .2s, box-shadow .2s;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 36px rgba(37,211,102,.5); }
+.wa-float svg { width: 28px; height: 28px; fill: #fff; }
+@keyframes floatIn { from { opacity:0; transform: scale(.4); } to { opacity:1; transform: scale(1); } }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: fixed; top: var(--nav-h); left: 0; right: 0;
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 16px; gap: 4px; z-index: 499;
+  }
+  .nav-links.open a { padding: 10px 14px; border-radius: 10px; }
+  .nav-hamburger {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 9px;
+    font-size: 17px; color: var(--text2);
+  }
+  .hero-inner { padding: 72px 20px 60px; }
+  .trust { grid-template-columns: repeat(2,1fr); padding: 0 16px; }
+  .stock-section { padding: 0 16px 80px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); }
+  .contact-inner { grid-template-columns: 1fr; gap: 36px; }
+  .map-wrap { height: 220px; }
+  .how-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 480px) {
+  .trust { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card { padding: 14px; }
+  .card-model { font-size: 14px; }
+  .price-usd { font-size: 18px; }
+  .btn-wa { font-size: 12px; padding: 9px 10px; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .how-grid { grid-template-columns: 1fr; }
+  .cat-tabs { gap: 6px; }
+  .cat-tab { padding: 8px 14px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img class="logo-dark"  src="IMAGOTIPO-B.png" alt="Hassel BA">
+    <img class="logo-light" src="IMAGOTIPO-A.png" alt="Hassel BA">
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#stock" onclick="setCat('iphones'); closeMenu()">iPhones</a></li>
+    <li><a href="#stock" onclick="setCat('mac');     closeMenu()">MacBook</a></li>
+    <li><a href="#stock" onclick="setCat('watch');   closeMenu()">Apple Watch</a></li>
+    <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Cambiar tema">🌙</button>
+    <button class="nav-hamburger" onclick="toggleMenu()" id="hamburger">☰</button>
+    <a class="nav-wa" href="https://wa.me/5491136404202" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar
+    </a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero-wrap">
+  <div class="hero-bg-img"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Stock actualizado · Atención personalizada</div>
+    <h1 class="hero-h1">Hassel BA<br><em>todo para tus</em><br>dispositivos Apple.</h1>
+    <p class="hero-sub">Vidriera online de iPhone, MacBook y Apple Watch usados seleccionados. Mirá el stock, elegí tu equipo y escribinos directo por WhatsApp.</p>
+    <div class="hero-ctas">
+      <a href="#stock" class="btn-cta-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Ver stock
+      </a>
+      <a href="https://wa.me/5491136404202?text=Hola%20Hassel%2C%20quiero%20cotizar%20mi%20iPhone%20%F0%9F%93%B1" target="_blank" class="btn-cta-secondary">🔄 Cotizá tu iPhone</a>
+    </div>
+    <img src="TAGLINE-H.png" alt="Hassel BA" class="hero-tagline">
+  </div>
+</div>
+
+<!-- ─── TRUST ─── -->
+<div class="trust">
+  <div class="trust-card"><div class="trust-icon">🛡️</div><div class="trust-label">60 días de garantía</div><div class="trust-desc">Garantía escrita en cada equipo vendido</div></div>
+  <div class="trust-card"><div class="trust-icon">🔍</div><div class="trust-label">100% verificados</div><div class="trust-desc">Revisión completa de hardware y software</div></div>
+  <div class="trust-card"><div class="trust-icon">🔋</div><div class="trust-label">Batería informada</div><div class="trust-desc">Estado real de batería en cada publicación</div></div>
+  <div class="trust-card"><div class="trust-icon">🔄</div><div class="trust-label">Aceptamos permuta</div><div class="trust-desc">Tu iPhone como parte de pago</div></div>
+</div>
+
+<!-- ─── STOCK ─── -->
+<div id="stock" class="stock-section">
+  <div class="stock-header">
+    <span class="stock-title">Stock disponible</span>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="setCat('iphones',this)" data-cat="iphones">&#63743; iPhones</button>
+    <button class="cat-tab" onclick="setCat('mac',this)"     data-cat="mac">💻 MacBook</button>
+    <button class="cat-tab" onclick="setCat('watch',this)"   data-cat="watch">⌚ Apple Watch</button>
+  </div>
+
+  <div class="toolbar" id="toolbarWrap">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <input class="search-input" type="text" id="search" placeholder="Buscar modelo, color, GB…" oninput="renderGrid()">
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="renderGrid()">
+      <option value="default">Ordenar</option>
+      <option value="price-asc">Precio: menor a mayor</option>
+      <option value="price-desc">Precio: mayor a menor</option>
+      <option value="bat-desc">Mejor batería primero</option>
+      <option value="newest">Modelos más nuevos</option>
+      <option value="oldest">Modelos más antiguos</option>
+    </select>
+  </div>
+
+  <div class="model-filters" id="filtersWrap">
+    <span class="filter-label">Modelo:</span>
+    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('se',this)">SE</button>
+    <button class="filter-btn" onclick="setFilter('11',this)">11</button>
+    <button class="filter-btn" onclick="setFilter('12',this)">12</button>
+    <button class="filter-btn" onclick="setFilter('13',this)">13</button>
+    <button class="filter-btn" onclick="setFilter('14',this)">14</button>
+    <button class="filter-btn" onclick="setFilter('15',this)">15</button>
+    <button class="filter-btn" onclick="setFilter('16',this)">16</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ─── HOW ─── -->
+<div class="how-section">
+  <div class="how-inner">
+    <div class="section-t">¿Cómo funciona?</div>
+    <div class="how-grid">
+      <div class="how-step"><div class="how-n">01</div><div class="how-t">Elegís tu equipo</div><div class="how-d">Explorá el stock con filtros por modelo, batería y precio. Todo actualizado en tiempo real.</div></div>
+      <div class="how-step"><div class="how-n">02</div><div class="how-t">Consultás por WhatsApp</div><div class="how-d">Un clic te conecta directo con nosotros. El mensaje ya viene armado con el equipo que te interesa.</div></div>
+      <div class="how-step"><div class="how-n">03</div><div class="how-t">Acordamos la compra</div><div class="how-d">Coordinamos pago y retiro en Berazategui Centro. También aceptamos permuta.</div></div>
+      <div class="how-step"><div class="how-n">04</div><div class="how-t">Garantía escrita</div><div class="how-d">Te entregamos garantía escrita de 60 días sobre el equipo. Tu compra está respaldada.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TESTIMONIALS ─── -->
+<div class="testi-section">
+  <div class="section-t" style="text-align:center;margin-bottom:24px">Lo que dicen nuestros clientes</div>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Compré un iPhone 13 y quedé re contento. Me lo entregaron como prometieron, batería al 100% y con la garantía por escrito."</div><div class="testi-author">— Matías G., Berazategui</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Hice la permuta de mi 12 por un 14 Pro. El trato fue excelente, me explicaron todo y no tuve ningún problema."</div><div class="testi-author">— Lucía M., Quilmes</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-text">"Super rápido todo. Vi el stock en la web, escribí por WhatsApp y en una hora ya tenía el equipo en mano."</div><div class="testi-author">— Sebastián R., Florencio Varela</div></div>
+  </div>
+</div>
+
+<!-- ─── FAQ ─── -->
+<div class="faq-section">
+  <div class="section-t" style="text-align:center;margin-bottom:24px">Preguntas frecuentes</div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Qué incluye la garantía?<span class="faq-icon">+</span></button><div class="faq-a">60 días de garantía escrita sobre fallas de hardware y funcionamiento general. No cubre daños físicos ni por líquidos posteriores a la compra.</div></div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Aceptan permuta?<span class="faq-icon">+</span></button><div class="faq-a">Sí, aceptamos tu iPhone como parte de pago. Escribinos por WhatsApp con el modelo, GB, batería y estado del equipo para cotizarlo.</div></div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Hacen envíos?<span class="faq-icon">+</span></button><div class="faq-a">Por el momento trabajamos con retiro en el local. Estamos en Berazategui Centro, Zona Sur del GBA. Lunes a sábados de 10 a 14 y 16 a 19:30 hs.</div></div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Cómo son las cuotas?<span class="faq-icon">+</span></button><div class="faq-a">El precio en cuotas es referencial (precio × 1.5 / 6). Las condiciones finales las coordinamos directamente por WhatsApp.</div></div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Los equipos tienen IMEI limpio?<span class="faq-icon">+</span></button><div class="faq-a">Sí, todos los equipos están verificados con IMEI libre y sin reportes. Podés consultarnos el IMEI antes de comprarlo.</div></div>
+  <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">¿Puedo ir a ver el equipo antes de comprarlo?<span class="faq-icon">+</span></button><div class="faq-a">Por supuesto. Pasá por el local en Berazategui Centro de lunes a sábado. Te recomendamos coordinar por WhatsApp antes.</div></div>
+</div>
+
+<!-- ─── CONTACT ─── -->
+<div class="contact-section" id="contacto">
+  <div class="contact-inner">
+    <div>
+      <div class="contact-t">Encontranos</div>
+      <p class="contact-sub">Berazategui Centro, Zona Sur GBA.<br>Lunes a sábados de 10 a 14 y 16 a 19:30 hs.</p>
+      <div class="contact-btns">
+        <a href="https://wa.me/5491136404202" target="_blank" class="contact-btn"><div class="contact-icon ci-wa">💬</div><div class="contact-btn-meta"><span class="contact-btn-label">WhatsApp</span><span>+54 9 11 3640-4202</span></div></a>
+        <a href="https://www.instagram.com/hassel.ba/" target="_blank" class="contact-btn"><div class="contact-icon ci-ig">📸</div><div class="contact-btn-meta"><span class="contact-btn-label">Instagram</span><span>@hassel.ba</span></div></a>
+        <a href="mailto:hasselbuenosaires@gmail.com" class="contact-btn"><div class="contact-icon ci-mail">✉️</div><div class="contact-btn-meta"><span class="contact-btn-label">Email</span><span>hasselbuenosaires@gmail.com</span></div></a>
+        <a href="https://maps.app.goo.gl/DQNT4V6GNazCTNgr9" target="_blank" class="contact-btn"><div class="contact-icon ci-maps">📍</div><div class="contact-btn-meta"><span class="contact-btn-label">Ubicación</span><span>Ver en Google Maps</span></div></a>
+      </div>
+    </div>
+    <div class="map-wrap">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3277.!2d-58.2094!3d-34.7641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQ1JzUwLjgiUyA1OMKwMTInMzMuOCJX!5e0!3m2!1ses!2sar!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img class="logo-dark"  src="IMAGOTIPO-B.png" alt="Hassel BA">
+      <img class="logo-light" src="IMAGOTIPO-A.png" alt="Hassel BA">
+    </div>
+    <div class="footer-links">
+      <a href="#stock">Stock</a>
+      <a href="https://wa.me/5491136404202" target="_blank">WhatsApp</a>
+      <a href="https://www.instagram.com/hassel.ba/" target="_blank">Instagram</a>
+      <a href="mailto:hasselbuenosaires@gmail.com">Email</a>
+      <a href="https://maps.app.goo.gl/DQNT4V6GNazCTNgr9" target="_blank">Ubicación</a>
+    </div>
+    <div class="footer-copy">© 2025 Hassel Buenos Aires · Berazategui Centro · Todos los derechos reservados</div>
+  </div>
+</footer>
+
+<!-- ─── WA FLOAT ─── -->
+<a class="wa-float" href="https://wa.me/5491136404202" target="_blank" title="Consultanos por WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+/* ════════════════════════════════════════════════════
+   CONFIGURACIÓN
+════════════════════════════════════════════════════ */
+const WA     = "5491136404202";
+const CUOTAS = 6;
+const USD_ARS = 1460; // Precio ARS por dólar (actualizá cuando quieras)
+
+let activeFilter = 'todos';
+let activeCat    = 'iphones';
+
+const MODEL_ORDER = ['SE 2020','SE 2022','SE 2023','8','X','XR','XS','11','12','13','14','15','16','17'];
+
+/* ════════════════════════════════════════════════════
+   STOCK — editá estos arrays para actualizar el sitio
+════════════════════════════════════════════════════ */
+
+const STOCK_IPHONES = [
+  // SE
+  { modelo:"iPhone SE 2020",    gb:"64GB",  color:"Black",            bat:99,  usd:200, grade:"A+", ingreso:"2025-07-04" },
+  { modelo:"iPhone SE 2020",    gb:"128GB", color:"Red",              bat:82,  usd:220, grade:"A+", ingreso:"2026-02-08" },
+  { modelo:"iPhone SE 2020",    gb:"256GB", color:"Black",            bat:86,  usd:240, grade:"A+", ingreso:"2026-01-26" },
+  { modelo:"iPhone SE 2022",    gb:"64GB",  color:"Black",            bat:89,  usd:240, grade:"A-", ingreso:"2026-01-05" },
+  { modelo:"iPhone SE 2022",    gb:"128GB", color:"White",            bat:100, usd:240, grade:"A",  ingreso:"2026-02-01" },
+  // 11
+  { modelo:"iPhone 11",         gb:"64GB",  color:"White",            bat:82,  usd:260, grade:"A",  ingreso:"2026-02-13" },
+  { modelo:"iPhone 11",         gb:"64GB",  color:"White",            bat:100, usd:260, grade:"A+", ingreso:"2026-03-04" },
+  { modelo:"iPhone 11 Pro",     gb:"256GB", color:"Green Midnight",   bat:89,  usd:300, grade:"A-", ingreso:"2025-07-11" },
+  { modelo:"iPhone 11 Pro Max", gb:"64GB",  color:"Space Gray",       bat:100, usd:500, grade:"A+", ingreso:"2026-01-26" },
+  // 12
+  { modelo:"iPhone 12",         gb:"64GB",  color:"Black",            bat:84,  usd:300, grade:"A",  ingreso:"2026-02-18" },
+  { modelo:"iPhone 12",         gb:"64GB",  color:"Red",              bat:100, usd:330, grade:"A",  ingreso:"2025-09-05" },
+  { modelo:"iPhone 12",         gb:"128GB", color:"Midnight",         bat:86,  usd:370, grade:"A",  ingreso:"2025-09-04" },
+  { modelo:"iPhone 12 Pro",     gb:"128GB", color:"Graphite",         bat:87,  usd:330, grade:"A",  ingreso:"2026-02-23" },
+  { modelo:"iPhone 12 Pro",     gb:"128GB", color:"Pacific Blue",     bat:100, usd:350, grade:"A",  ingreso:"2026-03-05" },
+  { modelo:"iPhone 12 Pro",     gb:"128GB", color:"Gold",             bat:100, usd:350, grade:"A+", ingreso:"2026-03-16" },
+  // 13
+  { modelo:"iPhone 13 Mini",    gb:"128GB", color:"Blue",             bat:100, usd:310, grade:"B+", ingreso:"2025-12-29" },
+  { modelo:"iPhone 13",         gb:"128GB", color:"Midnight",         bat:100, usd:400, grade:"B",  ingreso:"2025-09-03" },
+  { modelo:"iPhone 13",         gb:"128GB", color:"Midnight",         bat:100, usd:400, grade:"A+", ingreso:"2025-12-31" },
+  { modelo:"iPhone 13",         gb:"128GB", color:"Pink",             bat:88,  usd:400, grade:"A+", ingreso:"2026-01-27" },
+  { modelo:"iPhone 13",         gb:"128GB", color:"Pink",             bat:100, usd:400, grade:"A+", ingreso:"2026-02-13" },
+  { modelo:"iPhone 13",         gb:"256GB", color:"Blue",             bat:100, usd:440, grade:"A-", ingreso:"2026-01-19" },
+  { modelo:"iPhone 13",         gb:"256GB", color:"Midnight",         bat:87,  usd:420, grade:"A",  ingreso:"2026-01-19" },
+  { modelo:"iPhone 13",         gb:"256GB", color:"Pink",             bat:87,  usd:420, grade:"A",  ingreso:"2026-01-19" },
+  { modelo:"iPhone 13",         gb:"256GB", color:"Red",              bat:87,  usd:420, grade:"A+", ingreso:"2026-01-26" },
+  // 14
+  { modelo:"iPhone 14",         gb:"128GB", color:"Midnight",         bat:87,  usd:450, grade:"A-", ingreso:"2025-09-30" },
+  { modelo:"iPhone 14",         gb:"128GB", color:"Blue",             bat:89,  usd:450, grade:"A",  ingreso:"2026-01-12" },
+  { modelo:"iPhone 14",         gb:"128GB", color:"Midnight",         bat:87,  usd:450, grade:"A",  ingreso:"2026-01-21" },
+  { modelo:"iPhone 14 Pro",     gb:"256GB", color:"Deep Purple",      bat:86,  usd:580, grade:"A-", ingreso:"2026-03-12" },
+  { modelo:"iPhone 14 Pro Max", gb:"256GB", color:"Space Black",      bat:100, usd:660, grade:"A",  ingreso:"2026-02-23" },
+  // 15
+  { modelo:"iPhone 15",         gb:"128GB", color:"Black",            bat:87,  usd:440, grade:"A-", ingreso:"2026-03-17" },
+  { modelo:"iPhone 15",         gb:"256GB", color:"Black",            bat:82,  usd:570, grade:"A",  ingreso:"2025-12-29" },
+  { modelo:"iPhone 15",         gb:"256GB", color:"Black",            bat:82,  usd:570, grade:"A-/B",ingreso:"2025-12-31" },
+  { modelo:"iPhone 15 Pro",     gb:"128GB", color:"Black Titanium",   bat:79,  usd:620, grade:"A",  ingreso:"2026-02-07" },
+  { modelo:"iPhone 15 Pro",     gb:"128GB", color:"Blue Titanium",    bat:89,  usd:620, grade:"A",  ingreso:"2026-03-09", extra:"Módulo cambiado" },
+  { modelo:"iPhone 15 Pro",     gb:"256GB", color:"Black Titanium",   bat:89,  usd:670, grade:"A+", ingreso:"2026-02-13" },
+  { modelo:"iPhone 15 Pro",     gb:"256GB", color:"Black Titanium",   bat:87,  usd:530, grade:"A+", ingreso:"2026-03-18" },
+  { modelo:"iPhone 15 Pro Max", gb:"256GB", color:"Black Titanium",   bat:83,  usd:750, grade:"A-", ingreso:"2026-01-31" },
+  { modelo:"iPhone 15 Pro Max", gb:"512GB", color:"Natural Titanium", bat:94,  usd:750, grade:"A",  ingreso:"2026-01-13", extra:"Módulo cambiado" },
+  // 16
+  { modelo:"iPhone 16",         gb:"128GB", color:"Black",            bat:99,  usd:700, grade:"A",  ingreso:"2026-02-07" },
+  { modelo:"iPhone 16 Pro",     gb:"128GB", color:"Natural Titanium", bat:91,  usd:800, grade:"A+", ingreso:"2026-03-16" },
+  { modelo:"iPhone 16 Pro Max", gb:"256GB", color:"Black Titanium",   bat:92,  usd:970, grade:"A+", ingreso:"2026-01-31" },
+];
+
+const STOCK_MAC = [
+  { modelo:"MacBook Pro 2019 16\" i9", gb:"1TB / 16GB",  color:"Silver",     bat:"3 ciclos",        usd:960,  grade:"A+", extra:"Con Touch Bar",      ingreso:"2026-01-10" },
+  { modelo:"MacBook Pro M3 Max 16\"",  gb:"2TB / 64GB",  color:"Black",      bat:"89 ciclos",       usd:2100, grade:"A-",                              ingreso:"2025-12-11" },
+  { modelo:"MacBook Air M1 13\"",      gb:"8GB / 256GB", color:"Space Gray", bat:"Batería OK",      usd:650,  grade:"A",  extra:"Le falta una tecla", ingreso:"2026-01-15" },
+  { modelo:"MacBook Pro M1 2020 13\"", gb:"8GB / 256GB", color:"Space Gray", bat:"91% (278 ciclos)",usd:600,  grade:"A-", extra:"Con Touch Bar",      ingreso:"2026-01-20" },
+];
+
+const STOCK_WATCH = [
+  { modelo:"Apple Watch Ultra 2",  gb:"49mm GPS + Cellular", color:"Black Titanium", bat:99, usd:600, grade:"A",  extra:"Con malla y cargador · garantía hasta 06/03/26", ingreso:"2026-02-25" },
+  { modelo:"Apple Watch Series 7", gb:"45mm GPS",            color:"Black Titanium", bat:84, usd:190, grade:"A-", extra:"Con cargador",                                    ingreso:"2026-03-05" },
+];
+
+/* ════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════ */
+const WA_SVG = `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+function modelGen(m) {
+  const s = m.toLowerCase();
+  for (let i = 0; i < MODEL_ORDER.length; i++) {
+    if (s.includes(MODEL_ORDER[i].toLowerCase())) return i;
+  }
+  return 99;
+}
+
+function batClass(b) {
+  const n = parseInt(b);
+  if (isNaN(n)) return 'bat-g';
+  return n >= 85 ? 'bat-g' : n >= 75 ? 'bat-m' : 'bat-r';
+}
+
+function parseIngreso(str) {
+  if (!str) return null;
+  const d = new Date(str + 'T00:00:00');
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function isNewArrival(p) {
+  const d = parseIngreso(p.ingreso);
+  if (!d) return false;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.floor((today - d) / 86400000) <= 10;
+}
+
+function buildWA(p) {
+  const specs = p.extra ? `${p.gb} ${p.color} (${p.extra})` : `${p.gb} ${p.color}`;
+  const batN  = parseInt(p.bat);
+  const batD  = isNaN(batN) ? p.bat : `${p.bat}%`;
+  const ars   = Math.round(p.usd * USD_ARS).toLocaleString('es-AR');
+  const msg   = `Hola Hassel! 👋 Vi la web y me interesa este equipo:\n\n📱 ${p.modelo} ${specs}\n🔋 Batería: ${batD}\n💵 USD $${p.usd} / $${ars} ARS\n\n¿Está disponible?`;
+  return `https://api.whatsapp.com/send?phone=${WA}&text=${encodeURIComponent(msg)}`;
+}
+
+function buildWAPermuta() {
+  return `https://api.whatsapp.com/send?phone=${WA}&text=${encodeURIComponent('Hola Hassel, quiero cotizar mi iPhone 📱')}`;
+}
+
+/* ════════════════════════════════════════════════════
+   CARD HTML
+════════════════════════════════════════════════════ */
+function cardHTML(p, i, badgeClass, badgeLabel) {
+  const ars   = Math.round(p.usd * USD_ARS);
+  const cuota = Math.round((ars * 1.5) / CUOTAS);
+  const isMac = badgeLabel === 'MacBook';
+  const batN  = parseInt(p.bat);
+  const batPct = isNaN(batN) ? 100 : batN;
+  const batD  = isNaN(batN) ? p.bat : `${p.bat}%`;
+  const bc    = batClass(p.bat);
+
+  const batRow = isMac
+    ? `<div class="spec-row"><span class="spec-k">Ciclos de carga</span><span class="spec-v">${p.bat}</span></div>`
+    : `<div class="spec-row"><span class="spec-k">Batería</span><div class="bat-wrap"><div class="bat-bar"><div class="bat-fill ${bc}" style="width:${batPct}%"></div></div><span class="spec-v">${batD}</span></div></div>`;
+
+  const newBadge = isNewArrival(p)
+    ? `<span class="badge badge-new">🆕 Nuevo ingreso</span>` : '';
+
+  return `<div class="card" style="animation-delay:${Math.min(i * 30, 500)}ms">
+    <div class="card-top">
+      <span class="apple-icon">&#63743;</span>
+      <div class="card-badges">${newBadge}<span class="badge ${badgeClass}">${badgeLabel}</span></div>
+    </div>
+    <div class="card-model">${p.modelo}</div>
+    <div class="card-specs">
+      <div class="spec-row"><span class="spec-k">Almacenamiento</span><span class="spec-v">${p.gb}</span></div>
+      <div class="spec-row"><span class="spec-k">Color</span><span class="spec-v">${p.color}</span></div>
+      ${p.grade ? `<div class="spec-row"><span class="spec-k">Grado</span><span class="spec-v">${p.grade}</span></div>` : ''}
+      ${batRow}
+      ${p.extra ? `<div class="spec-row"><span class="spec-k">Nota</span><span class="spec-v" style="font-size:11px;color:var(--text3)">${p.extra}</span></div>` : ''}
+    </div>
+    <div class="divider"></div>
+    <div class="price-usd">USD $${p.usd.toLocaleString()}</div>
+    <div class="price-ars">$${ars.toLocaleString('es-AR')} ARS</div>
+    <div class="price-cuo">${CUOTAS} cuotas de $${cuota.toLocaleString('es-AR')}</div>
+    <div class="card-actions">
+      <a class="btn-wa" href="${buildWA(p)}" target="_blank">${WA_SVG} Me interesa</a>
+      <a class="btn-permuta" href="${buildWAPermuta()}" target="_blank" title="Cotizar mi iPhone">🔄</a>
+    </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   FILTROS Y RENDER
+════════════════════════════════════════════════════ */
+function filterMatch(p) {
+  if (activeFilter === 'todos') return true;
+  if (activeFilter === 'se')    return p.modelo.toLowerCase().includes('se');
+  return p.modelo.toLowerCase().includes('iphone ' + activeFilter);
+}
+
+function searchMatch(p, q) {
+  if (!q) return true;
+  return (p.modelo + ' ' + p.gb + ' ' + p.color + ' ' + (p.extra || '')).toLowerCase().includes(q.toLowerCase());
+}
+
+function getSorted(arr) {
+  const s = document.getElementById('sortSelect').value;
+  const c = [...arr];
+  if (s === 'price-asc')  return c.sort((a,b) => a.usd - b.usd);
+  if (s === 'price-desc') return c.sort((a,b) => b.usd - a.usd);
+  if (s === 'bat-desc')   return c.sort((a,b) => (parseInt(b.bat)||0) - (parseInt(a.bat)||0));
+  if (s === 'newest')     return c.sort((a,b) => modelGen(b.modelo) - modelGen(a.modelo));
+  if (s === 'oldest')     return c.sort((a,b) => modelGen(a.modelo) - modelGen(b.modelo));
+  return c;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const tw   = document.getElementById('toolbarWrap');
+  const fw   = document.getElementById('filtersWrap');
+
+  if (activeCat === 'iphones') {
+    tw.style.display = ''; fw.style.display = '';
+    const q = document.getElementById('search').value;
+    let f = STOCK_IPHONES.filter(p => filterMatch(p) && searchMatch(p, q));
+    f = getSorted(f);
+    grid.innerHTML = f.length === 0
+      ? `<div class="empty">No hay equipos con ese filtro. <a href="#" onclick="clearFilters();return false;">Limpiar filtros</a></div>`
+      : f.map((p,i) => cardHTML(p, i, 'badge-cat', 'Seminuevo')).join('');
+  } else if (activeCat === 'mac') {
+    tw.style.display = 'none'; fw.style.display = 'none';
+    grid.innerHTML = STOCK_MAC.map((p,i) => cardHTML(p, i, 'badge-mac', 'MacBook')).join('');
+  } else {
+    tw.style.display = 'none'; fw.style.display = 'none';
+    grid.innerHTML = STOCK_WATCH.map((p,i) => cardHTML(p, i, 'badge-watch', 'Apple Watch')).join('');
+  }
+}
+
+function setCat(cat, btn) {
+  activeCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  (btn || document.querySelector(`[data-cat="${cat}"]`))?.classList.add('active');
+  renderGrid();
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function clearFilters() {
+  activeFilter = 'todos';
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.filter-btn').forEach((b,i) => b.classList.toggle('active', i === 0));
+  renderGrid();
+}
+
+/* ════════════════════════════════════════════════════
+   UI HELPERS
+════════════════════════════════════════════════════ */
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const was  = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!was) item.classList.add('open');
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const next = isLight ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'light' ? '☀️' : '🌙';
+  localStorage.setItem('theme', next);
+}
+
+function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+function closeMenu()  { document.getElementById('navLinks').classList.remove('open'); }
+
+/* ════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════ */
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+document.getElementById('themeBtn').textContent = savedTheme === 'light' ? '☀️' : '🌙';
+
+renderGrid();
+</script>
+</body>
+</html>
