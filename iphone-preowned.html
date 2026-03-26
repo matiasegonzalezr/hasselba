@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
   <meta charset="UTF-8">
   <title>iPhone PreOwned - Hassel</title>
@@ -7,38 +7,40 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-black text-white">
+<body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
 
 <!-- HEADER -->
-<header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
+<header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-black/80 backdrop-blur border-b border-black/10 dark:border-white/10 transition-colors duration-300">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-    <a href="index.html" class="text-white font-semibold text-lg">Hassel</a>
+    <a href="index.html" class="text-black dark:text-white font-semibold text-lg transition-colors duration-300">
+      Hassel
+    </a>
 
-    <nav class="hidden md:flex items-center gap-8 text-sm text-white">
+    <nav class="hidden md:flex items-center gap-8 text-sm text-black dark:text-white transition-colors duration-300">
 
       <div class="relative group">
         <button class="hover:text-[#008ACB] transition">Tienda</button>
 
-        <div class="absolute left-0 top-full mt-4 w-[500px] bg-black border border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+        <div class="absolute left-0 top-full mt-4 w-[500px] bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition shadow-xl">
 
           <div class="grid grid-cols-2 gap-6 text-sm">
 
             <div>
-              <p class="text-gray-400 mb-2">iPhone</p>
+              <p class="text-zinc-500 dark:text-gray-400 mb-2">iPhone</p>
               <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
               <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
               <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
             </div>
 
             <div>
-              <p class="text-gray-400 mb-2">MacBook</p>
+              <p class="text-zinc-500 dark:text-gray-400 mb-2">MacBook</p>
               <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
               <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
             </div>
 
             <div>
-              <p class="text-gray-400 mb-2">Otros</p>
+              <p class="text-zinc-500 dark:text-gray-400 mb-2">Otros</p>
               <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
               <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
             </div>
@@ -52,10 +54,17 @@
 
     </nav>
 
-    <a href="https://wa.me/5491136404202"
-       class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
-       WhatsApp
-    </a>
+    <div class="flex items-center gap-3">
+      <button onclick="toggleTheme()"
+        class="border border-black/10 dark:border-white/20 text-black dark:text-white px-3 py-2 rounded-lg text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
+        <span id="theme-icon">☀</span>
+      </button>
+
+      <a href="https://wa.me/5491136404202"
+         class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
+         WhatsApp
+      </a>
+    </div>
 
   </div>
 </header>
@@ -72,7 +81,7 @@
     iPhone PreOwned
   </h1>
 
-  <p class="text-white/70 max-w-2xl mx-auto">
+  <p class="text-black/70 dark:text-white/70 max-w-2xl mx-auto transition-colors duration-300">
     Equipos seleccionados, revisados y listos para usar.
   </p>
 </section>
@@ -93,30 +102,30 @@
 </main>
 
 <!-- FOOTER -->
-<footer class="px-6 py-20 bg-black text-white border-t border-white/10">
+<footer class="px-6 py-20 bg-white dark:bg-black text-black dark:text-white border-t border-black/10 dark:border-white/10 transition-colors duration-300">
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
 
     <div>
       <h3 class="text-2xl font-semibold mb-4">Hassel BA</h3>
-      <p class="text-white/60 text-sm mb-4">Todo para tus dispositivos Apple.</p>
-      <p class="text-white/40 text-xs">iPhone · MacBook · Apple Watch · Servicio técnico</p>
+      <p class="text-black/60 dark:text-white/60 text-sm mb-4">Todo para tus dispositivos Apple.</p>
+      <p class="text-black/40 dark:text-white/40 text-xs">iPhone · MacBook · Apple Watch · Servicio técnico</p>
     </div>
 
     <div>
-      <h4 class="text-sm font-medium mb-4 text-white/80">Tienda</h4>
+      <h4 class="text-sm font-medium mb-4 text-black/80 dark:text-white/80">Tienda</h4>
       <div class="flex flex-col gap-3 text-sm">
-        <a href="iphone-preowned.html">iPhone PreOwned</a>
-        <a href="iphone-new.html">iPhone New</a>
-        <a href="iphone-outlet.html">iPhone Outlet</a>
+        <a href="iphone-preowned.html" class="hover:text-[#008ACB]">iPhone PreOwned</a>
+        <a href="iphone-new.html" class="hover:text-[#008ACB]">iPhone New</a>
+        <a href="iphone-outlet.html" class="hover:text-[#008ACB]">iPhone Outlet</a>
       </div>
     </div>
 
     <div>
-      <h4 class="text-sm font-medium mb-4 text-white/80">Contacto</h4>
-      <a href="https://wa.me/5491136404202" class="block mb-2 text-green-400">WhatsApp</a>
-      <a href="https://instagram.com/hasselba" class="block mb-4 text-blue-400">Instagram</a>
+      <h4 class="text-sm font-medium mb-4 text-black/80 dark:text-white/80">Contacto</h4>
+      <a href="https://wa.me/5491136404202" class="block mb-2 text-green-500">WhatsApp</a>
+      <a href="https://instagram.com/hasselba" class="block mb-4 text-[#008ACB]">Instagram</a>
 
-      <div class="w-full h-[160px] rounded-xl overflow-hidden border border-white/10">
+      <div class="w-full h-[160px] rounded-xl overflow-hidden border border-black/10 dark:border-white/10">
         <iframe src="https://www.google.com/maps?q=-34.7541418,-58.2006839&z=15&output=embed"
           width="100%" height="100%" style="border:0;" loading="lazy">
         </iframe>
@@ -140,7 +149,7 @@ const filtersContainer = document.getElementById("model-filters");
 let activeFilter = "Todos";
 
 function getModelFamily(name) {
-  const match = name.match(/iPhone\s+\d+/i);
+  const match = name.match(/iPhone\\s+\\d+/i);
   return match ? match[0] : "Otros";
 }
 
@@ -149,10 +158,10 @@ function renderFilters() {
 
   filtersContainer.innerHTML = families.map(f => `
     <button onclick="setFilter('${f}')"
-      class="px-4 py-2 rounded-full text-sm border ${
+      class="px-4 py-2 rounded-full text-sm border transition ${
         activeFilter === f
-        ? "bg-white text-black"
-        : "bg-white/5 text-white border-white/10"
+        ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
+        : "bg-black/5 text-black border-black/10 hover:bg-black/10 dark:bg-white/5 dark:text-white dark:border-white/10 dark:hover:bg-white/10"
       }">
       ${f}
     </button>
@@ -165,17 +174,17 @@ function renderProducts() {
     : products.filter(p => getModelFamily(p.name) === activeFilter);
 
   grid.innerHTML = filtered.map(p => `
-    <div class="border border-white/10 rounded-2xl p-6 hover:border-[#008ACB] transition">
+    <div class="border border-black/10 dark:border-white/10 rounded-2xl p-6 bg-black/[0.03] dark:bg-white/[0.03] hover:border-[#008ACB] transition">
 
       <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
 
-      <p class="text-white/60 text-sm mb-1">${p.storage} · ${p.color}</p>
-      <p class="text-white/60 text-sm mb-4">🔋 ${p.battery} · ${p.grade}</p>
+      <p class="text-black/60 dark:text-white/60 text-sm mb-1">${p.storage} · ${p.color}</p>
+      <p class="text-black/60 dark:text-white/60 text-sm mb-4">🔋 ${p.battery} · ${p.grade}</p>
 
       <p class="text-2xl font-semibold mb-4">USD ${p.price}</p>
 
       <a href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${p.name}`)}"
-         class="block text-center bg-green-500 text-black py-3 rounded-xl">
+         class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-medium transition">
          Consultar
       </a>
 
@@ -188,6 +197,39 @@ function setFilter(f) {
   renderFilters();
   renderProducts();
 }
+
+function updateThemeIcon() {
+  const icon = document.getElementById("theme-icon");
+  if (document.documentElement.classList.contains("dark")) {
+    icon.textContent = "☀";
+  } else {
+    icon.textContent = "🌙";
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+
+  if (html.classList.contains("dark")) {
+    html.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  } else {
+    html.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  }
+
+  updateThemeIcon();
+}
+
+(function () {
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
+    document.documentElement.classList.remove("dark");
+  } else {
+    document.documentElement.classList.add("dark");
+  }
+  updateThemeIcon();
+})();
 
 renderFilters();
 renderProducts();
