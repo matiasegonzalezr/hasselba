@@ -4,36 +4,26 @@
   <meta charset="UTF-8">
   <title>iPhone PreOwned - Hassel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-black text-white">
 
-<!-- HEADER SIMPLE -->
+<!-- HEADER -->
 <header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-    <!-- Logo -->
-    <a href="index.html" class="text-white font-semibold text-lg">
-      Hassel
-    </a>
+    <a href="index.html" class="text-white font-semibold text-lg">Hassel</a>
 
-    <!-- Navegación -->
     <nav class="hidden md:flex items-center gap-8 text-sm text-white">
 
-      <!-- TIENDA (dropdown) -->
       <div class="relative group">
-        <button class="hover:text-[#008ACB] transition">
-          Tienda
-        </button>
+        <button class="hover:text-[#008ACB] transition">Tienda</button>
 
-        <!-- Dropdown -->
         <div class="absolute left-0 top-full mt-4 w-[500px] bg-black border border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
 
           <div class="grid grid-cols-2 gap-6 text-sm">
 
-            <!-- iPhone -->
             <div>
               <p class="text-gray-400 mb-2">iPhone</p>
               <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
@@ -41,14 +31,12 @@
               <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
             </div>
 
-            <!-- Mac -->
             <div>
               <p class="text-gray-400 mb-2">MacBook</p>
               <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
               <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
             </div>
 
-            <!-- Otros -->
             <div>
               <p class="text-gray-400 mb-2">Otros</p>
               <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
@@ -59,13 +47,11 @@
         </div>
       </div>
 
-      <!-- Links -->
       <a href="nosotros.html" class="hover:text-[#008ACB]">Nosotros</a>
       <a href="contacto.html" class="hover:text-[#008ACB]">Contacto</a>
 
     </nav>
 
-    <!-- WhatsApp -->
     <a href="https://wa.me/5491136404202"
        class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
        WhatsApp
@@ -74,163 +60,138 @@
   </div>
 </header>
 
-<!-- TÍTULO -->
-<section class="pt-32 pb-16 px-6 bg-black text-white">
-  <div class="max-w-5xl mx-auto text-center">
-    <p class="text-sm uppercase tracking-[0.2em] text-[#008ACB] mb-4">
-      Hassel Selection
-    </p>
+<main>
 
-    <h1 class="text-4xl md:text-6xl font-semibold leading-tight mb-6">
-      iPhone PreOwned
-    </h1>
+<!-- HERO -->
+<section class="pt-32 pb-16 px-6 text-center">
+  <p class="text-sm uppercase tracking-[0.2em] text-[#008ACB] mb-4">
+    Hassel Selection
+  </p>
 
-    <p class="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-      Equipos seleccionados, revisados y listos para usar. Elegí con más claridad y consultá directo por WhatsApp.
-    </p>
-  </div>
+  <h1 class="text-4xl md:text-6xl font-semibold mb-6">
+    iPhone PreOwned
+  </h1>
+
+  <p class="text-white/70 max-w-2xl mx-auto">
+    Equipos seleccionados, revisados y listos para usar.
+  </p>
 </section>
 
-<!-- GRID -->
+<!-- FILTROS + GRID -->
 <section class="px-6 pb-20 max-w-7xl mx-auto">
 
+  <!-- FILTROS -->
+  <div class="mb-10">
+    <div id="model-filters" class="flex flex-wrap gap-3 justify-center"></div>
+  </div>
+
+  <!-- GRID -->
   <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-    <!-- DUPLICÁ ESTE BLOQUE PARA MÁS EQUIPOS -->
-
-  </div>
-
 </section>
-  <script>
-  const products = [
-    {
-      name: "iPhone 13 Pro",
-      storage: "128GB",
-      color: "Grafito",
-      battery: "87%",
-      grade: "A",
-      price: 480
-    },
-    {
-      name: "iPhone 14",
-      storage: "128GB",
-      color: "Blue",
-      battery: "89%",
-      grade: "A-",
-      price: 520
-    },
-    {
-      name: "iPhone 15 Pro",
-      storage: "256GB",
-      color: "Natural",
-      battery: "91%",
-      grade: "A",
-      price: 890
-    }
-  ];
 
-  const grid = document.getElementById("product-grid");
+</main>
 
-  function renderProducts() {
-grid.innerHTML = products.map(product => `
-  <div class="border border-white/10 rounded-2xl p-6 bg-gradient-to-b from-white/5 to-transparent hover:border-[#008ACB] transition-all duration-300">
-
-    <!-- Modelo -->
-    <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
-
-    <!-- Specs -->
-    <p class="text-white/60 text-sm mb-1">
-      ${product.storage} · ${product.color}
-    </p>
-
-    <p class="text-white/60 text-sm mb-4">
-      🔋 ${product.battery} · ${product.grade}
-    </p>
-
-    <!-- Precio -->
-    <p class="text-2xl font-semibold mb-4">
-      USD ${product.price}
-    </p>
-
-    <!-- CTA -->
-    <a
-      href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${product.name} ${product.storage} que vi en la web.`)}"
-      target="_blank"
-      class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-medium transition"
-    >
-      Consultar disponibilidad
-    </a>
-
-  </div>
-`).join("");
-  }
-
-  renderProducts();
-</script>
+<!-- FOOTER -->
 <footer class="px-6 py-20 bg-black text-white border-t border-white/10">
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
 
-    <!-- Marca -->
     <div>
       <h3 class="text-2xl font-semibold mb-4">Hassel BA</h3>
-      <p class="text-white/60 text-sm mb-4">
-        Todo para tus dispositivos Apple.
-      </p>
-      <p class="text-white/40 text-xs">
-        iPhone · MacBook · Apple Watch · Servicio técnico especializado
-      </p>
+      <p class="text-white/60 text-sm mb-4">Todo para tus dispositivos Apple.</p>
+      <p class="text-white/40 text-xs">iPhone · MacBook · Apple Watch · Servicio técnico</p>
     </div>
 
-    <!-- Navegación -->
     <div>
       <h4 class="text-sm font-medium mb-4 text-white/80">Tienda</h4>
-
       <div class="flex flex-col gap-3 text-sm">
-        <a href="iphone-preowned.html" class="hover:text-white transition">iPhone PreOwned</a>
-        <a href="iphone-new.html" class="hover:text-white transition">iPhone New</a>
-        <a href="iphone-outlet.html" class="hover:text-white transition">iPhone Outlet</a>
-        <a href="macbook-preowned.html" class="hover:text-white transition">MacBook PreOwned</a>
-        <a href="apple-watch.html" class="hover:text-white transition">Apple Watch</a>
+        <a href="iphone-preowned.html">iPhone PreOwned</a>
+        <a href="iphone-new.html">iPhone New</a>
+        <a href="iphone-outlet.html">iPhone Outlet</a>
       </div>
     </div>
 
-    <!-- Contacto -->
     <div>
       <h4 class="text-sm font-medium mb-4 text-white/80">Contacto</h4>
+      <a href="https://wa.me/5491136404202" class="block mb-2 text-green-400">WhatsApp</a>
+      <a href="https://instagram.com/hasselba" class="block mb-4 text-blue-400">Instagram</a>
 
-      <div class="flex flex-col gap-3 text-sm mb-6">
-
-        <a href="https://wa.me/5491136404202" target="_blank" class="hover:text-green-400 transition">
-          WhatsApp
-        </a>
-
-        <a href="https://instagram.com/hasselba" target="_blank" class="hover:text-blue-400 transition">
-          Instagram
-        </a>
-
-        <span class="text-white/60">
-          Berazategui, Buenos Aires
-        </span>
-
-      </div>
-
-      <div class="w-full h-[180px] rounded-xl overflow-hidden border border-white/10">
-        <iframe 
-          src="https://www.google.com/maps?q=-34.7541418,-58.2006839&z=15&output=embed"
-          width="100%" 
-          height="100%" 
-          style="border:0;" 
-          loading="lazy">
+      <div class="w-full h-[160px] rounded-xl overflow-hidden border border-white/10">
+        <iframe src="https://www.google.com/maps?q=-34.7541418,-58.2006839&z=15&output=embed"
+          width="100%" height="100%" style="border:0;" loading="lazy">
         </iframe>
       </div>
-
     </div>
 
   </div>
-
-  <div class="mt-12 pt-6 border-t border-white/10 text-center text-white/40 text-xs">
-    © 2026 Hassel BA — Todos los derechos reservados
-  </div>
 </footer>
+
+<!-- SCRIPT -->
+<script>
+const products = [
+  { name: "iPhone 13 Pro", storage: "128GB", color: "Grafito", battery: "87%", grade: "A", price: 480 },
+  { name: "iPhone 14", storage: "128GB", color: "Blue", battery: "89%", grade: "A-", price: 520 },
+  { name: "iPhone 15 Pro", storage: "256GB", color: "Natural", battery: "91%", grade: "A", price: 890 }
+];
+
+const grid = document.getElementById("product-grid");
+const filtersContainer = document.getElementById("model-filters");
+
+let activeFilter = "Todos";
+
+function getModelFamily(name) {
+  const match = name.match(/iPhone\s+\d+/i);
+  return match ? match[0] : "Otros";
+}
+
+function renderFilters() {
+  const families = ["Todos", ...new Set(products.map(p => getModelFamily(p.name)))];
+
+  filtersContainer.innerHTML = families.map(f => `
+    <button onclick="setFilter('${f}')"
+      class="px-4 py-2 rounded-full text-sm border ${
+        activeFilter === f
+        ? "bg-white text-black"
+        : "bg-white/5 text-white border-white/10"
+      }">
+      ${f}
+    </button>
+  `).join("");
+}
+
+function renderProducts() {
+  const filtered = activeFilter === "Todos"
+    ? products
+    : products.filter(p => getModelFamily(p.name) === activeFilter);
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="border border-white/10 rounded-2xl p-6 hover:border-[#008ACB] transition">
+
+      <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
+
+      <p class="text-white/60 text-sm mb-1">${p.storage} · ${p.color}</p>
+      <p class="text-white/60 text-sm mb-4">🔋 ${p.battery} · ${p.grade}</p>
+
+      <p class="text-2xl font-semibold mb-4">USD ${p.price}</p>
+
+      <a href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${p.name}`)}"
+         class="block text-center bg-green-500 text-black py-3 rounded-xl">
+         Consultar
+      </a>
+
+    </div>
+  `).join("");
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  renderFilters();
+  renderProducts();
+}
+
+renderFilters();
+renderProducts();
+</script>
+
 </body>
 </html>
