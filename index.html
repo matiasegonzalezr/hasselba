@@ -94,36 +94,68 @@
 <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 relative overflow-x-hidden selection:bg-hassel selection:text-white">
 
     <!-- Navbar -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-900 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <a href="#" class="flex-shrink-0 flex items-center">
-                    <img id="brand-logo" src="IMAGOTIPO-B.png" alt="Hassel BA" class="h-6 w-auto object-contain">
-                </a>
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#stock" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">Stock</a>
-                    <a href="#historia" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">Nosotros</a>
-                    <a href="#como-funciona" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">¿Cómo funciona?</a>
-                    <a href="#faq" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">FAQ</a>
-                </nav>
+    <!-- Logo -->
+    <a href="/" class="text-white font-semibold text-lg">
+      Hassel
+    </a>
 
-                <!-- Actions -->
-                <div class="flex items-center gap-4">
-                    <button id="theme-toggle" class="text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 flex items-center justify-center">
-                        <iconify-icon icon="solar:moon-linear" class="text-xl dark:hidden"></iconify-icon>
-                        <iconify-icon icon="solar:sun-linear" class="text-xl hidden dark:block"></iconify-icon>
-                    </button>
-                    <a href="https://wa.me/5491136404202" target="_blank" class="hidden sm:inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-white bg-hassel rounded-full hover:bg-hassel-dark transition-colors gap-2">
-                        <iconify-icon icon="solar:chat-round-dots-linear" class="text-base"></iconify-icon>
-                        WhatsApp
-                    </a>
-                </div>
+    <!-- Navegación -->
+    <nav class="hidden md:flex items-center gap-8 text-sm text-white">
+
+      <!-- TIENDA (dropdown) -->
+      <div class="relative group">
+        <button class="hover:text-blue-400 transition">
+          Tienda
+        </button>
+
+        <!-- Dropdown -->
+        <div class="absolute left-0 top-full mt-4 w-[500px] bg-black border border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+
+          <div class="grid grid-cols-2 gap-6 text-sm">
+
+            <!-- iPhone -->
+            <div>
+              <p class="text-gray-400 mb-2">iPhone</p>
+              <a href="iphone-preowned.html" class="block hover:text-blue-400">iPhone PreOwned</a>
+              <a href="iphone-new.html" class="block hover:text-blue-400">iPhone New</a>
+              <a href="iphone-outlet.html" class="block hover:text-blue-400">iPhone Outlet</a>
             </div>
+
+            <!-- Mac -->
+            <div>
+              <p class="text-gray-400 mb-2">MacBook</p>
+              <a href="macbook-preowned.html" class="block hover:text-blue-400">MacBook PreOwned</a>
+              <a href="macbook-new.html" class="block hover:text-blue-400">MacBook New</a>
+            </div>
+
+            <!-- Otros -->
+            <div>
+              <p class="text-gray-400 mb-2">Otros</p>
+              <a href="apple-watch.html" class="block hover:text-blue-400">Apple Watch</a>
+              <a href="service.html" class="block hover:text-blue-400">Service</a>
+            </div>
+
+          </div>
         </div>
-    </header>
+      </div>
+
+      <!-- Links -->
+      <a href="nosotros.html" class="hover:text-blue-400">Nosotros</a>
+      <a href="contacto.html" class="hover:text-blue-400">Contacto</a>
+
+    </nav>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/5491136404202"
+       class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
+       WhatsApp
+    </a>
+
+  </div>
+</header>
 
     <main>
         <!-- Hero Section -->
