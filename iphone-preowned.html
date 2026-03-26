@@ -132,21 +132,37 @@
   const grid = document.getElementById("product-grid");
 
   function renderProducts() {
-    grid.innerHTML = products.map(product => `
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">${product.name}</h3>
-        <p class="text-white/60 text-sm mb-1">${product.storage} · ${product.color}</p>
-        <p class="text-white/60 text-sm mb-4">Batería ${product.battery} · Grade ${product.grade}</p>
-        <p class="text-2xl font-semibold mb-4">USD ${product.price}</p>
-        <a
-          href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${product.name} ${product.storage} que vi en la web.`)}"
-          class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-lg"
-          target="_blank"
-        >
-          Consultar
-        </a>
-      </div>
-    `).join("");
+grid.innerHTML = products.map(product => `
+  <div class="border border-white/10 rounded-2xl p-6 bg-gradient-to-b from-white/5 to-transparent hover:border-[#008ACB] transition-all duration-300">
+
+    <!-- Modelo -->
+    <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+
+    <!-- Specs -->
+    <p class="text-white/60 text-sm mb-1">
+      ${product.storage} · ${product.color}
+    </p>
+
+    <p class="text-white/60 text-sm mb-4">
+      🔋 ${product.battery} · ${product.grade}
+    </p>
+
+    <!-- Precio -->
+    <p class="text-2xl font-semibold mb-4">
+      USD ${product.price}
+    </p>
+
+    <!-- CTA -->
+    <a
+      href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${product.name} ${product.storage} que vi en la web.`)}"
+      target="_blank"
+      class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-medium transition"
+    >
+      Consultar disponibilidad
+    </a>
+
+  </div>
+`).join("");
   }
 
   renderProducts();
