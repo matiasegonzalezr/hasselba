@@ -28,30 +28,63 @@
 <!-- GRID -->
 <section class="px-6 pb-20 max-w-7xl mx-auto">
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-    <!-- PRODUCTO -->
-    <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-
-      <h3 class="text-xl font-medium mb-2">iPhone 13 Pro</h3>
-
-      <p class="text-white/60 text-sm mb-1">128GB · Grafito</p>
-      <p class="text-white/60 text-sm mb-4">Batería 87% · Grade A</p>
-
-      <p class="text-2xl font-semibold mb-4">USD 480</p>
-
-      <a href="https://wa.me/5491136404202"
-         class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-lg">
-        Consultar
-      </a>
-
-    </div>
+  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <!-- DUPLICÁ ESTE BLOQUE PARA MÁS EQUIPOS -->
 
   </div>
 
 </section>
+  <script>
+  const products = [
+    {
+      name: "iPhone 13 Pro",
+      storage: "128GB",
+      color: "Grafito",
+      battery: "87%",
+      grade: "A",
+      price: 480
+    },
+    {
+      name: "iPhone 14",
+      storage: "128GB",
+      color: "Blue",
+      battery: "89%",
+      grade: "A-",
+      price: 520
+    },
+    {
+      name: "iPhone 15 Pro",
+      storage: "256GB",
+      color: "Natural",
+      battery: "91%",
+      grade: "A",
+      price: 890
+    }
+  ];
+
+  const grid = document.getElementById("product-grid");
+
+  function renderProducts() {
+    grid.innerHTML = products.map(product => `
+      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
+        <h3 class="text-xl font-medium mb-2">${product.name}</h3>
+        <p class="text-white/60 text-sm mb-1">${product.storage} · ${product.color}</p>
+        <p class="text-white/60 text-sm mb-4">Batería ${product.battery} · Grade ${product.grade}</p>
+        <p class="text-2xl font-semibold mb-4">USD ${product.price}</p>
+        <a
+          href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${product.name} ${product.storage} que vi en la web.`)}"
+          class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-lg"
+          target="_blank"
+        >
+          Consultar
+        </a>
+      </div>
+    `).join("");
+  }
+
+  renderProducts();
+</script>
 
 </body>
 </html>
