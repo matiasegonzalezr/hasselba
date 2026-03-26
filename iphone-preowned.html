@@ -11,8 +11,67 @@
 <body class="bg-black text-white">
 
 <!-- HEADER SIMPLE -->
-<header class="p-6 border-b border-white/10">
-  <a href="index.html" class="text-white text-lg">← Volver</a>
+<header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+
+    <!-- Logo -->
+    <a href="index.html" class="text-white font-semibold text-lg">
+      Hassel
+    </a>
+
+    <!-- Navegación -->
+    <nav class="hidden md:flex items-center gap-8 text-sm text-white">
+
+      <!-- TIENDA (dropdown) -->
+      <div class="relative group">
+        <button class="hover:text-[#008ACB] transition">
+          Tienda
+        </button>
+
+        <!-- Dropdown -->
+        <div class="absolute left-0 top-full mt-4 w-[500px] bg-black border border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+
+          <div class="grid grid-cols-2 gap-6 text-sm">
+
+            <!-- iPhone -->
+            <div>
+              <p class="text-gray-400 mb-2">iPhone</p>
+              <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
+              <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
+              <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
+            </div>
+
+            <!-- Mac -->
+            <div>
+              <p class="text-gray-400 mb-2">MacBook</p>
+              <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
+              <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
+            </div>
+
+            <!-- Otros -->
+            <div>
+              <p class="text-gray-400 mb-2">Otros</p>
+              <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
+              <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <a href="nosotros.html" class="hover:text-[#008ACB]">Nosotros</a>
+      <a href="contacto.html" class="hover:text-[#008ACB]">Contacto</a>
+
+    </nav>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/5491136404202"
+       class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
+       WhatsApp
+    </a>
+
+  </div>
 </header>
 
 <!-- TÍTULO -->
