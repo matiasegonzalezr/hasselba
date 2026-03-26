@@ -1,0 +1,602 @@
+<html lang="es" class="dark"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassel BA | Todo para tus dispositivos Apple</title>
+    
+    <!-- Tipografías -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hassel: {
+                            DEFAULT: '#008ACB',
+                            dark: '#264E9A'
+                        }
+                    },
+                    fontFamily: {
+                        bebas: ['"Bebas Neue"', 'sans-serif'],
+                        dm: ['"DM Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Iconify (Solar Linear) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .font-bebas {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05rem;
+        }
+        
+        /* Hero Background */
+        .hero-bg {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease;
+        }
+        .dark .hero-bg {
+            background-image: url('fondo-dark.jpg');
+        }
+        html:not(.dark) .hero-bg {
+            background-image: url('fondo-light.jpg');
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: #09090b; /* zinc-950 */
+            opacity: 0.84; /* ~0.16 visibility para el dark */
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            z-index: 0;
+        }
+        html:not(.dark) .hero-bg::before {
+            background-color: #ffffff;
+            opacity: 0.50;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+        
+        /* Acordeón FAQ */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-content {
+            max-height: 500px;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 relative overflow-x-hidden selection:bg-hassel selection:text-white">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex-shrink-0 flex items-center">
+                    <img id="brand-logo" src="IMAGOTIPO-B.png" alt="Hassel BA" class="h-6 w-auto object-contain">
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#stock" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">Stock</a>
+                    <a href="#historia" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">Nosotros</a>
+                    <a href="#como-funciona" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">¿Cómo funciona?</a>
+                    <a href="#faq" class="text-sm font-medium text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors">FAQ</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="text-zinc-600 hover:text-hassel dark:text-zinc-400 dark:hover:text-hassel transition-colors p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 flex items-center justify-center">
+                        <iconify-icon icon="solar:moon-linear" class="text-xl dark:hidden"></iconify-icon>
+                        <iconify-icon icon="solar:sun-linear" class="text-xl hidden dark:block"></iconify-icon>
+                    </button>
+                    <a href="https://wa.me/5491136404202" target="_blank" class="hidden sm:inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-white bg-hassel rounded-full hover:bg-hassel-dark transition-colors gap-2">
+                        <iconify-icon icon="solar:chat-round-dots-linear" class="text-base"></iconify-icon>
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg pt-32 pb-24 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 min-h-[85vh] flex flex-col justify-center items-center text-center">
+            <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-200/50 dark:bg-zinc-900/50 border border-zinc-300/50 dark:border-zinc-800/50 text-xs font-medium text-zinc-700 dark:text-zinc-400 mb-8 backdrop-blur-sm">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-hassel opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-hassel"></span>
+                    </span>
+                    Stock actualizado en tiempo real
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-bebas text-zinc-900 dark:text-white leading-none mb-6">
+                    Todo para tus <span class="text-hassel">dispositivos Apple</span>
+                </h1>
+                
+                <p class="text-base md:text-xl font-normal text-zinc-600 dark:text-zinc-400 max-w-2xl mb-10">
+                    Equipos usados seleccionados, verificados y garantizados. Atención personalizada desde Berazategui, Zona Sur.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="#stock" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium text-white bg-hassel rounded-full hover:bg-hassel-dark transition-colors duration-300 shadow-lg shadow-hassel/20">
+                        Ver Stock Disponible
+                    </a>
+                    <a href="https://wa.me/5491136404202" target="_blank" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium text-zinc-900 dark:text-white bg-white/10 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-300 gap-2 backdrop-blur-md">
+                        <iconify-icon icon="solar:chat-round-dots-linear" class="text-lg"></iconify-icon>
+                        Consultar por permuta
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid grid-cols-3 gap-8 md:gap-16 pt-8 border-t border-zinc-200/50 dark:border-zinc-800/50 w-full max-w-2xl">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl md:text-4xl font-bebas text-zinc-900 dark:text-white">2020</span>
+                        <span class="text-xs font-medium text-zinc-500 mt-1 uppercase tracking-wider">Fundación</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl md:text-4xl font-bebas text-zinc-900 dark:text-white">+1000</span>
+                        <span class="text-xs font-medium text-zinc-500 mt-1 uppercase tracking-wider">Vendidos</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl md:text-4xl font-bebas text-zinc-900 dark:text-white">60</span>
+                        <span class="text-xs font-medium text-zinc-500 mt-1 uppercase tracking-wider">Días Garantía</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Bar -->
+        <section class="bg-white dark:bg-zinc-950 border-y border-zinc-200 dark:border-zinc-900 py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
+                        <iconify-icon icon="solar:verified-check-linear" class="text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Equipos Seleccionados</h3>
+                    <p class="text-xs text-zinc-500">Revisados en más de 30 puntos antes de publicarse.</p>
+                </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
+                        <iconify-icon icon="solar:battery-charge-linear" class="text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Batería Informada</h3>
+                    <p class="text-xs text-zinc-500">Transparencia total sobre la condición de cada equipo.</p>
+                </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
+                        <iconify-icon icon="solar:document-text-linear" class="text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Garantía Escrita</h3>
+                    <p class="text-xs text-zinc-500">60 días de cobertura propia para tu tranquilidad.</p>
+                </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
+                        <iconify-icon icon="solar:shield-check-linear" class="text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">IMEI Verificado</h3>
+                    <p class="text-xs text-zinc-500">Equipos 100% legales y libres para cualquier compañía.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stock Section -->
+        <section id="stock" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-2">Nuestro Stock</h2>
+                    <p class="text-sm text-zinc-500">Seleccioná una categoría para ver los equipos disponibles hoy.</p>
+                </div>
+                <div class="text-xs font-medium text-zinc-500 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                    Tipo de cambio: <span id="ars-rate" class="text-zinc-900 dark:text-white">Cargando...</span> ARS
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar" id="category-tabs">
+                <button data-cat="iphone" class="tab-btn active px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md">
+                    iPhone
+                </button>
+                <button data-cat="macbook" class="tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800">
+                    MacBook
+                </button>
+                <button data-cat="watch" class="tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800">
+                    Apple Watch
+                </button>
+            </div>
+
+            <!-- Grid -->
+            <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Se llena vía JS -->
+            </div>
+        </section>
+
+        <!-- Historia Section -->
+        <section id="historia" class="bg-zinc-100 dark:bg-zinc-900/30 border-y border-zinc-200 dark:border-zinc-800/50 py-24 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-4">Nuestra Historia</h2>
+                    <p class="text-sm text-zinc-600 dark:text-zinc-400">Desde 2020 acercando la mejor tecnología Apple a la Zona Sur.</p>
+                </div>
+
+                <div class="relative border-l border-zinc-300 dark:border-zinc-700 ml-3 md:ml-6 space-y-12 pb-4">
+                    <!-- 2020 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <div class="absolute -left-3.5 top-1 h-7 w-7 rounded-full bg-zinc-50 dark:bg-zinc-950 border-4 border-hassel flex items-center justify-center"></div>
+                        <h3 class="text-2xl font-bebas text-zinc-900 dark:text-white">2020 - El Inicio</h3>
+                        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Hassel nace en plena pandemia en nuestra primera locación en Berazategui, con el objetivo de brindar seguridad en la compra de equipos usados.</p>
+                    </div>
+                    <!-- 2022 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <div class="absolute -left-3.5 top-1 h-7 w-7 rounded-full bg-zinc-50 dark:bg-zinc-950 border-4 border-zinc-300 dark:border-zinc-700 flex items-center justify-center"></div>
+                        <h3 class="text-2xl font-bebas text-zinc-900 dark:text-white">2022 - Crecimiento</h3>
+                        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Nos mudamos a nuestra segunda ubicación, ampliando el catálogo para incluir líneas de MacBook y Apple Watch, consolidando cientos de clientes.</p>
+                    </div>
+                    <!-- Hoy -->
+                    <div class="relative pl-8 md:pl-12">
+                        <div class="absolute -left-3.5 top-1 h-7 w-7 rounded-full bg-zinc-50 dark:bg-zinc-950 border-4 border-zinc-300 dark:border-zinc-700 flex items-center justify-center"></div>
+                        <h3 class="text-2xl font-bebas text-zinc-900 dark:text-white">Actualidad</h3>
+                        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Hoy nos encontramos en nuestra tercera y mejorada oficina en Berazategui Centro, siendo referencia de tecnología Apple en toda la Zona Sur del GBA.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cómo Funciona -->
+        <section id="como-funciona" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-4">¿Cómo funciona?</h2>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400">Un proceso simple, humano y sin complicaciones.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Paso 1 -->
+                <div class="flex flex-col items-center text-center relative">
+                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">1</div>
+                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Elegís tu equipo</h3>
+                    <p class="text-xs text-zinc-500">Revisá nuestro stock actualizado en esta misma web.</p>
+                </div>
+                <!-- Paso 2 -->
+                <div class="flex flex-col items-center text-center relative">
+                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">2</div>
+                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Nos contactás</h3>
+                    <p class="text-xs text-zinc-500">Escribinos por WhatsApp para confirmar disponibilidad o permutas.</p>
+                </div>
+                <!-- Paso 3 -->
+                <div class="flex flex-col items-center text-center relative">
+                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
+                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">3</div>
+                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Coordinamos</h3>
+                    <p class="text-xs text-zinc-500">Acordamos forma de pago y entrega en nuestra oficina o envío.</p>
+                </div>
+                <!-- Paso 4 -->
+                <div class="flex flex-col items-center text-center relative">
+                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">4</div>
+                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Disfrutás</h3>
+                    <p class="text-xs text-zinc-500">Te llevás tu Apple garantizado y listo para usar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="bg-zinc-100 dark:bg-zinc-900/30 border-y border-zinc-200 dark:border-zinc-800/50 py-24 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-4">Preguntas Frecuentes</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Item -->
+                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Toman equipos como parte de pago?</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
+                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
+                                Sí, tomamos iPhone como parte de pago (a partir de iPhone 11 en adelante). El equipo debe estar en excelentes condiciones y libre de fábrica. Consultanos por WhatsApp para una cotización aproximada.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Qué formas de pago aceptan?</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
+                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
+                                Aceptamos dólares cara grande/azul, pesos (transferencia o efectivo al cambio del día), y tarjetas de crédito con recargo (consultar planes vigentes).
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Qué incluye la garantía de 60 días?</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
+                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
+                                Cubre cualquier falla de hardware no generada por el usuario. No cubre daños por agua, golpes, o caídas posteriores a la compra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-6">Estamos cerca tuyo</h2>
+                    <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-8">Ubicados en Berazategui Centro, atendemos de manera personalizada para que elijas tu próximo Apple con seguridad y confianza.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400">
+                                <iconify-icon icon="solar:map-point-linear" class="text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-zinc-900 dark:text-white">Ubicación</h4>
+                                <p class="text-xs text-zinc-500">Berazategui Centro, Buenos Aires (Atención con cita previa)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400">
+                                <iconify-icon icon="solar:phone-linear" class="text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-zinc-900 dark:text-white">WhatsApp</h4>
+                                <a href="https://wa.me/5491136404202" class="text-xs text-zinc-500 hover:text-hassel transition-colors">+54 9 11 3640-4202</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400">
+                                <iconify-icon icon="solar:letter-linear" class="text-xl"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-zinc-900 dark:text-white">Email</h4>
+                                <a href="mailto:hasselbuenosaires@gmail.com" class="text-xs text-zinc-500 hover:text-hassel transition-colors">hasselbuenosaires@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map Placeholder (Google Maps iframe goes here usually) -->
+                <div class="h-[400px] bg-zinc-200 dark:bg-zinc-900 rounded-3xl overflow-hidden relative border border-zinc-300 dark:border-zinc-800 flex items-center justify-center">
+                    <div class="text-center p-6">
+                        <iconify-icon icon="solar:map-linear" class="text-4xl text-zinc-400 mb-3"></iconify-icon>
+                        <p class="text-sm text-zinc-500">Mapa interactivo de Berazategui</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <img src="IMAGOTIPO-B.png" id="footer-logo" alt="Hassel BA" class="h-5 w-auto object-contain opacity-70">
+                <span class="text-xs text-zinc-500">Todo para tus dispositivos Apple. © 2020 - 2026</span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="https://instagram.com/hassel.ba" target="_blank" class="text-zinc-400 hover:text-hassel transition-colors">
+                    <span class="sr-only">Instagram</span>
+                    <iconify-icon icon="solar:camera-linear" class="text-xl"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/5491136404202" target="_blank" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
+        <iconify-icon icon="solar:chat-round-dots-bold" class="text-3xl"></iconify-icon>
+    </a>
+
+    <!-- JS Logic -->
+    <script>
+        // 1. Theme Logic (Claro/Oscuro)
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const logoImg = document.getElementById('brand-logo');
+        const footerLogo = document.getElementById('footer-logo');
+
+        function updateLogo() {
+            const isDark = htmlElement.classList.contains('dark');
+            const src = isDark ? 'IMAGOTIPO-B.png' : 'IMAGOTIPO-A.png';
+            logoImg.src = src;
+            footerLogo.src = src;
+        }
+
+        // Initialize theme
+        if (localStorage.theme === 'light') {
+            htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark'); // Default oscuro
+        }
+        updateLogo();
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            updateLogo();
+        });
+
+        // 2. FAQ Accordion
+        document.querySelectorAll('.faq-item button').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+                // Toggle current
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
+        // 3. Stock Data & Logic
+        let USD_ARS = 1460; // Fallback
+        
+        const STOCK_IPHONES = [
+            { modelo: "iPhone 14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+", ingreso: "2026-03-01" },
+            { modelo: "iPhone 13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A", ingreso: "2026-02-15" },
+            { modelo: "iPhone 12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+", ingreso: "2026-03-05" }
+        ];
+
+        const STOCK_MAC = [
+            { modelo: "MacBook Air M1", gb: "256GB", color: "Space Gray", bat: "89 ciclos", usd: 750, grade: "A+", ingreso: "2026-02-28" },
+            { modelo: "MacBook Pro M2", gb: "512GB", color: "Silver", bat: "45 ciclos", usd: 1200, grade: "A", ingreso: "2026-03-02" }
+        ];
+
+        const STOCK_WATCH = [
+            { modelo: "Apple Watch SE 2", gb: "40mm", color: "Midnight", bat: 98, usd: 250, grade: "A+", ingreso: "2026-03-04" }
+        ];
+
+        let currentCategory = 'iphone';
+
+        async function fetchDolarAPI() {
+            try {
+                const res = await fetch('https://dolarapi.com/v1/dolares/blue');
+                const data = await res.json();
+                USD_ARS = data.venta + 15;
+            } catch (error) {
+                console.error('Error fetching DolarAPI, using fallback.', error);
+            }
+            document.getElementById('ars-rate').innerText = USD_ARS.toLocaleString('es-AR');
+            renderStock();
+        }
+
+        function isNew(dateString) {
+            const ingreso = new Date(dateString);
+            const hoy = new Date();
+            const diffTime = Math.abs(hoy - ingreso);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            return diffDays <= 10;
+        }
+
+        function createCardText(item, isMac) {
+            const precioARS = item.usd * USD_ARS;
+            const cuota = (precioARS * 1.5) / 6;
+            
+            let batText = isMac ? item.bat : `Batería ${item.bat}%`;
+            let batIcon = isMac ? 'solar:bolt-circle-linear' : 'solar:battery-charge-linear';
+
+            // WhatsApp Message Template
+            let waMsg = encodeURIComponent(`Hola Hassel! 👋 Vi la web y me interesa:\n\n📱 ${item.modelo} ${item.gb} ${item.color}\n🔋 Batería: ${batText}\n💵 USD $${item.usd} / $${precioARS.toLocaleString('es-AR')} ARS\n\n¿Está disponible?`);
+            let waLink = `https://wa.me/5491136404202?text=${waMsg}`;
+
+            return `
+                <div class="group flex flex-col justify-between p-6 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-3xl hover:border-hassel/50 transition-all duration-300 relative shadow-sm hover:shadow-md">
+                    ${isNew(item.ingreso) ? `<span class="absolute top-4 right-4 bg-hassel text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Nuevo Ingreso</span>` : ''}
+                    
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 text-[10px] font-medium text-zinc-600 dark:text-zinc-300">Grado ${item.grade}</span>
+                        </div>
+                        <h3 class="text-lg font-medium tracking-tight text-zinc-900 dark:text-white">${item.modelo}</h3>
+                        <p class="text-xs text-zinc-500 mt-1">${item.gb} • ${item.color}</p>
+                        
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <div class="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/50 px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/50">
+                                <iconify-icon icon="${batIcon}" class="text-hassel"></iconify-icon> ${batText}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
+                        <div class="flex items-end justify-between mb-4">
+                            <div>
+                                <div class="text-xl font-bebas text-zinc-900 dark:text-white">USD ${item.usd}</div>
+                                <div class="text-[10px] text-zinc-500 font-medium">ARS $${precioARS.toLocaleString('es-AR')}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-[10px] text-zinc-500">6 cuotas de</div>
+                                <div class="text-xs font-medium text-zinc-900 dark:text-white">$${cuota.toLocaleString('es-AR', {maximumFractionDigits:0})}</div>
+                            </div>
+                        </div>
+                        <a href="${waLink}" target="_blank" class="w-full text-xs font-medium text-white bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-hassel dark:hover:bg-hassel dark:hover:text-white py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
+                            Comprar
+                            <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStock() {
+            const grid = document.getElementById('stock-grid');
+            grid.innerHTML = '';
+            
+            let data = [];
+            let isMac = false;
+
+            if (currentCategory === 'iphone') data = STOCK_IPHONES;
+            else if (currentCategory === 'macbook') { data = STOCK_MAC; isMac = true; }
+            else if (currentCategory === 'watch') data = STOCK_WATCH;
+
+            if (data.length === 0) {
+                grid.innerHTML = `<p class="text-sm text-zinc-500 col-span-full">No hay stock disponible en esta categoría por el momento.</p>`;
+                return;
+            }
+
+            data.forEach(item => {
+                grid.innerHTML += createCardText(item, isMac);
+            });
+        }
+
+        // Tab logic
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Reset styles
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.className = "tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800";
+                });
+                
+                // Set active styles (adapting depending on theme)
+                e.target.className = "tab-btn active px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md";
+                
+                currentCategory = e.target.getAttribute('data-cat');
+                renderStock();
+            });
+        });
+
+        // Init
+        fetchDolarAPI();
+
+    </script>
+
+</body></html>
