@@ -203,14 +203,18 @@ function setFilter(f) {
   renderProducts();
 }
 
+<script>
 function updateThemeIcon() {
   const icon = document.getElementById("theme-icon");
+  if (!icon) return;
+
   if (document.documentElement.classList.contains("dark")) {
     icon.textContent = "☀";
   } else {
     icon.textContent = "🌙";
   }
 }
+</script>
 
 function toggleTheme() {
   const html = document.documentElement;
