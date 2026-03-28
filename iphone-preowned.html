@@ -168,7 +168,7 @@ async function loadDollarBlue() {
     const res = await fetch("https://dolarapi.com/v1/dolares/blue");
     if (!res.ok) throw new Error("No se pudo obtener el dólar blue");
     const data = await res.json();
-    dolarBlueVenta = data.venta;
+    dolarBlueVenta = data.venta + 15;
   } catch (error) {
     console.error("Error cargando dólar blue:", error);
   }
