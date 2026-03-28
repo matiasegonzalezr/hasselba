@@ -160,41 +160,71 @@
 
     <main>
         <!-- Hero Section -->
-       <section class="min-h-screen flex items-center justify-center text-center px-6 bg-black text-white">
+       <section class="relative w-full h-[85vh] overflow-hidden">
 
-  <div class="max-w-3xl">
+  <!-- Slides -->
+  <div id="carousel" class="w-full h-full relative">
 
-    <!-- Título -->
-    <h1 class="text-5xl md:text-7xl font-semibold leading-tight mb-6">
-  <span class="bg-gradient-to-r from-[#008ACB] to-[#264E9A] bg-clip-text text-transparent">
-    TODO PARA TUS
-  </span>
-  <br />
-  <span class="text-white">
-    DISPOSITIVOS APPLE
-  </span>
-</h1>
+    <!-- Slide 1 -->
+    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-100">
+      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
 
-    <!-- Subtítulo -->
-    <p class="text-white/70 text-lg md:text-xl mb-8">
-      iPhone, MacBook y Apple Watch seleccionados, con garantía y asesoramiento personalizado.
-    </p>
-
-    <!-- Botones -->
-    <div class="flex flex-col sm:flex-row justify-center gap-4">
-
-      <a href="iphone-preowned.html"
-         class="bg-white text-black px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
-        Ver iPhone PreOwned
-      </a>
-
-      <a href="https://wa.me/5491136404202"
-         class="bg-green-500 text-black px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition">
-        Hablar por WhatsApp
-      </a>
-
+      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
+        <h2 class="text-5xl font-semibold mb-4">iPhone 17 Pro</h2>
+        <p class="text-white/70 mb-6">Potencia, cámara y diseño premium.</p>
+        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
+      </div>
     </div>
 
+    <!-- Slide 2 -->
+    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
+      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
+        <h2 class="text-5xl font-semibold mb-4">iPhone 17 Pro Max</h2>
+        <p class="text-white/70 mb-6">Pantalla grande. Autonomía real.</p>
+        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
+      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
+        <h2 class="text-5xl font-semibold mb-4">iPhone 17e</h2>
+        <p class="text-white/70 mb-6">Tu entrada al ecosistema Apple.</p>
+        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
+      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
+
+      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
+        <h2 class="text-5xl font-semibold mb-4">MacBook New</h2>
+        <p class="text-white/70 mb-6">Rendimiento para todo tu día.</p>
+        <a href="macbook-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Flechas -->
+  <button onclick="prevSlide()" class="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl">‹</button>
+  <button onclick="nextSlide()" class="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl">›</button>
+
+  <!-- Dots -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
+    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
+    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
+    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
   </div>
 
 </section>
