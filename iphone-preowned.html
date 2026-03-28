@@ -15,8 +15,8 @@
 
     <!-- IZQUIERDA -->
     <div class="flex justify-start">
-      <a href="index.html" class="text-white font-semibold text-lg">
-        Hassel
+      <a href="index.html">
+        <img src="img/imagotipo-a.png" alt="Hassel" style="height: 32px;">
       </a>
     </div>
 
@@ -180,19 +180,14 @@ function renderProducts() {
 
   grid.innerHTML = filtered.map(p => `
     <div class="border border-black/10 dark:border-white/10 rounded-2xl p-6 bg-black/[0.03] dark:bg-white/[0.03] hover:border-[#008ACB] transition">
-
       <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
-
       <p class="text-black/60 dark:text-white/60 text-sm mb-1">${p.storage} · ${p.color}</p>
       <p class="text-black/60 dark:text-white/60 text-sm mb-4">🔋 ${p.battery} · ${p.grade}</p>
-
       <p class="text-2xl font-semibold mb-4">USD ${p.price}</p>
-
       <a href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${p.name}`)}"
          class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-medium transition">
          Consultar
       </a>
-
     </div>
   `).join("");
 }
@@ -203,7 +198,6 @@ function setFilter(f) {
   renderProducts();
 }
 
-<script>
 function updateThemeIcon() {
   const icon = document.getElementById("theme-icon");
   if (!icon) return;
@@ -214,7 +208,6 @@ function updateThemeIcon() {
     icon.textContent = "🌙";
   }
 }
-</script>
 
 function toggleTheme() {
   const html = document.documentElement;
