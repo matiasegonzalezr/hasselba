@@ -154,7 +154,7 @@ const filtersContainer = document.getElementById("model-filters");
 let activeFilter = "Todos";
 
 function getModelFamily(name) {
-  const match = name.match(/iPhone\\s+\\d+/i);
+  const match = name.match(/iPhone\s+\d+/i);
   return match ? match[0] : "Otros";
 }
 
