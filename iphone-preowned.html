@@ -179,15 +179,45 @@ function renderProducts() {
     : products.filter(p => getModelFamily(p.name) === activeFilter);
 
   grid.innerHTML = filtered.map(p => `
-    <div class="border border-black/10 dark:border-white/10 rounded-2xl p-6 bg-black/[0.03] dark:bg-white/[0.03] hover:border-[#008ACB] transition">
-      <h3 class="text-xl font-semibold mb-2">${p.name}</h3>
-      <p class="text-black/60 dark:text-white/60 text-sm mb-1">${p.storage} · ${p.color}</p>
-      <p class="text-black/60 dark:text-white/60 text-sm mb-4">🔋 ${p.battery} · ${p.grade}</p>
-      <p class="text-2xl font-semibold mb-4">USD ${p.price}</p>
-      <a href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${p.name}`)}"
-         class="block text-center bg-green-500 hover:bg-green-600 text-black py-3 rounded-xl font-medium transition">
-         Consultar
+    <div class="group border border-black/10 dark:border-white/10 rounded-3xl p-6 md:p-7 bg-white dark:bg-white/[0.03] hover:border-[#008ACB] hover:-translate-y-1 transition duration-300">
+
+      <div class="mb-6">
+        <p class="text-xs uppercase tracking-[0.18em] text-[#008ACB] mb-3">
+          PreOwned Selection
+        </p>
+
+        <h3 class="text-2xl font-semibold leading-tight mb-3">
+          ${p.name}
+        </h3>
+
+        <p class="text-black/60 dark:text-white/60 text-sm leading-relaxed">
+          ${p.storage} · ${p.color}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span class="px-3 py-1 rounded-full text-xs border border-black/10 dark:border-white/10 text-black/70 dark:text-white/70">
+          🔋 ${p.battery}
+        </span>
+        <span class="px-3 py-1 rounded-full text-xs border border-black/10 dark:border-white/10 text-black/70 dark:text-white/70">
+          Grade ${p.grade}
+        </span>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-xs uppercase tracking-[0.16em] text-black/40 dark:text-white/40 mb-2">
+          Precio
+        </p>
+        <p class="text-3xl font-semibold tracking-tight">
+          USD ${p.price}
+        </p>
+      </div>
+
+      <a href="https://wa.me/5491136404202?text=${encodeURIComponent(`Hola! Me interesa el ${p.name} ${p.storage}`)}"
+         class="block text-center bg-green-500 hover:bg-green-600 text-black py-3.5 rounded-2xl font-medium transition">
+         Consultar por WhatsApp
       </a>
+
     </div>
   `).join("");
 }
