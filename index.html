@@ -148,12 +148,29 @@
     </nav>
 
     <!-- DERECHA -->
-    <div class="flex justify-end">
-      <a href="https://wa.me/5491136404202"
-         class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
-         WhatsApp
-      </a>
-    </div>
+   <div class="flex justify-end items-center gap-4">
+
+  <!-- SEARCH -->
+  <div class="hidden md:flex items-center bg-white/10 backdrop-blur rounded-full px-4 py-2 border border-white/10">
+    <input 
+      type="text" 
+      placeholder="Buscar"
+      class="bg-transparent outline-none text-sm text-white placeholder-white/50 w-32"
+    >
+  </div>
+
+  <!-- THEME TOGGLE -->
+  <button onclick="toggleTheme()" class="text-white text-lg">
+    <span id="theme-icon">🌙</span>
+  </button>
+
+  <!-- WHATSAPP -->
+  <a href="https://wa.me/5491136404202"
+     class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
+     WhatsApp
+  </a>
+
+</div>
 
   </div>
 </header>
