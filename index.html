@@ -819,5 +819,38 @@
         fetchDolarAPI();
 
     </script>
+<script>
+let current = 0;
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
 
+function showSlide(index) {
+  slides.forEach((s, i) => {
+    s.style.opacity = i === index ? "1" : "0";
+  });
+
+  dots.forEach((d, i) => {
+    d.classList.toggle("bg-white", i === index);
+    d.classList.toggle("bg-white/50", i !== index);
+  });
+
+  current = index;
+}
+
+function nextSlide() {
+  let next = (current + 1) % slides.length;
+  showSlide(next);
+}
+
+function prevSlide() {
+  let prev = (current - 1 + slides.length) % slides.length;
+  showSlide(prev);
+}
+
+// auto slide
+setInterval(nextSlide, 5000);
+
+// init
+showSlide(0);
+</script>
 </body></html>
