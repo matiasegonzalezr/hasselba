@@ -9,14 +9,13 @@
 
 <body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
 
-<!-- HEADER -->
 <header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
   <div class="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
 
     <!-- IZQUIERDA -->
     <div class="flex justify-start">
-      <a href="index.html" class="text-white font-semibold text-lg">
-        Hassel
+      <a href="index.html">
+        <img src="img/imagotipo-a.png" alt="Hassel" style="height: 32px;">
       </a>
     </div>
 
@@ -64,11 +63,19 @@
     </nav>
 
     <!-- DERECHA -->
-    <div class="flex justify-end">
+    <div class="flex justify-end items-center gap-4">
+
+      <!-- DÓLAR -->
+      <span id="usd-rate" class="text-xs text-white/60">
+        USD: ...
+      </span>
+
+      <!-- WHATSAPP -->
       <a href="https://wa.me/5491136404202"
          class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
          WhatsApp
       </a>
+
     </div>
 
   </div>
