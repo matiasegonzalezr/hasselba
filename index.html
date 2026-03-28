@@ -94,83 +94,66 @@
 <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 relative overflow-x-hidden selection:bg-hassel selection:text-white">
 
     <!-- Navbar -->
-   <header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
-  <div class="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/75 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
 
-    <!-- IZQUIERDA -->
-    <div class="flex justify-start">
-      <a href="index.html" class="text-white font-semibold text-lg">
-        Hassel
-      </a>
-    </div>
+    <!-- Logo -->
+    <a href="index.html" class="text-white text-3xl font-semibold tracking-tight leading-none">
+      Hassel
+    </a>
 
-    <!-- CENTRO -->
-    <nav class="hidden md:flex justify-center items-center gap-8 text-sm text-white">
+    <!-- Navegación central -->
+    <nav class="hidden lg:flex items-center gap-10 text-[14px] uppercase tracking-[0.18em] text-white/85">
 
-      <div class="relative group py-2">
-        <button class="hover:text-[#008ACB] transition">
-          TIENDA 
-        </button>
+      <!-- iPhone -->
+      <div class="relative group">
+        <button class="hover:text-white transition">iPhone</button>
 
-        <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[500px] z-50 hidden group-hover:block">
-          <div class="bg-black border border-white/10 rounded-xl p-6">
-
-            <div class="grid grid-cols-2 gap-6 text-sm">
-
-              <div>
-                <p class="text-gray-400 mb-2">iPhone</p>
-                <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
-                <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
-                <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
-              </div>
-
-              <div>
-                <p class="text-gray-400 mb-2">MacBook</p>
-                <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
-                <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
-              </div>
-
-              <div>
-                <p class="text-gray-400 mb-2">Otros</p>
-                <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
-                <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
-              </div>
-
+        <div class="absolute left-1/2 top-full -translate-x-1/2 pt-4 hidden group-hover:block z-50">
+          <div class="min-w-[280px] rounded-2xl border border-white/10 bg-black/95 backdrop-blur-xl p-5 shadow-2xl">
+            <div class="space-y-3 text-sm normal-case tracking-normal">
+              <a href="iphone-preowned.html" class="block text-white/80 hover:text-[#008ACB] transition">iPhone PreOwned</a>
+              <a href="iphone-new.html" class="block text-white/80 hover:text-[#008ACB] transition">iPhone New</a>
+              <a href="iphone-outlet.html" class="block text-white/80 hover:text-[#008ACB] transition">iPhone Outlet</a>
             </div>
-
           </div>
         </div>
       </div>
 
-      <a href="nosotros.html" class="hover:text-[#008ACB]">NOSOTROS</a>
-      <a href="contacto.html" class="hover:text-[#008ACB]">CONTACTO</a>
+      <!-- MacBook -->
+      <div class="relative group">
+        <button class="hover:text-white transition">MacBook</button>
 
+        <div class="absolute left-1/2 top-full -translate-x-1/2 pt-4 hidden group-hover:block z-50">
+          <div class="min-w-[260px] rounded-2xl border border-white/10 bg-black/95 backdrop-blur-xl p-5 shadow-2xl">
+            <div class="space-y-3 text-sm normal-case tracking-normal">
+              <a href="macbook-preowned.html" class="block text-white/80 hover:text-[#008ACB] transition">MacBook PreOwned</a>
+              <a href="macbook-new.html" class="block text-white/80 hover:text-[#008ACB] transition">MacBook New</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="nosotros.html" class="hover:text-white transition">Sobre Nosotros</a>
+      <a href="contacto.html" class="hover:text-white transition">Contacto</a>
     </nav>
 
-    <!-- DERECHA -->
-   <div class="flex justify-end items-center gap-4">
+    <!-- Derecha -->
+    <div class="flex items-center gap-4">
+      <button class="hidden md:inline-flex items-center gap-2 text-white/80 hover:text-white text-sm uppercase tracking-[0.16em] transition">
+        <span class="text-lg leading-none">⌕</span>
+        <span>Buscar</span>
+      </button>
 
-  <!-- SEARCH -->
-  <div class="hidden md:flex items-center bg-white/10 backdrop-blur rounded-full px-4 py-2 border border-white/10">
-    <input 
-      type="text" 
-      placeholder="Buscar"
-      class="bg-transparent outline-none text-sm text-white placeholder-white/50 w-32"
-    >
-  </div>
+      <button onclick="toggleTheme()" class="text-white/80 hover:text-white text-lg transition">
+        <span id="theme-icon">☀</span>
+      </button>
 
-  <!-- THEME TOGGLE -->
-  <button onclick="toggleTheme()" class="text-white text-lg">
-    <span id="theme-icon">🌙</span>
-  </button>
-
-  <!-- WHATSAPP -->
-  <a href="https://wa.me/5491136404202"
-     class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
-     WhatsApp
-  </a>
-
-</div>
+      <a href="https://wa.me/5491136404202"
+         class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
+        WhatsApp
+      </a>
+    </div>
 
   </div>
 </header>
