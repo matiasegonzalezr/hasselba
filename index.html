@@ -242,6 +242,27 @@
   </div>
 
 </section>
+        <section class="px-6 py-20 max-w-7xl mx-auto">
+
+  <div class="text-center mb-12">
+    <h2 class="text-3xl md:text-4xl font-semibold mb-4">
+      Selección destacada
+    </h2>
+    <p class="text-black/60 dark:text-white/60">
+      Los equipos más buscados en Hassel
+    </p>
+  </div>
+
+  <div id="featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+  <div class="text-center mt-12">
+    <a href="iphone-preowned.html"
+       class="bg-[#008ACB] hover:bg-[#0070a3] text-white px-6 py-3 rounded-xl font-medium transition">
+       Ver todos los iPhone
+    </a>
+  </div>
+
+</section>
 
         <!-- Trust Bar -->
         <section class="bg-white dark:bg-zinc-950 border-y border-zinc-200 dark:border-zinc-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -662,209 +683,177 @@
     </a>
 
     <!-- JS Logic -->
-    <script>
-        // 1. Theme Logic (Claro/Oscuro)
-        const htmlElement = document.documentElement;
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const logoImg = document.getElementById('brand-logo');
-        const footerLogo = document.getElementById('footer-logo');
+  <script>
 
-        function updateLogo() {
-            const isDark = htmlElement.classList.contains('dark');
-            const src = isDark ? 'IMAGOTIPO-B.png' : 'IMAGOTIPO-A.png';
-            logoImg.src = src;
-            footerLogo.src = src;
-        }
+// ===== 1. THEME =====
+const htmlElement = document.documentElement;
+const themeToggleBtn = document.getElementById('theme-toggle');
+const logoImg = document.getElementById('brand-logo');
+const footerLogo = document.getElementById('footer-logo');
 
-        // Initialize theme
-        if (localStorage.theme === 'light') {
-            htmlElement.classList.remove('dark');
-        } else {
-            htmlElement.classList.add('dark'); // Default oscuro
-        }
-        updateLogo();
+function updateLogo() {
+  if (!logoImg || !footerLogo) return;
+  const isDark = htmlElement.classList.contains('dark');
+  const src = isDark ? 'IMAGOTIPO-B.png' : 'IMAGOTIPO-A.png';
+  logoImg.src = src;
+  footerLogo.src = src;
+}
 
-        themeToggleBtn.addEventListener('click', () => {
-            htmlElement.classList.toggle('dark');
-            const isDark = htmlElement.classList.contains('dark');
-            localStorage.theme = isDark ? 'dark' : 'light';
-            updateLogo();
-        });
+if (localStorage.theme === 'light') {
+  htmlElement.classList.remove('dark');
+} else {
+  htmlElement.classList.add('dark');
+}
+updateLogo();
 
-        // 2. FAQ Accordion
-        document.querySelectorAll('.faq-item button').forEach(button => {
-            button.addEventListener('click', () => {
-                const item = button.parentElement;
-                const isActive = item.classList.contains('active');
-                // Close all
-                document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-                // Toggle current
-                if (!isActive) item.classList.add('active');
-            });
-        });
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    const isDark = htmlElement.classList.contains('dark');
+    localStorage.theme = isDark ? 'dark' : 'light';
+    updateLogo();
+  });
+}
 
-        // 3. Stock Data & Logic
-        let USD_ARS = 1460; // Fallback
-        
-        const STOCK_IPHONES = [
-            { modelo: "iPhone 14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+", ingreso: "2026-03-01" },
-            { modelo: "iPhone 13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A", ingreso: "2026-02-15" },
-            { modelo: "iPhone 12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+", ingreso: "2026-03-05" }
-        ];
+// ===== 2. FAQ =====
+document.querySelectorAll('.faq-item button').forEach(button => {
+  button.addEventListener('click', () => {
+    const item = button.parentElement;
+    const isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+    if (!isActive) item.classList.add('active');
+  });
+});
 
-        const STOCK_MAC = [
-            { modelo: "MacBook Air M1", gb: "256GB", color: "Space Gray", bat: "89 ciclos", usd: 750, grade: "A+", ingreso: "2026-02-28" },
-            { modelo: "MacBook Pro M2", gb: "512GB", color: "Silver", bat: "45 ciclos", usd: 1200, grade: "A", ingreso: "2026-03-02" }
-        ];
+// ===== 3. STOCK =====
+let USD_ARS = 1460;
 
-        const STOCK_WATCH = [
-            { modelo: "Apple Watch SE 2", gb: "40mm", color: "Midnight", bat: 98, usd: 250, grade: "A+", ingreso: "2026-03-04" }
-        ];
+const STOCK_IPHONES = [
+  { modelo: "iPhone 14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+", ingreso: "2026-03-01" },
+  { modelo: "iPhone 13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A", ingreso: "2026-02-15" },
+  { modelo: "iPhone 12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+", ingreso: "2026-03-05" }
+];
 
-        let currentCategory = 'iphone';
+const STOCK_MAC = [
+  { modelo: "MacBook Air M1", gb: "256GB", color: "Space Gray", bat: "89 ciclos", usd: 750, grade: "A+", ingreso: "2026-02-28" },
+  { modelo: "MacBook Pro M2", gb: "512GB", color: "Silver", bat: "45 ciclos", usd: 1200, grade: "A", ingreso: "2026-03-02" }
+];
 
-        async function fetchDolarAPI() {
-            try {
-                const res = await fetch('https://dolarapi.com/v1/dolares/blue');
-                const data = await res.json();
-                USD_ARS = data.venta + 15;
-            } catch (error) {
-                console.error('Error fetching DolarAPI, using fallback.', error);
-            }
-            document.getElementById('ars-rate').innerText = USD_ARS.toLocaleString('es-AR');
-            renderStock();
-        }
+const STOCK_WATCH = [
+  { modelo: "Apple Watch SE 2", gb: "40mm", color: "Midnight", bat: 98, usd: 250, grade: "A+", ingreso: "2026-03-04" }
+];
 
-        function isNew(dateString) {
-            const ingreso = new Date(dateString);
-            const hoy = new Date();
-            const diffTime = Math.abs(hoy - ingreso);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            return diffDays <= 10;
-        }
+let currentCategory = 'iphone';
 
-        function createCardText(item, isMac) {
-            const precioARS = item.usd * USD_ARS;
-            const cuota = (precioARS * 1.5) / 6;
-            
-            let batText = isMac ? item.bat : `Batería ${item.bat}%`;
-            let batIcon = isMac ? 'solar:bolt-circle-linear' : 'solar:battery-charge-linear';
+async function fetchDolarAPI() {
+  try {
+    const res = await fetch('https://dolarapi.com/v1/dolares/blue');
+    const data = await res.json();
+    USD_ARS = data.venta + 15;
+  } catch (error) {
+    console.error('Error dolar API', error);
+  }
 
-            // WhatsApp Message Template
-            let waMsg = encodeURIComponent(`Hola Hassel! 👋 Vi la web y me interesa:\n\n📱 ${item.modelo} ${item.gb} ${item.color}\n🔋 Batería: ${batText}\n💵 USD $${item.usd} / $${precioARS.toLocaleString('es-AR')} ARS\n\n¿Está disponible?`);
-            let waLink = `https://wa.me/5491136404202?text=${waMsg}`;
+  const rateEl = document.getElementById('ars-rate');
+  if (rateEl) rateEl.innerText = USD_ARS.toLocaleString('es-AR');
 
-            return `
-                <div class="group flex flex-col justify-between p-6 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-3xl hover:border-hassel/50 transition-all duration-300 relative shadow-sm hover:shadow-md">
-                    ${isNew(item.ingreso) ? `<span class="absolute top-4 right-4 bg-hassel text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Nuevo Ingreso</span>` : ''}
-                    
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="inline-flex items-center rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 text-[10px] font-medium text-zinc-600 dark:text-zinc-300">Grado ${item.grade}</span>
-                        </div>
-                        <h3 class="text-lg font-medium tracking-tight text-zinc-900 dark:text-white">${item.modelo}</h3>
-                        <p class="text-xs text-zinc-500 mt-1">${item.gb} • ${item.color}</p>
-                        
-                        <div class="mt-4 flex flex-wrap gap-2">
-                            <div class="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/50 px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800/50">
-                                <iconify-icon icon="${batIcon}" class="text-hassel"></iconify-icon> ${batText}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
-                        <div class="flex items-end justify-between mb-4">
-                            <div>
-                                <div class="text-xl font-bebas text-zinc-900 dark:text-white">USD ${item.usd}</div>
-                                <div class="text-[10px] text-zinc-500 font-medium">ARS $${precioARS.toLocaleString('es-AR')}</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-[10px] text-zinc-500">6 cuotas de</div>
-                                <div class="text-xs font-medium text-zinc-900 dark:text-white">$${cuota.toLocaleString('es-AR', {maximumFractionDigits:0})}</div>
-                            </div>
-                        </div>
-                        <a href="${waLink}" target="_blank" class="w-full text-xs font-medium text-white bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 hover:bg-hassel dark:hover:bg-hassel dark:hover:text-white py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
-                            Comprar
-                            <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
+  renderStock();
+}
 
-        function renderStock() {
-            const grid = document.getElementById('stock-grid');
-            grid.innerHTML = '';
-            
-            let data = [];
-            let isMac = false;
+// ===== HELPERS =====
+function isNew(dateString) {
+  const ingreso = new Date(dateString);
+  const hoy = new Date();
+  const diffDays = Math.ceil(Math.abs(hoy - ingreso) / (1000 * 60 * 60 * 24));
+  return diffDays <= 10;
+}
 
-            if (currentCategory === 'iphone') data = STOCK_IPHONES;
-            else if (currentCategory === 'macbook') { data = STOCK_MAC; isMac = true; }
-            else if (currentCategory === 'watch') data = STOCK_WATCH;
+// ===== CARD =====
+function createCardText(item, isMac) {
+  const precioARS = item.usd * USD_ARS;
+  const cuota = (precioARS * 1.5) / 6;
 
-            if (data.length === 0) {
-                grid.innerHTML = `<p class="text-sm text-zinc-500 col-span-full">No hay stock disponible en esta categoría por el momento.</p>`;
-                return;
-            }
+  const batText = isMac ? item.bat : `Batería ${item.bat}%`;
+  const batIcon = isMac ? 'solar:bolt-circle-linear' : 'solar:battery-charge-linear';
 
-            data.forEach(item => {
-                grid.innerHTML += createCardText(item, isMac);
-            });
-        }
+  const waMsg = encodeURIComponent(`Hola Hassel! 👋 Vi la web y me interesa:\n\n📱 ${item.modelo} ${item.gb} ${item.color}\n🔋 ${batText}\n💵 USD $${item.usd} / $${precioARS.toLocaleString('es-AR')} ARS\n\n¿Está disponible?`);
+  const waLink = `https://wa.me/5491136404202?text=${waMsg}`;
 
-        // Tab logic
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Reset styles
-                document.querySelectorAll('.tab-btn').forEach(b => {
-                    b.className = "tab-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800";
-                });
-                
-                // Set active styles (adapting depending on theme)
-                e.target.className = "tab-btn active px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md";
-                
-                currentCategory = e.target.getAttribute('data-cat');
-                renderStock();
-            });
-        });
+  return `
+  <div class="group flex flex-col justify-between p-6 bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/60 rounded-3xl hover:border-hassel/50 transition-all duration-300">
 
-        // Init
-        fetchDolarAPI();
+    ${isNew(item.ingreso) ? `<span class="absolute top-4 right-4 bg-hassel text-white text-[10px] px-2 py-1 rounded-full">Nuevo</span>` : ''}
 
-    </script>
-<script>
+    <div>
+      <span class="text-xs">Grado ${item.grade}</span>
+      <h3 class="text-lg font-medium mt-2">${item.modelo}</h3>
+      <p class="text-xs text-zinc-500">${item.gb} • ${item.color}</p>
+    </div>
+
+    <div class="mt-4 text-sm">
+      🔋 ${batText}
+    </div>
+
+    <div class="mt-6">
+      <div class="text-xl font-semibold">USD ${item.usd}</div>
+      <div class="text-xs text-zinc-500">$${precioARS.toLocaleString('es-AR')}</div>
+    </div>
+
+    <a href="${waLink}" class="mt-4 text-center bg-black text-white py-2 rounded-xl">
+      Consultar
+    </a>
+
+  </div>
+  `;
+}
+
+// ===== RENDER =====
+function renderStock() {
+  const grid = document.getElementById('stock-grid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  let data = [];
+  let isMac = false;
+
+  if (currentCategory === 'iphone') data = STOCK_IPHONES;
+  else if (currentCategory === 'macbook') { data = STOCK_MAC; isMac = true; }
+  else if (currentCategory === 'watch') data = STOCK_WATCH;
+
+  data.forEach(item => {
+    grid.innerHTML += createCardText(item, isMac);
+  });
+}
+
+// ===== TABS =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    currentCategory = e.target.dataset.cat;
+    renderStock();
+  });
+});
+
+// ===== CAROUSEL =====
 let current = 0;
 const slides = document.querySelectorAll(".slide");
 const dots = document.querySelectorAll(".dot");
 
 function showSlide(index) {
-  slides.forEach((s, i) => {
-    s.style.opacity = i === index ? "1" : "0";
-  });
-
-  dots.forEach((d, i) => {
-    d.classList.toggle("bg-white", i === index);
-    d.classList.toggle("bg-white/50", i !== index);
-  });
-
+  slides.forEach((s, i) => s.style.opacity = i === index ? "1" : "0");
+  dots.forEach((d, i) => d.classList.toggle("bg-white", i === index));
   current = index;
 }
 
 function nextSlide() {
-  let next = (current + 1) % slides.length;
-  showSlide(next);
+  showSlide((current + 1) % slides.length);
 }
 
-function prevSlide() {
-  let prev = (current - 1 + slides.length) % slides.length;
-  showSlide(prev);
-}
-
-// auto slide
 setInterval(nextSlide, 5000);
-
-// init
 showSlide(0);
+
+// ===== INIT =====
+fetchDolarAPI();
+
 </script>
 </body></html>
