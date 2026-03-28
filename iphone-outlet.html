@@ -10,39 +10,48 @@
 <body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
 
 <!-- HEADER -->
-<header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-black/80 backdrop-blur border-b border-black/10 dark:border-white/10 transition-colors duration-300">
-  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+<header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
+  <div class="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
 
-    <a href="index.html" class="text-black dark:text-white font-semibold text-lg transition-colors duration-300">
-      Hassel
-    </a>
+    <!-- IZQUIERDA -->
+    <div class="flex justify-start">
+      <a href="index.html" class="text-white font-semibold text-lg">
+        Hassel
+      </a>
+    </div>
 
-    <nav class="hidden md:flex items-center gap-8 text-sm text-black dark:text-white transition-colors duration-300">
+    <!-- CENTRO -->
+    <nav class="hidden md:flex justify-center items-center gap-8 text-sm text-white">
 
-      <div class="relative group">
-        <button class="hover:text-[#008ACB] transition">Tienda</button>
+      <div class="relative group py-2">
+        <button class="hover:text-[#008ACB] transition">
+          Tienda
+        </button>
 
-        <div class="absolute left-0 top-full mt-4 w-[500px] bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition shadow-xl">
+        <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[500px] z-50 hidden group-hover:block">
+          <div class="bg-black border border-white/10 rounded-xl p-6">
 
-          <div class="grid grid-cols-2 gap-6 text-sm">
+            <div class="grid grid-cols-2 gap-6 text-sm">
 
-            <div>
-              <p class="text-zinc-500 dark:text-gray-400 mb-2">iPhone</p>
-              <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
-              <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
-              <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
-            </div>
+              <div>
+                <p class="text-gray-400 mb-2">iPhone</p>
+                <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
+                <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
+                <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
+              </div>
 
-            <div>
-              <p class="text-zinc-500 dark:text-gray-400 mb-2">MacBook</p>
-              <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
-              <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
-            </div>
+              <div>
+                <p class="text-gray-400 mb-2">MacBook</p>
+                <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
+                <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
+              </div>
 
-            <div>
-              <p class="text-zinc-500 dark:text-gray-400 mb-2">Otros</p>
-              <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
-              <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
+              <div>
+                <p class="text-gray-400 mb-2">Otros</p>
+                <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
+                <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
+              </div>
+
             </div>
 
           </div>
@@ -54,12 +63,8 @@
 
     </nav>
 
-    <div class="flex items-center gap-3">
-      <button onclick="toggleTheme()"
-        class="border border-black/10 dark:border-white/20 text-black dark:text-white px-3 py-2 rounded-lg text-sm hover:bg-black/5 dark:hover:bg-white/10 transition">
-        <span id="theme-icon">☀</span>
-      </button>
-
+    <!-- DERECHA -->
+    <div class="flex justify-end">
       <a href="https://wa.me/5491136404202"
          class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
          WhatsApp
@@ -68,7 +73,6 @@
 
   </div>
 </header>
-
 <main>
 
 <!-- HERO -->
