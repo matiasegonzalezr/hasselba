@@ -39,8 +39,62 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <style>
-        body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-.font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
+        /* --- CONFIGURACIÓN DE FUENTES HASSEL BA --- */
+
+/* TRIOMPHE: Para títulos e impacto */
+@font-face {
+    font-family: 'Triomphe';
+    src: url('triomphe-regular-autoinstr.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Triomphe';
+    src: url('triomphe-bold-autoinstr.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Triomphe';
+    src: url('triomphe-bold-italic-autoinstr.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* MYRIAD PRO: Para lectura, precios y botones */
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('Myriad Pro Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('Myriad Pro Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('Myriad Pro Light.otf') format('opentype');
+    font-weight: 300;
+}
+
+/* --- APLICACIÓN GENERAL --- */
+body { 
+    font-family: 'Myriad Pro', sans-serif; 
+    -webkit-font-smoothing: antialiased; 
+    scroll-behavior: smooth; 
+}
+
+/* Reemplazamos la clase font-bebas por font-triomphe */
+.font-triomphe { 
+    font-family: 'Triomphe', sans-serif; 
+    font-weight: bold; 
+}
+
+/* Si querés mantener la clase font-bebas pero que use Triomphe para no romper el HTML actual: */
+.font-bebas { 
+    font-family: 'Triomphe', sans-serif; 
+    font-weight: bold;
+    letter-spacing: -0.02em; /* Triomphe es más ancha, esto la hace ver más pro */
+}
 
 /* Estilo Glassmorfismo */
 .glass {
@@ -112,7 +166,12 @@
             <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-hassel-azul/20 blur-[120px] rounded-full"></div>
             <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-hassel-celeste/10 blur-[120px] rounded-full"></div>
             <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-                <h1 class="font-bebas text-7xl md:text-9xl text-white leading-none mb-4">HASSEL BA</h1>
+               <h1 class="font-triomphe text-8xl md:text-[10rem] leading-none text-white italic">
+    HASSEL <span class="text-[#d90724]">BA</span>
+</h1>
+<p class="font-myriad font-light tracking-[0.3em] text-sm uppercase">
+    Todo para tus dispositivos Apple
+</p>
                 <p class="font-bebas text-2xl md:text-4xl text-hassel-celeste tracking-[0.2em] uppercase mb-12">TODO PARA TUS DISPOSITIVOS APPLE</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button onclick="filtrarStock('iphone-preowned')" class="w-full sm:w-auto bg-white text-black font-bold px-10 py-5 rounded-2xl hover:bg-hassel-celeste hover:text-white transition uppercase text-sm tracking-widest">VER STOCK IPHONE</button>
@@ -271,7 +330,14 @@ function createCardText(item) {
                 <iconify-icon icon="apple-fill" class="text-white/10" width="20"></iconify-icon>
             </div>
             
-            <h3 class="font-bebas text-4xl text-white uppercase tracking-wide leading-none mb-2">iPhone ${item.modelo}</h3>
+            // Antes: font-bebas
+// Ahora:
+<h3 class="font-triomphe text-4xl text-white uppercase italic mb-1">
+    iPhone ${item.modelo}
+</h3>
+<p class="font-myriad font-normal text-white/40 text-[11px] tracking-widest uppercase">
+    ${item.gb} | ${item.color}
+</p>
             <p class="text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">${item.gb} <span class="mx-2 text-white/10">|</span> ${item.color}</p>
             
             <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
