@@ -40,12 +40,38 @@
 
     <style>
         body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .faq-item.active .faq-content { max-height: 500px; }
-        .faq-item.active .faq-icon { transform: rotate(180deg); }
+.font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
+
+/* Estilo Glassmorfismo */
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-hover:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Animación de fondo */
+.bg-gradient-animate {
+    background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+}
+
+.faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+.faq-item.active .faq-content { max-height: 500px; }
+.faq-item.active .faq-icon { transform: rotate(180deg); }
+
+/* Animación de entrada de las cards */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-card { animation: fadeIn 0.5s ease forwards; }
     </style>
 </head>
 <body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 overflow-x-hidden">
@@ -95,24 +121,30 @@
             </div>
         </section>
 
-        <section id="productos-seccion" class="py-20 bg-white dark:bg-zinc-950 min-h-screen">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                    <div>
-                        <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight uppercase">STOCK DISPONIBLE</h2>
-                        <p class="text-zinc-500 mt-2 italic">Valores expresados en Dólar Blue Venta.</p>
-                    </div>
-                    <div class="bg-hassel-azul/10 px-4 py-2 rounded-full border border-hassel-azul/20">
-                        <span id="contador-productos" class="text-hassel-azul font-bold text-sm tracking-tighter"></span>
-                    </div>
-                </div>
-                <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-                <div id="no-stock" class="hidden text-center py-20">
-                    <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-300 mx-auto mb-4"></iconify-icon>
-                    <p class="text-zinc-500">No hay equipos disponibles en esta categoría por el momento.</p>
-                </div>
+        <section id="productos-seccion" class="relative py-24 bg-black overflow-hidden min-h-screen">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-hassel-azul/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-hassel-celeste/10 blur-[120px] rounded-full"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <h2 id="titulo-categoria" class="font-bebas text-6xl text-white tracking-tight uppercase">STOCK DISPONIBLE</h2>
+                <p class="text-zinc-500 mt-2 font-medium tracking-wide">VALORES EN USD • BLUE (+15)</p>
             </div>
-        </section>
+            <div class="glass px-6 py-2 rounded-full border border-white/10">
+                <span id="contador-productos" class="text-hassel-celeste font-bold text-xs tracking-widest uppercase"></span>
+            </div>
+        </div>
+        
+        <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+
+        <div id="no-stock" class="hidden text-center py-20">
+            <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-700 mx-auto mb-4"></iconify-icon>
+            <p class="text-zinc-500 font-bebas text-2xl uppercase tracking-widest">Sin stock en esta categoría</p>
+        </div>
+    </div>
+</section>
 
         <section id="service" class="py-24 bg-zinc-100 dark:bg-zinc-900">
             <div class="max-w-3xl mx-auto px-6 text-center">
@@ -219,34 +251,46 @@ function createCardText(item) {
     const precioPesos = item.usd * (valorDolarBlue + 15);
     const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
     const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
-    const colores = { 'A+': 'bg-green-500', 'A': 'bg-blue-600', 'B+': 'bg-orange-500', 'Nuevo': 'bg-hassel-celeste' };
     
+    // Badge de grado con estilo translúcido
+    const gradoColors = {
+        'A+': 'bg-green-500/10 text-green-400 border-green-500/20',
+        'A': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        'B+': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+        'Nuevo': 'bg-hassel-celeste/10 text-hassel-celeste border-hassel-celeste/20'
+    };
+    const estiloGrado = gradoColors[item.grade] || 'bg-white/10 text-white/50 border-white/10';
+
     return `
-    <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-[2.5rem] shadow-sm flex flex-col justify-between hover:border-hassel-celeste transition-all animate-fade-in">
+    <div class="glass glass-hover p-8 rounded-[2.5rem] flex flex-col justify-between transition-all duration-500 animate-card">
         <div>
-            <div class="flex justify-between items-start mb-4">
-                <span class="text-[10px] font-bold px-2 py-1 rounded text-white ${colores[item.grade] || 'bg-zinc-500'}">GRADO ${item.grade}</span>
-                <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
+            <div class="flex justify-between items-start mb-6">
+                <span class="text-[10px] font-bold px-3 py-1 rounded-full border ${estiloGrado} uppercase tracking-widest">
+                    GRADO ${item.grade}
+                </span>
+                <iconify-icon icon="apple-fill" class="text-white/10" width="20"></iconify-icon>
             </div>
-            <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white uppercase tracking-wide leading-none mb-1">iPhone ${item.modelo}</h3>
-            <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
-            <div class="flex items-center gap-2 text-sm mb-6 font-bold text-zinc-700 dark:text-zinc-300">
+            
+            <h3 class="font-bebas text-4xl text-white uppercase tracking-wide leading-none mb-2">iPhone ${item.modelo}</h3>
+            <p class="text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">${item.gb} <span class="mx-2 text-white/10">|</span> ${item.color}</p>
+            
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
                 <iconify-icon icon="solar:battery-charge-bold" class="text-green-500" width="20"></iconify-icon>
-                Batería: ${item.bat}
+                <span class="text-white/60 text-xs font-bold uppercase tracking-widest">Batería: <span class="text-white">${item.bat}%</span></span>
             </div>
         </div>
-        <div class="flex justify-between items-center pt-6 border-t border-zinc-50 dark:border-zinc-800">
+
+        <div class="flex justify-between items-end pt-6 border-t border-white/5">
             <div class="flex flex-col">
-                <p class="text-3xl font-bebas text-zinc-900 dark:text-white leading-none">USD ${item.usd}</p>
-                <p class="text-[10px] text-zinc-500 font-bold">$${precioPesos.toLocaleString('es-AR')}</p>
+                <p class="text-4xl font-bebas text-hassel-celeste leading-none mb-1">USD ${item.usd}</p>
+                <p class="text-[10px] text-white/20 font-bold tracking-widest uppercase">$${precioPesos.toLocaleString('es-AR')}</p>
             </div>
-            <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-110 transition shadow-lg shadow-green-500/20">
-                <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
+            <a href="${waLink}" target="_blank" class="bg-white/5 hover:bg-hassel-celeste text-white p-4 rounded-2xl transition-all duration-300 border border-white/10 hover:border-hassel-celeste shadow-xl group">
+                <iconify-icon icon="ic:baseline-whatsapp" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
             </a>
         </div>
     </div>`;
 }
-
 function renderStock() {
     const grid = document.getElementById('stock-grid');
     if (!grid) return;
