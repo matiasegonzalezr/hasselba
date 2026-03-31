@@ -425,14 +425,22 @@
             <h2 class="font-bebas text-5xl text-white">SERVICE ESPECIALIZADO</h2>
             <p class="text-zinc-400">Reparaciones, cambio de batería y soporte técnico Apple.</p>
         </div>
-        <form class="space-y-4">
-            <input type="text" placeholder="Nombre completo" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
-            <input type="text" placeholder="Modelo de equipo (Ej: iPhone 13)" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
-            <textarea placeholder="¿Qué falla tiene tu equipo?" rows="4" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste"></textarea>
-            <button type="submit" class="w-full bg-hassel-celeste text-white font-bold py-4 rounded-xl hover:bg-hassel-azul transition">
+        
+        <div class="space-y-4">
+            <input type="text" id="service-nombre" placeholder="Nombre completo" 
+                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
+            
+            <input type="text" id="service-modelo" placeholder="Modelo de equipo (Ej: iPhone 13 Pro)" 
+                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
+            
+            <textarea id="service-mensaje" placeholder="¿Qué falla tiene tu equipo?" rows="4" 
+                      class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste"></textarea>
+            
+            <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-xl hover:bg-green-600 transition flex items-center justify-center gap-2">
+                <iconify-icon icon="ic:baseline-whatsapp" width="24"></iconify-icon>
                 ENVIAR CONSULTA AL SERVICE
             </button>
-        </form>
+        </div>
     </div>
 </section>
     
@@ -689,5 +697,27 @@ showSlide(0);
 // ===== INIT =====
 fetchDolarAPI();
 
+      function enviarServiceWhatsApp() {
+    // 1. Obtenemos los valores de los campos
+    const nombre = document.getElementById('service-nombre').value;
+    const modelo = document.getElementById('service-modelo').value;
+    const mensaje = document.getElementById('service-mensaje').value;
+
+    // 2. Validamos que no estén vacíos (Opcional pero recomendado)
+    if (!nombre || !modelo || !mensaje) {
+        alert("Por favor, completá todos los campos para enviarnos tu consulta.");
+        return;
+    }
+
+    // 3. Armamos el mensaje para WhatsApp
+    // %0A es un salto de línea en WhatsApp
+    const textoFinal = `Hola Hassel! Mi nombre es ${nombre}, tengo un ${modelo}. %0A%0AConsulta: ${mensaje}`;
+    
+    // 4. Creamos el link y lo abrimos
+    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(textoFinal)}`;
+    
+    window.open(waLink, '_blank');
+}
+      
 </script>
 </body></html>
