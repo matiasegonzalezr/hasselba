@@ -419,24 +419,28 @@
         <!-- Contact Section -->
         
     </main>
-<section id="service" class="py-20 bg-zinc-50 dark:bg-black/50">
+<section id="service" class="py-20 bg-zinc-50 dark:bg-zinc-900/50">
     <div class="max-w-3xl mx-auto px-6">
         <div class="text-center mb-10">
-            <h2 class="font-bebas text-5xl text-white">SERVICE ESPECIALIZADO</h2>
-            <p class="text-zinc-400">Reparaciones, cambio de batería y soporte técnico Apple.</p>
+            <h2 class="font-bebas text-5xl text-zinc-900 dark:text-white uppercase tracking-tight">
+                SERVICE ESPECIALIZADO
+            </h2>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">
+                Reparaciones, cambio de batería y soporte técnico Apple.
+            </p>
         </div>
         
         <div class="space-y-4">
             <input type="text" id="service-nombre" placeholder="Nombre completo" 
-                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
+                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400">
             
             <input type="text" id="service-modelo" placeholder="Modelo de equipo (Ej: iPhone 13 Pro)" 
-                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste">
+                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400">
             
             <textarea id="service-mensaje" placeholder="¿Qué falla tiene tu equipo?" rows="4" 
-                      class="w-full p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-800 text-white outline-none focus:border-hassel-celeste"></textarea>
+                      class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400"></textarea>
             
-            <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-xl hover:bg-green-600 transition flex items-center justify-center gap-2">
+            <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-600 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20">
                 <iconify-icon icon="ic:baseline-whatsapp" width="24"></iconify-icon>
                 ENVIAR CONSULTA AL SERVICE
             </button>
