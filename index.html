@@ -671,57 +671,57 @@ function isNew(dateString) {
 }
 
 // ===== CARD =====
-function createCardText(item, isMac = false) {
-  const waMsg = `Hola Hassel! Me interesa el ${item.modelo} (${item.gb}) de USD ${item.usd}. ¿Me pasás fotos?`;
-  const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+// Variable para el dólar (se actualiza con tu fetch de dolarapi)
+let valorDolarBlue = 1460; // Valor base por si falla la API
 
-  // Badge de color según el estado
-  let badgeClass = "bg-hassel-celeste/10 text-hassel-celeste";
-  if (item.grade && item.grade.includes('Nuevo')) badgeClass = "bg-green-500/10 text-green-500";
-  if (item.grade && item.grade.includes('Outlet')) badgeClass = "bg-hassel-rojo/10 text-hassel-rojo";
-
-  return `
-  <div class="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-[2rem] hover:border-hassel-celeste/40 transition-all duration-300 shadow-sm flex flex-col justify-between">
+function createCardText(item) {
+    // Lógica de precio en Pesos: (USD * (Blue + 15))
+    const precioPesos = item.usd * (valorDolarBlue + 15);
     
-    <div>
-      <div class="flex justify-between items-start mb-4">
-        <span class="text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${badgeClass}">
-          ${item.grade || 'Seleccionado'}
-        </span>
-        <iconify-icon icon="apple-fill" class="text-zinc-300 dark:text-zinc-700" width="20"></iconify-icon>
-      </div>
+    const waMsg = `Hola Hassel! Me interesa el ${item.modelo} de USD ${item.usd}. ¿Me pasás más info?`;
+    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
 
-      <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white tracking-wide leading-tight uppercase">
-        ${item.modelo}
-      </h3>
-      <p class="text-zinc-500 text-xs font-medium mb-4 uppercase tracking-tighter">
-        ${item.gb} • ${item.color}
-      </p>
+    // Colores por Grado
+    const coloresGrado = {
+        'A+': 'bg-green-500 text-white',
+        'A': 'bg-blue-600 text-white',
+        'B+': 'bg-orange-500 text-white',
+        'Nuevo': 'bg-hassel-celeste text-white'
+    };
+    const claseGrado = coloresGrado[item.grade] || 'bg-zinc-500 text-white';
 
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-          <iconify-icon icon="solar:battery-charge-bold" class="text-hassel-celeste"></iconify-icon>
-          <span>Condición: <strong>${item.bat}</strong></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="pt-6 border-t border-zinc-50 dark:border-zinc-800">
-      <div class="flex justify-between items-end">
+    return `
+    <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm flex flex-col justify-between">
         <div>
-          <p class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Precio Especial</p>
-          <p class="text-3xl font-bebas text-zinc-900 dark:text-white leading-none">
-            USD ${item.usd}
-          </p>
-        </div>
-        <a href="${waLink}" class="bg-hassel-celeste text-white p-3 rounded-2xl hover:bg-hassel-azul transition-transform hover:scale-110 active:scale-95 shadow-lg shadow-hassel-celeste/20">
-          <iconify-icon icon="solar:outgoing-call-bold" width="24"></iconify-icon>
-        </a>
-      </div>
-    </div>
+            <div class="flex justify-between items-start mb-4">
+                <span class="text-[10px] font-bold px-2 py-1 rounded ${claseGrado}">
+                    GRADO ${item.grade}
+                </span>
+                <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
+            </div>
 
-  </div>
-  `;
+            <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white tracking-wide">
+                iPhone ${item.modelo.replace('iPhone', '').replace('IPHONE', '').trim()}
+            </h3>
+            <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
+
+            <div class="flex items-center gap-2 text-sm mb-6">
+                <iconify-icon icon="solar:battery-charge-bold" class="text-green-500"></iconify-icon>
+                <span class="dark:text-zinc-300 text-zinc-700 font-bold">Batería: ${item.bat}%</span>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4 border-t border-zinc-100 dark:border-zinc-800">
+            <div>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white leading-none mb-1">USD ${item.usd}</p>
+                <p class="text-xs text-zinc-500 font-medium">$${precioPesos.toLocaleString('es-AR')}</p>
+            </div>
+            <a href="${waLink}" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-105 transition shadow-lg shadow-green-500/20 flex items-center justify-center">
+                <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
+            </a>
+        </div>
+    </div>
+    `;
 }
 
 // ===== RENDER =====
