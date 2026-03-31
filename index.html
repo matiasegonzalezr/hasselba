@@ -141,97 +141,31 @@
 </header>
 
     <main>
-        <!-- Hero Section -->
-       <section class="relative w-full h-[85vh] overflow-hidden">
+        <section id="productos-seccion" class="py-20 bg-white dark:bg-hassel-negro min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+                <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight">
+                    NUESTRO <span class="text-hassel-celeste">STOCK</span>
+                </h2>
+                <p class="text-zinc-500 dark:text-zinc-400 mt-2">Seleccioná una categoría para filtrar los equipos disponibles.</p>
+            </div>
+            
+            <div class="bg-hassel-azul/10 px-4 py-2 rounded-full border border-hassel-azul/20">
+                <span id="contador-productos" class="text-hassel-azul font-bold text-sm">Cargando equipos...</span>
+            </div>
+        </div>
 
-  <!-- Slides -->
-  <div id="carousel" class="w-full h-full relative">
+        <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
 
-    <!-- Slide 1 -->
-    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-100">
-      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50"></div>
-
-      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
-        <h2 class="text-5xl font-semibold mb-4">iPhone 17 Pro</h2>
-        <p class="text-white/70 mb-6">Potencia, cámara y diseño premium.</p>
-        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
-      </div>
+        <div id="no-stock" class="hidden text-center py-20">
+            <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-300 mx-auto mb-4"></iconify-icon>
+            <p class="text-zinc-500">No encontramos equipos en esta categoría por el momento.</p>
+        </div>
     </div>
-
-    <!-- Slide 2 -->
-    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
-      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50"></div>
-
-      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
-        <h2 class="text-5xl font-semibold mb-4">iPhone 17 Pro Max</h2>
-        <p class="text-white/70 mb-6">Pantalla grande. Autonomía real.</p>
-        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
-      </div>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
-      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50"></div>
-
-      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
-        <h2 class="text-5xl font-semibold mb-4">iPhone 17e</h2>
-        <p class="text-white/70 mb-6">Tu entrada al ecosistema Apple.</p>
-        <a href="iphone-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
-      </div>
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="slide absolute inset-0 transition-opacity duration-700 opacity-0">
-      <img src="https://via.placeholder.com/1600x900" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50"></div>
-
-      <div class="absolute left-[8%] top-1/2 -translate-y-1/2 text-white max-w-lg">
-        <h2 class="text-5xl font-semibold mb-4">MacBook New</h2>
-        <p class="text-white/70 mb-6">Rendimiento para todo tu día.</p>
-        <a href="macbook-new.html" class="bg-white text-black px-6 py-3 rounded-lg text-sm">Ver</a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Flechas -->
-  <button onclick="prevSlide()" class="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl">‹</button>
-  <button onclick="nextSlide()" class="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl">›</button>
-
-  <!-- Dots -->
-  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
-    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
-    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
-    <div class="dot w-2 h-2 bg-white/50 rounded-full"></div>
-  </div>
-
 </section>
-        <section class="px-6 py-20 max-w-7xl mx-auto">
-
-  <div class="text-center mb-12">
-    <h2 class="text-3xl md:text-4xl font-semibold mb-4">
-      Selección destacada
-    </h2>
-    <p class="text-black/60 dark:text-white/60">
-      Los equipos más buscados en Hassel
-    </p>
-  </div>
-
-  <div id="featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-  <div class="text-center mt-12">
-    <a href="iphone-preowned.html"
-       class="bg-[#008ACB] hover:bg-[#0070a3] text-white px-6 py-3 rounded-xl font-medium transition">
-       Ver todos los iPhone
-    </a>
-  </div>
-
-</section>
-
         <!-- Trust Bar -->
         <section class="bg-white dark:bg-zinc-950 border-y border-zinc-200 dark:border-zinc-900 py-12 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
