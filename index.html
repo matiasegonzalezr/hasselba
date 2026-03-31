@@ -1,28 +1,28 @@
-<html lang="es" class="dark"><head>
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
     <link rel="icon" type="image/png" href="img/isotipo-dark.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hassel BA | Todo para tus dispositivos Apple</title>
     
-    <!-- Tipografías -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {envi
+        tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         hassel: {
-                            azul: '#264E9A',      // Azul Hassel (Autoridad)
-                            celeste: '#008ACB',   // Celeste (Acción)
-                            negro: '#1A1A1A',     // Negro Soft
-                            rojo: '#C3122F',      // Rojo (Outlet/Ofertas)
-                            blanco: '#FAFAFA'     // Blanco Off-white
+                            azul: '#264E9A',
+                            celeste: '#008ACB',
+                            negro: '#1A1A1A',
+                            rojo: '#C3122F',
+                            blanco: '#FAFAFA'
                         }
                     },
                     fontFamily: {
@@ -34,733 +34,242 @@
         }
     </script>
     
-    <!-- Iconify (Solar Linear) -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <style>
-        
-        .logo {
-  height: 32px;
-  object-fit: contain;
-}
-        body {
-            font-family: 'DM Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        h1, h2, h3, h4, h5, h6, .font-bebas {
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 0.05rem;
-        }
-        
-        /* Hero Background */
-        .hero-bg {
-            position: relative;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background-image 0.3s ease;
-        }
-        .dark .hero-bg {
-            background-image: url('bg-accent-dark.jpg');
-        }
-        html:not(.dark) .hero-bg {
-            background-image: url('bg-accent-blue.jpg');
-        }
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-color: #09090b; /* zinc-950 */
-            opacity: 0.84; /* ~0.16 visibility para el dark */
-            transition: opacity 0.3s ease, background-color 0.3s ease;
-            z-index: 0;
-        }
-        html:not(.dark) .hero-bg::before {
-            background-color: #ffffff;
-            opacity: 0.50;
-        }
-        
-        /* Custom Scrollbar */
+        body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
-        
-        /* Acordeón FAQ */
-        .faq-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .faq-item.active .faq-content {
-            max-height: 500px;
-        }
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .faq-item.active .faq-content { max-height: 500px; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 relative overflow-x-hidden selection:bg-hassel selection:text-white">
+<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 overflow-x-hidden">
 
-  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-
-        <div class="flex items-center gap-3">
-            <img src="img/imagotipo-a.png" alt="Hassel" class="h-8 md:h-10 w-auto">
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+            <div class="flex items-center gap-3">
+                <img src="img/imagotipo-a.png" alt="Hassel" class="h-8 md:h-10 w-auto">
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/80">
+                <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">iPhone PreOwned</button>
+                <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">iPhone New</button>
+                <a href="#service" class="hover:text-hassel-celeste transition">Service</a>
+                <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/5491136404202" class="bg-hassel-celeste hover:bg-hassel-azul text-white font-bold px-4 py-2 rounded-full text-xs uppercase transition flex items-center gap-2">
+                    <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
+                    <span>Consultar</span>
+                </a>
+                <button onclick="toggleMenu()" class="md:hidden text-white"><iconify-icon icon="solar:menu-dots-bold" width="28"></iconify-icon></button>
+            </div>
         </div>
-
-        <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/80">
-            <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">PreOwned</button>
-            <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">Nuevos</button>
-            <button onclick="filtrarStock('macbook')" class="hover:text-hassel-celeste transition">Macs</button>
-            <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
-        </nav>
-
-        <div class="flex items-center gap-4">
-            <a href="https://wa.me/5491136404202" class="bg-hassel-celeste hover:bg-hassel-azul text-white font-bold px-4 py-2 rounded-full text-xs uppercase tracking-tight transition flex items-center gap-2">
-                <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
-                <span class="hidden sm:inline">Consultar</span>
-            </a>
-            
-            <button onclick="toggleMenu()" class="md:hidden text-white flex items-center">
-                <iconify-icon icon="solar:menu-dots-bold" width="28"></iconify-icon>
-            </button>
+        <div id="mobile-menu" class="hidden bg-black border-t border-white/10 md:hidden p-6 space-y-4">
+            <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">📱 iPhone PreOwned</button>
+            <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">✨ iPhone New</button>
+            <button onclick="toggleMenu(); location.href='#service'" class="block text-white text-xl font-bebas w-full text-left uppercase">🛠 Service</button>
         </div>
-    </div>
-
-    <div id="mobile-menu" class="hidden bg-hassel-negro border-t border-white/10 md:hidden p-6 space-y-4 animate-fade-in">
-        <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">📱 iPhone PreOwned</button>
-        <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">✨ iPhone New</button>
-        <button onclick="filtrarStock('macbook'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">💻 MacBooks</button>
-        <button onclick="filtrarStock('watch'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">⌚ Apple Watch</button>
-    </div>
-</header>
+    </header>
 
     <main>
-        <section id="productos-seccion" class="py-20 bg-white dark:bg-hassel-negro min-h-screen">
-    <div class="max-w-7xl mx-auto px-6">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div>
-                <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight">
-                    HASSEL BA <span class="text-hassel-celeste">TODO PARA TUS DISPOSITIVOS APPLE</span>
-                </h2>
-                <p class="text-zinc-500 dark:text-zinc-400 mt-2">Seleccioná una categoría para filtrar los equipos disponibles.</p>
-            </div>
-            
-            <div class="bg-hassel-azul/10 px-4 py-2 rounded-full border border-hassel-azul/20">
-                <span id="contador-productos" class="text-hassel-azul font-bold text-sm">Cargando equipos...</span>
-            </div>
-        </div>
-
-        <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
-
-        <div id="no-stock" class="hidden text-center py-20">
-            <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-300 mx-auto mb-4"></iconify-icon>
-            <p class="text-zinc-500">No encontramos equipos en esta categoría por el momento.</p>
-        </div>
-    </div>
-</section>
-
-        <section id="hero" class="relative min-h-[70vh] flex items-center justify-center pt-24 pb-12 bg-[#000000] overflow-hidden">
-    
-    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-hassel-azul/20 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-hassel-celeste/10 blur-[120px] rounded-full pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-        
-        <h1 class="font-bebas text-7xl md:text-9xl text-white leading-[0.85] tracking-tight mb-4">
-            HASSEL BA
-        </h1>
-
-        <p class="font-bebas text-2xl md:text-4xl text-hassel-celeste tracking-[0.3em] uppercase mb-12">
-            TODO PARA TUS DISPOSITIVOS APPLE
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-            <button onclick="filtrarStock('iphone-preowned')" 
-                    class="w-full sm:w-auto bg-white text-black font-bold px-10 py-5 rounded-2xl hover:bg-hassel-celeste hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-white/5 uppercase text-sm tracking-widest">
-                VER IPHONES SELECCIONADOS
-            </button>
-            <a href="#service" 
-               class="w-full sm:w-auto border border-white/20 text-white font-bold px-10 py-5 rounded-2xl hover:bg-white/5 transition-all text-sm tracking-widest">
-                SERVICIO TÉCNICO
-            </a>
-        </div>
-
-    </div>
-</section>
-        <!-- Trust Bar -->
-        <section class="bg-white dark:bg-zinc-950 border-y border-zinc-200 dark:border-zinc-900 py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="flex flex-col items-center text-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
-                        <iconify-icon icon="solar:verified-check-linear" class="text-2xl"></iconify-icon>
-                    </div>
-                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Equipos Seleccionados</h3>
-                    <p class="text-xs text-zinc-500">Revisados en más de 30 puntos antes de publicarse.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
-                        <iconify-icon icon="solar:battery-charge-linear" class="text-2xl"></iconify-icon>
-                    </div>
-                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Batería Informada</h3>
-                    <p class="text-xs text-zinc-500">Transparencia total sobre la condición de cada equipo.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
-                        <iconify-icon icon="solar:document-text-linear" class="text-2xl"></iconify-icon>
-                    </div>
-                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">Garantía Escrita</h3>
-                    <p class="text-xs text-zinc-500">60 días de cobertura propia para tu tranquilidad.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-hassel">
-                        <iconify-icon icon="solar:shield-check-linear" class="text-2xl"></iconify-icon>
-                    </div>
-                    <h3 class="text-sm font-medium text-zinc-900 dark:text-white">IMEI Verificado</h3>
-                    <p class="text-xs text-zinc-500">Equipos 100% legales y libres para cualquier compañía.</p>
+        <section id="hero" class="relative min-h-[70vh] flex items-center justify-center pt-32 pb-12 bg-black overflow-hidden">
+            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-hassel-azul/20 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-hassel-celeste/10 blur-[120px] rounded-full"></div>
+            <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+                <h1 class="font-bebas text-7xl md:text-9xl text-white leading-none mb-4">HASSEL BA</h1>
+                <p class="font-bebas text-2xl md:text-4xl text-hassel-celeste tracking-[0.2em] uppercase mb-12">TODO PARA TUS DISPOSITIVOS APPLE</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="filtrarStock('iphone-preowned')" class="w-full sm:w-auto bg-white text-black font-bold px-10 py-5 rounded-2xl hover:bg-hassel-celeste hover:text-white transition uppercase text-sm tracking-widest">VER STOCK IPHONE</button>
+                    <a href="#service" class="w-full sm:w-auto border border-white/20 text-white font-bold px-10 py-5 rounded-2xl hover:bg-white/5 transition text-sm tracking-widest">SERVICIO TÉCNICO</a>
                 </div>
             </div>
         </section>
 
-        <!-- Stock Section -->
-        <section class="px-6 py-20 bg-black text-white">
-  <div class="max-w-7xl mx-auto">
-
-    <div class="mb-12 text-center">
-      <h2 class="text-3xl md:text-5xl font-semibold mb-4">Tienda</h2>
-      <p class="text-white/70 max-w-2xl mx-auto text-base md:text-lg">
-        Elegí la categoría que estás buscando y navegá una selección clara, sin saturación.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-      <a href="iphone-preowned.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">iPhone</p>
-        <h3 class="text-2xl font-medium mb-3">iPhone PreOwned</h3>
-        <p class="text-white/70">Equipos seleccionados, revisados y listos para entregar.</p>
-      </a>
-
-      <a href="iphone-new.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">iPhone</p>
-        <h3 class="text-2xl font-medium mb-3">iPhone New</h3>
-        <p class="text-white/70">Modelos nuevos sellados con garantía oficial Apple.</p>
-      </a>
-
-      <a href="iphone-outlet.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">iPhone</p>
-        <h3 class="text-2xl font-medium mb-3">iPhone Outlet</h3>
-        <p class="text-white/70">Oportunidades seleccionadas con precio más accesible.</p>
-      </a>
-
-      <a href="macbook-preowned.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">MacBook</p>
-        <h3 class="text-2xl font-medium mb-3">MacBook PreOwned</h3>
-        <p class="text-white/70">MacBooks seleccionadas para trabajo, estudio y uso diario.</p>
-      </a>
-
-      <a href="apple-watch.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">Apple Watch</p>
-        <h3 class="text-2xl font-medium mb-3">Apple Watch</h3>
-        <p class="text-white/70">Selección visible de modelos disponibles para consultar.</p>
-      </a>
-
-      <a href="service.html" class="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition">
-        <p class="text-sm text-white/50 mb-2">Hassel</p>
-        <h3 class="text-2xl font-medium mb-3">Service</h3>
-        <p class="text-white/70">Servicio técnico especializado para tus dispositivos Apple.</p>
-      </a>
-
-    </div>
-  </div>
-</section>
-        <section class="px-6 py-20 bg-black text-white">
-  <div class="max-w-6xl mx-auto text-center">
-
-    <h2 class="text-3xl md:text-5xl font-semibold mb-6">
-      Elegir bien no es casualidad
-    </h2>
-
-    <p class="text-white/70 max-w-2xl mx-auto mb-12 text-base md:text-lg">
-      En Hassel no vendemos cualquier equipo. Seleccionamos, revisamos y acompañamos cada compra.
-    </p>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">+6 años de experiencia</h3>
-        <p class="text-white/70 text-sm">
-          Trabajando todos los días con productos Apple y asesorando clientes.
-        </p>
-      </div>
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">Equipos seleccionados</h3>
-        <p class="text-white/70 text-sm">
-          Cada dispositivo pasa por un proceso de revisión antes de salir a la venta.
-        </p>
-      </div>
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">Garantía y soporte</h3>
-        <p class="text-white/70 text-sm">
-          No desaparecemos después de vender. Estamos para acompañarte.
-        </p>
-      </div>
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">Servicio técnico especializado</h3>
-        <p class="text-white/70 text-sm">
-          Reparaciones, baterías y soporte técnico enfocado en Apple.
-        </p>
-      </div>
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">Atención personalizada</h3>
-        <p class="text-white/70 text-sm">
-          Te ayudamos a elegir el equipo correcto según tu uso real.
-        </p>
-      </div>
-
-      <div class="border border-white/10 rounded-2xl p-6 bg-white/5">
-        <h3 class="text-xl font-medium mb-2">Compra simple</h3>
-        <p class="text-white/70 text-sm">
-          Elegís desde la web y terminás de definir todo por WhatsApp.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-       
-        <section class="px-6 py-24 bg-gradient-to-b from-black to-zinc-900 text-white text-center">
-  <div class="max-w-3xl mx-auto">
-
-    <h2 class="text-3xl md:text-5xl font-semibold mb-6">
-      ¿No sabés qué iPhone elegir?
-    </h2>
-
-    <p class="text-white/70 mb-10 text-base md:text-lg">
-      Escribinos por WhatsApp y te ayudamos a elegir el equipo ideal según tu uso y presupuesto.
-    </p>
-
-    <a href="https://wa.me/5491136404202" target="_blank"
-       class="inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-8 py-4 rounded-xl transition text-lg">
-      Hablar por WhatsApp
-    </a>
-
-  </div>
-</section>
-
-        <!-- Historia Section -->
-        
-
-        <!-- Cómo Funciona -->
-        <section id="como-funciona" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-4">¿Cómo funciona?</h2>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400">Un proceso simple, humano y sin complicaciones.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Paso 1 -->
-                <div class="flex flex-col items-center text-center relative">
-                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">1</div>
-                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Elegís tu equipo</h3>
-                    <p class="text-xs text-zinc-500">Revisá nuestro stock actualizado en esta misma web.</p>
+        <section id="productos-seccion" class="py-20 bg-white dark:bg-zinc-950 min-h-screen">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight uppercase">NUESTRO STOCK</h2>
+                        <p class="text-zinc-500 mt-2 italic">Precios actualizados al valor del dólar blue.</p>
+                    </div>
+                    <div class="bg-hassel-azul/10 px-4 py-2 rounded-full border border-hassel-azul/20">
+                        <span id="contador-productos" class="text-hassel-azul font-bold text-sm tracking-tighter">Cargando equipos...</span>
+                    </div>
                 </div>
-                <!-- Paso 2 -->
-                <div class="flex flex-col items-center text-center relative">
-                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">2</div>
-                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Nos contactás</h3>
-                    <p class="text-xs text-zinc-500">Escribinos por WhatsApp para confirmar disponibilidad o permutas.</p>
-                </div>
-                <!-- Paso 3 -->
-                <div class="flex flex-col items-center text-center relative">
-                    <div class="hidden md:block absolute top-6 left-[60%] right-[-40%] h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
-                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">3</div>
-                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Coordinamos</h3>
-                    <p class="text-xs text-zinc-500">Acordamos forma de pago y entrega en nuestra oficina o envío.</p>
-                </div>
-                <!-- Paso 4 -->
-                <div class="flex flex-col items-center text-center relative">
-                    <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-hassel text-lg font-bold mb-6 relative z-10">4</div>
-                    <h3 class="text-base font-medium text-zinc-900 dark:text-white mb-2">Disfrutás</h3>
-                    <p class="text-xs text-zinc-500">Te llevás tu Apple garantizado y listo para usar.</p>
+                <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                <div id="no-stock" class="hidden text-center py-20">
+                    <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-300 mx-auto mb-4"></iconify-icon>
+                    <p class="text-zinc-500">No hay equipos disponibles en esta categoría.</p>
                 </div>
             </div>
         </section>
 
-        <!-- FAQ Section -->
-        <section id="faq" class="bg-zinc-100 dark:bg-zinc-900/30 border-y border-zinc-200 dark:border-zinc-800/50 py-24 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bebas text-zinc-900 dark:text-white mb-4">Preguntas Frecuentes</h2>
+        <section class="bg-zinc-50 dark:bg-black border-y border-zinc-200 dark:border-zinc-900 py-16 px-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div class="flex flex-col items-center text-center gap-3">
+                    <iconify-icon icon="solar:verified-check-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
+                    <h3 class="font-bold text-zinc-900 dark:text-white">Equipos Seleccionados</h3>
+                    <p class="text-xs text-zinc-500 px-4">Revisados en más de 30 puntos antes de publicarse.</p>
                 </div>
-
-                <div class="space-y-4">
-                    <!-- Item -->
-                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
-                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Toman equipos como parte de pago?</span>
-                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
-                        </button>
-                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
-                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
-                                Sí, tomamos iPhone como parte de pago (a partir de iPhone 11 en adelante). El equipo debe estar en excelentes condiciones y libre de fábrica. Consultanos por WhatsApp para una cotización aproximada.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
-                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Qué formas de pago aceptan?</span>
-                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
-                        </button>
-                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
-                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
-                                Aceptamos dólares cara grande/azul, pesos (transferencia o efectivo al cambio del día), y tarjetas de crédito con recargo (consultar planes vigentes).
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Item -->
-                    <div class="faq-item bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
-                            <span class="text-sm font-medium text-zinc-900 dark:text-white">¿Qué incluye la garantía de 60 días?</span>
-                            <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform duration-300"></iconify-icon>
-                        </button>
-                        <div class="faq-content bg-zinc-50 dark:bg-zinc-900/50 px-6">
-                            <p class="py-4 text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-100 dark:border-zinc-800">
-                                Cubre cualquier falla de hardware no generada por el usuario. No cubre daños por agua, golpes, o caídas posteriores a la compra.
-                            </p>
-                        </div>
-                    </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <iconify-icon icon="solar:battery-charge-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
+                    <h3 class="font-bold text-zinc-900 dark:text-white">Batería Informada</h3>
+                    <p class="text-xs text-zinc-500 px-4">Transparencia total sobre la condición de cada equipo.</p>
+                </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <iconify-icon icon="solar:document-text-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
+                    <h3 class="font-bold text-zinc-900 dark:text-white">Garantía Escrita</h3>
+                    <p class="text-xs text-zinc-500 px-4">60 días de cobertura propia para tu tranquilidad.</p>
+                </div>
+                <div class="flex flex-col items-center text-center gap-3">
+                    <iconify-icon icon="solar:shield-check-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
+                    <h3 class="font-bold text-zinc-900 dark:text-white">IMEI Verificado</h3>
+                    <p class="text-xs text-zinc-500 px-4">Equipos 100% legales y libres para cualquier compañía.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        
+        <section id="service" class="py-24 bg-zinc-100 dark:bg-zinc-900">
+            <div class="max-w-3xl mx-auto px-6 text-center">
+                <h2 class="font-bebas text-5xl text-zinc-900 dark:text-white mb-4">SERVICE ESPECIALIZADO</h2>
+                <p class="text-zinc-500 mb-10">Reparaciones y soporte técnico enfocado en Apple.</p>
+                <div class="space-y-4 text-left">
+                    <input type="text" id="service-nombre" placeholder="Tu nombre" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste">
+                    <input type="text" id="service-modelo" placeholder="Modelo de equipo (Ej: iPhone 13 Pro)" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste">
+                    <textarea id="service-mensaje" placeholder="¿Qué falla tiene?" rows="4" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste"></textarea>
+                    <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-600 text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+                        <iconify-icon icon="ic:baseline-whatsapp" width="24"></iconify-icon>
+                        ENVIAR CONSULTA AL SERVICE
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-24 px-6 max-w-3xl mx-auto">
+            <h2 class="text-4xl font-bebas text-center mb-12">Preguntas Frecuentes</h2>
+            <div class="space-y-4">
+                <div class="faq-item bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center outline-none">
+                        <span class="font-medium">¿Toman equipos como parte de pago?</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
+                    </button>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Sí, tomamos iPhone del 11 en adelante en excelentes condiciones.</p></div>
+                </div>
+                <div class="faq-item bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center outline-none">
+                        <span class="font-medium">¿Qué formas de pago aceptan?</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
+                    </button>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Aceptamos dólares, pesos al cambio del día y tarjetas de crédito con recargo.</p></div>
+                </div>
+            </div>
+        </section>
     </main>
-<section id="service" class="py-20 bg-zinc-50 dark:bg-zinc-900/50">
-    <div class="max-w-3xl mx-auto px-6">
-        <div class="text-center mb-10">
-            <h2 class="font-bebas text-5xl text-zinc-900 dark:text-white uppercase tracking-tight">
-                SERVICE ESPECIALIZADO
-            </h2>
-            <p class="text-zinc-500 dark:text-zinc-400 mt-2 font-medium">
-                Reparaciones, cambio de batería y soporte técnico Apple.
-            </p>
+
+    <footer class="bg-black py-16 px-6 border-t border-white/10 text-center md:text-left">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div><h3 class="text-2xl font-bebas mb-4">Hassel BA</h3><p class="text-zinc-500 text-sm">Todo para tus dispositivos Apple.</p></div>
+            <div><h4 class="font-bold mb-4">Contacto</h4><div class="flex flex-col gap-2 text-sm text-zinc-400">
+                <a href="https://wa.me/5491136404202" class="hover:text-hassel-celeste transition">WhatsApp</a>
+                <a href="https://instagram.com/hasselba" class="hover:text-hassel-celeste transition">Instagram</a>
+                <span>Berazategui, Buenos Aires</span>
+            </div></div>
+            <div><h4 class="font-bold mb-4">Ubicación</h4><div class="h-40 rounded-xl overflow-hidden bg-zinc-900 flex items-center justify-center text-xs text-zinc-600 italic">Mapa de Berazategui</div></div>
         </div>
-        
-        <div class="space-y-4">
-            <input type="text" id="service-nombre" placeholder="Nombre completo" 
-                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400">
+        <div class="mt-16 text-center text-zinc-600 text-xs tracking-widest uppercase italic">© 2026 Hassel BA — Todos los derechos reservados</div>
+    </footer>
+
+    <script>
+        let valorDolarBlue = 1460;
+        let currentCategory = 'iphone-preowned';
+
+        const STOCK_TOTAL = [
+            { cat: 'iphone-preowned', modelo: "14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+" },
+            { cat: 'iphone-preowned', modelo: "13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A" },
+            { cat: 'iphone-preowned', modelo: "12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+" },
+            { cat: 'iphone-new', modelo: "15 Pro", gb: "128GB", color: "Natural Titanium", bat: 100, usd: 1250, grade: "Nuevo" },
+            { cat: 'macbook', modelo: "Air M1", gb: "256GB", color: "Space Gray", bat: "98", usd: 750, grade: "A+" }
+        ];
+
+        async function fetchDolar() {
+            try {
+                const res = await fetch('https://dolarapi.com/v1/dolares/blue');
+                const data = await res.json();
+                valorDolarBlue = data.venta;
+                renderStock();
+            } catch (e) { renderStock(); }
+        }
+
+        function createCardText(item) {
+            const precioPesos = item.usd * (valorDolarBlue + 15);
+            const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
+            const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+            const colores = { 'A+': 'bg-green-500', 'A': 'bg-blue-600', 'B+': 'bg-orange-500', 'Nuevo': 'bg-hassel-celeste' };
             
-            <input type="text" id="service-modelo" placeholder="Modelo de equipo (Ej: iPhone 13 Pro)" 
-                   class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400">
-            
-            <textarea id="service-mensaje" placeholder="¿Qué falla tiene tu equipo?" rows="4" 
-                      class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste placeholder:text-zinc-400"></textarea>
-            
-            <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-600 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20">
-    <iconify-icon icon="ic:baseline-whatsapp" width="24"></iconify-icon>
-    ENVIAR CONSULTA AL SERVICE
-</button>
-        </div>
-    </div>
-</section>
-    
-    <!-- Footer -->
-    <footer class="px-6 py-16 bg-black text-white border-t border-white/10">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            return `
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-[2.5rem] shadow-sm flex flex-col justify-between hover:border-hassel-celeste transition-all">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded text-white ${colores[item.grade] || 'bg-zinc-500'}">GRADO ${item.grade}</span>
+                        <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
+                    </div>
+                    <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white uppercase tracking-wide leading-none mb-1">iPhone ${item.modelo}</h3>
+                    <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
+                    <div class="flex items-center gap-2 text-sm mb-6 font-bold text-zinc-700 dark:text-zinc-300">
+                        <iconify-icon icon="solar:battery-charge-bold" class="text-green-500" width="20"></iconify-icon>
+                        Batería: ${item.bat}%
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-6 border-t border-zinc-50 dark:border-zinc-800">
+                    <div class="flex flex-col">
+                        <p class="text-3xl font-bebas text-zinc-900 dark:text-white leading-none">USD ${item.usd}</p>
+                        <p class="text-[10px] text-zinc-500 font-bold">$${precioPesos.toLocaleString('es-AR')}</p>
+                    </div>
+                    <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-110 transition shadow-lg shadow-green-500/20">
+                        <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
+                    </a>
+                </div>
+            </div>`;
+        }
 
-    <!-- Marca -->
-    <div>
-      <h3 class="text-xl font-semibold mb-4">Hassel BA</h3>
-      <p class="text-white/60 text-sm mb-4">
-        Todo para tus dispositivos Apple.
-      </p>
-      <p class="text-white/40 text-xs">
-        Especialistas en iPhone, MacBook y Apple Watch.
-      </p>
-    </div>
+        function renderStock() {
+            const grid = document.getElementById('stock-grid');
+            const data = STOCK_TOTAL.filter(i => i.cat === currentCategory);
+            grid.innerHTML = data.map(i => createCardText(i)).join('');
+            document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS ENCONTRADOS`;
+            document.getElementById('no-stock').classList.toggle('hidden', data.length > 0);
+        }
 
-    <!-- Contacto -->
-    <div>
-      <h4 class="text-sm font-medium mb-4 text-white/80">Contacto</h4>
+        function filtrarStock(cat) {
+            currentCategory = cat;
+            renderStock();
+            document.getElementById('productos-seccion').scrollIntoView({ behavior: 'smooth' });
+        }
 
-      <div class="flex flex-col gap-3 text-sm">
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
-        <a href="https://wa.me/5491136404202" target="_blank" class="hover:text-green-400">
-          WhatsApp
-        </a>
+        document.querySelectorAll('.faq-item button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const wasActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+                if (!wasActive) item.classList.add('active');
+            });
+        });
 
-        <a href="https://instagram.com/hasselba" target="_blank" class="hover:text-blue-400">
-          Instagram
-        </a>
+        function enviarServiceWhatsApp() {
+            const n = document.getElementById('service-nombre').value;
+            const m = document.getElementById('service-modelo').value;
+            const msg = document.getElementById('service-mensaje').value;
+            if (!n || !m || !msg) return alert("Completá todos los campos.");
+            const texto = `Hola Hassel! Mi nombre es ${n}, tengo un ${m}.\n\nConsulta: ${msg}`;
+            window.open(`https://wa.me/5491136404202?text=${encodeURIComponent(texto)}`, '_blank');
+        }
 
-        <span class="text-white/60">
-          Berazategui, Buenos Aires
-        </span>
-
-      </div>
-    </div>
-
-    <!-- Mapa -->
-    <div>
-      <h4 class="text-sm font-medium mb-4 text-white/80">Ubicación</h4>
-
-      <div class="w-full h-[200px] rounded-xl overflow-hidden border border-white/10">
-        <iframe 
-  src="https://www.google.com/maps?q=-34.7541418,-58.2006839&z=15&output=embed"
-  width="100%" 
-  height="100%" 
-  style="border:0;" 
-  allowfullscreen="" 
-  loading="lazy">
-</iframe>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Bottom -->
-  <div class="mt-12 text-center text-white/40 text-xs">
-    © 2026 Hassel BA — Todos los derechos reservados
-  </div>
-</footer>
-
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/5491136404202" target="_blank" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300">
-        <iconify-icon icon="solar:chat-round-dots-bold" class="text-3xl"></iconify-icon>
-    </a>
-
-    <!-- JS Logic -->
-  <script>
-
-// ===== 1. THEME =====
-const htmlElement = document.documentElement;
-const themeToggleBtn = document.getElementById('theme-toggle');
-const logoImg = document.getElementById('brand-logo');
-const footerLogo = document.getElementById('footer-logo');
-
-function updateLogo() {
-  if (!logoImg || !footerLogo) return;
-  const isDark = htmlElement.classList.contains('dark');
-  const src = isDark ? 'IMAGOTIPO-B.png' : 'IMAGOTIPO-A.png';
-  logoImg.src = src;
-  footerLogo.src = src;
-}
-
-if (localStorage.theme === 'light') {
-  htmlElement.classList.remove('dark');
-} else {
-  htmlElement.classList.add('dark');
-}
-updateLogo();
-
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener('click', () => {
-    htmlElement.classList.toggle('dark');
-    const isDark = htmlElement.classList.contains('dark');
-    localStorage.theme = isDark ? 'dark' : 'light';
-    updateLogo();
-  });
-}
-
-// ===== 2. FAQ =====
-document.querySelectorAll('.faq-item button').forEach(button => {
-  button.addEventListener('click', () => {
-    const item = button.parentElement;
-    const isActive = item.classList.contains('active');
-    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-    if (!isActive) item.classList.add('active');
-  });
-});
-
-// ===== 3. STOCK =====
-let USD_ARS = 1460;
-
-const STOCK_IPHONES = [
-  { modelo: "iPhone 14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+", ingreso: "2026-03-01" },
-  { modelo: "iPhone 13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A", ingreso: "2026-02-15" },
-  { modelo: "iPhone 12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+", ingreso: "2026-03-05" }
-];
-
-const STOCK_MAC = [
-  { modelo: "MacBook Air M1", gb: "256GB", color: "Space Gray", bat: "89 ciclos", usd: 750, grade: "A+", ingreso: "2026-02-28" },
-  { modelo: "MacBook Pro M2", gb: "512GB", color: "Silver", bat: "45 ciclos", usd: 1200, grade: "A", ingreso: "2026-03-02" }
-];
-
-const STOCK_WATCH = [
-  { modelo: "Apple Watch SE 2", gb: "40mm", color: "Midnight", bat: 98, usd: 250, grade: "A+", ingreso: "2026-03-04" }
-];
-
-let currentCategory = 'iphone';
-
-async function fetchDolarAPI() {
-  try {
-    const res = await fetch('https://dolarapi.com/v1/dolares/blue');
-    const data = await res.json();
-    USD_ARS = data.venta + 15;
-  } catch (error) {
-    console.error('Error dolar API', error);
-  }
-
-  const rateEl = document.getElementById('ars-rate');
-  if (rateEl) rateEl.innerText = USD_ARS.toLocaleString('es-AR');
-
-  renderStock();
-}
-
-// ===== HELPERS =====
-function isNew(dateString) {
-  const ingreso = new Date(dateString);
-  const hoy = new Date();
-  const diffDays = Math.ceil(Math.abs(hoy - ingreso) / (1000 * 60 * 60 * 24));
-  return diffDays <= 10;
-}
-
-// ===== CARD =====
-// Variable para el dólar (se actualiza con tu fetch de dolarapi)
-let valorDolarBlue = 1460; // Valor base por si falla la API
-
-function createCardText(item) {
-    // Lógica de precio en Pesos: (USD * (Blue + 15))
-    const precioPesos = item.usd * (valorDolarBlue + 15);
-    
-    const waMsg = `Hola Hassel! Me interesa el ${item.modelo} de USD ${item.usd}. ¿Me pasás más info?`;
-    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
-
-    // Colores por Grado
-    const coloresGrado = {
-        'A+': 'bg-green-500 text-white',
-        'A': 'bg-blue-600 text-white',
-        'B+': 'bg-orange-500 text-white',
-        'Nuevo': 'bg-hassel-celeste text-white'
-    };
-    const claseGrado = coloresGrado[item.grade] || 'bg-zinc-500 text-white';
-
-    return `
-    <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-3xl shadow-sm flex flex-col justify-between">
-        <div>
-            <div class="flex justify-between items-start mb-4">
-                <span class="text-[10px] font-bold px-2 py-1 rounded ${claseGrado}">
-                    GRADO ${item.grade}
-                </span>
-                <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
-            </div>
-
-            <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white tracking-wide">
-                iPhone ${item.modelo.replace('iPhone', '').replace('IPHONE', '').trim()}
-            </h3>
-            <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
-
-            <div class="flex items-center gap-2 text-sm mb-6">
-                <iconify-icon icon="solar:battery-charge-bold" class="text-green-500"></iconify-icon>
-                <span class="dark:text-zinc-300 text-zinc-700 font-bold">Batería: ${item.bat}%</span>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center pt-4 border-t border-zinc-100 dark:border-zinc-800">
-            <div>
-                <p class="text-2xl font-bold text-zinc-900 dark:text-white leading-none mb-1">USD ${item.usd}</p>
-                <p class="text-xs text-zinc-500 font-medium">$${precioPesos.toLocaleString('es-AR')}</p>
-            </div>
-            <a href="${waLink}" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-105 transition shadow-lg shadow-green-500/20 flex items-center justify-center">
-                <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
-            </a>
-        </div>
-    </div>
-    `;
-}
-
-// ===== RENDER =====
-function renderStock() {
-  const grid = document.getElementById('stock-grid');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-
-  let data = [];
-  let isMac = false;
-
-  if (currentCategory === 'iphone') data = STOCK_IPHONES;
-  else if (currentCategory === 'macbook') { data = STOCK_MAC; isMac = true; }
-  else if (currentCategory === 'watch') data = STOCK_WATCH;
-
-  data.forEach(item => {
-    grid.innerHTML += createCardText(item, isMac);
-  });
-}
-
-// ===== TABS =====
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    currentCategory = e.target.dataset.cat;
-    renderStock();
-  });
-});
-
-// ===== CAROUSEL =====
-let current = 0;
-const slides = document.querySelectorAll(".slide");
-const dots = document.querySelectorAll(".dot");
-
-function showSlide(index) {
-  slides.forEach((s, i) => s.style.opacity = i === index ? "1" : "0");
-  dots.forEach((d, i) => d.classList.toggle("bg-white", i === index));
-  current = index;
-}
-
-function nextSlide() {
-  showSlide((current + 1) % slides.length);
-}
-
-setInterval(nextSlide, 5000);
-showSlide(0);
-
-// ===== INIT =====
-fetchDolarAPI();
-
-      function enviarServiceWhatsApp() {
-    const nombre = document.getElementById('service-nombre').value;
-    const modelo = document.getElementById('service-modelo').value;
-    const mensaje = document.getElementById('service-mensaje').value;
-
-    if (!nombre || !modelo || !mensaje) {
-        alert("Por favor, completá todos los campos.");
-        return;
-    }
-
-    // Usamos saltos de línea reales dentro de un "Template String" (las comillas inclinadas)
-    const textoFinal = `Hola Hassel! Mi nombre es ${nombre}, tengo un ${modelo}.
-
-Consulta: ${mensaje}`;
-    
-    // Creamos el link. Al no usar encodeURIComponent en todo el bloque, 
-    // sino dejar que el navegador lo maneje, suele salir más limpio.
-    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(textoFinal)}`;
-    
-    window.open(waLink, '_blank');
-}
-
-    // 3. Armamos el mensaje para WhatsApp
-    // %0A es un salto de línea en WhatsApp
-    const textoFinal = `Hola Hassel! Mi nombre es ${nombre}, tengo un ${modelo}. %0A%0AConsulta: ${mensaje}`;
-    
-    // 4. Creamos el link y lo abrimos
-    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(textoFinal)}`;
-    
-    window.open(waLink, '_blank');
-}
-      
-</script>
-</body></html>
+        window.onload = fetchDolar;
+    </script>
+</body>
+</html>
