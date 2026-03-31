@@ -307,17 +307,56 @@ async function cargarStockGoogle() {
 
 // 3. DIBUJAR CARDS
 function createCardText(item) {
-    const precioPesos = item.usd * (valorDolarBlue + 15);
-    const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
+    const precioPesos = Math.round(item.usd * valorDolarBlue);
+    const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de ${item.gb}. ¿Lo tienen disponible?`;
     const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
     
-    // Badge de grado con estilo translúcido
-    const gradoColors = {
-        'A+': 'bg-green-500/10 text-green-400 border-green-500/20',
-        'A': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-        'B+': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-        'Nuevo': 'bg-hassel-celeste/10 text-hassel-celeste border-hassel-celeste/20'
-    };
+    // Badge de grado con Triomphe
+    const badgeStyle = (item.grade === 'A+' || item.grade === 'Nuevo') 
+        ? 'border-[#d90724] text-[#d90724] bg-[#d90724]/10' 
+        : 'border-white/20 text-white/40 bg-white/5';
+
+    return `
+    <div class="glass p-8 rounded-[2.5rem] flex flex-col justify-between border-white/5 hover:border-[#d90724]/30 transition-all duration-500 animate-card">
+        <div>
+            <div class="flex justify-between items-start mb-6">
+                <span class="font-triomphe text-[10px] font-bold px-3 py-1 rounded-full border ${badgeStyle} uppercase tracking-widest">
+                    GRADO ${item.grade}
+                </span>
+                <iconify-icon icon="apple-fill" class="text-white/10" width="22"></iconify-icon>
+            </div>
+            
+            <h3 class="font-triomphe text-5xl text-white uppercase italic leading-none mb-2 tracking-tight">
+                iPhone ${item.modelo}
+            </h3>
+            
+            <p class="font-myriad text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">
+                ${item.gb} <span class="text-[#008acb] px-1">|</span> ${item.color}
+            </p>
+            
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
+                <iconify-icon icon="solar:battery-charge-bold" class="text-[#008acb]" width="18"></iconify-icon>
+                <span class="font-myriad text-white/60 text-[10px] font-bold uppercase tracking-widest">
+                    Batería: <span class="text-white">${item.bat}%</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-end pt-6 border-t border-white/5">
+            <div>
+                <p class="font-triomphe text-4xl text-[#d90724] leading-none mb-1">USD ${item.usd}</p>
+                <p class="font-myriad text-[10px] text-white/20 font-bold tracking-widest uppercase">
+                    $${precioPesos.toLocaleString('es-AR')}
+                </p>
+            </div>
+            
+            <a href="${waLink}" target="_blank" 
+               class="bg-[#d90724] hover:bg-[#ff0000] text-white w-14 h-14 rounded-2xl transition-all duration-300 flex items-center justify-center shadow-lg shadow-red-900/20">
+                <iconify-icon icon="ic:baseline-whatsapp" width="30"></iconify-icon>
+            </a>
+        </div>
+    </div>`;
+}
     const estiloGrado = gradoColors[item.grade] || 'bg-white/10 text-white/50 border-white/10';
 
     return `
