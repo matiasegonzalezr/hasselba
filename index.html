@@ -37,7 +37,7 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <style>
-        body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
@@ -50,16 +50,18 @@
 
     <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
         <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-            <div class="flex items-center gap-3">
+            <a href="#hero" class="flex items-center gap-3 hover:opacity-80 transition">
                 <img src="img/imagotipo-a.png" alt="Hassel" class="h-8 md:h-10 w-auto">
-            </div>
+            </a>
+            
             <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/80">
-    <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">iPhone PreOwned</button>
-    <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">iPhone New</button>
-    <button onclick="filtrarStock('iphone-outlet')" class="hover:text-hassel-rojo transition text-hassel-rojo/80">iPhone Outlet</button>
-    <a href="#service" class="hover:text-hassel-celeste transition">Service</a>
-    <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
-</nav>
+                <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">iPhone PreOwned</button>
+                <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">iPhone New</button>
+                <button onclick="filtrarStock('iphone-outlet')" class="hover:text-hassel-rojo transition text-hassel-rojo/80">iPhone Outlet</button>
+                <a href="#service" class="hover:text-hassel-celeste transition">Service</a>
+                <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
+            </nav>
+
             <div class="flex items-center gap-4">
                 <a href="https://wa.me/5491136404202" class="bg-hassel-celeste hover:bg-hassel-azul text-white font-bold px-4 py-2 rounded-full text-xs uppercase transition flex items-center gap-2">
                     <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
@@ -68,12 +70,13 @@
                 <button onclick="toggleMenu()" class="md:hidden text-white"><iconify-icon icon="solar:menu-dots-bold" width="28"></iconify-icon></button>
             </div>
         </div>
+
         <div id="mobile-menu" class="hidden bg-black border-t border-white/10 md:hidden p-6 space-y-4">
-    <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">📱 iPhone PreOwned</button>
-    <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">✨ iPhone New</button>
-    <button onclick="filtrarStock('iphone-outlet'); toggleMenu()" class="block text-hassel-rojo text-xl font-bebas w-full text-left uppercase">🔥 iPhone Outlet</button>
-    <button onclick="toggleMenu(); location.href='#service'" class="block text-white text-xl font-bebas w-full text-left uppercase">🛠 Service</button>
-</div>
+            <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">📱 iPhone PreOwned</button>
+            <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">✨ iPhone New</button>
+            <button onclick="filtrarStock('iphone-outlet'); toggleMenu()" class="block text-hassel-rojo text-xl font-bebas w-full text-left uppercase">🔥 iPhone Outlet</button>
+            <button onclick="toggleMenu(); location.href='#service'" class="block text-white text-xl font-bebas w-full text-left uppercase">🛠 Service</button>
+        </div>
     </header>
 
     <main>
@@ -94,42 +97,17 @@
             <div class="max-w-7xl mx-auto px-6">
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
-                        <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight uppercase">NUESTRO STOCK</h2>
-                        <p class="text-zinc-500 mt-2 italic">Precios actualizados al valor del dólar blue.</p>
+                        <h2 id="titulo-categoria" class="font-bebas text-5xl md:text-6xl text-zinc-900 dark:text-white tracking-tight uppercase">STOCK DISPONIBLE</h2>
+                        <p class="text-zinc-500 mt-2 italic">Valores expresados en Dólar Blue (+15).</p>
                     </div>
                     <div class="bg-hassel-azul/10 px-4 py-2 rounded-full border border-hassel-azul/20">
-                        <span id="contador-productos" class="text-hassel-azul font-bold text-sm tracking-tighter">Cargando equipos...</span>
+                        <span id="contador-productos" class="text-hassel-azul font-bold text-sm tracking-tighter"></span>
                     </div>
                 </div>
                 <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
                 <div id="no-stock" class="hidden text-center py-20">
                     <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-300 mx-auto mb-4"></iconify-icon>
-                    <p class="text-zinc-500">No hay equipos disponibles en esta categoría.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="bg-zinc-50 dark:bg-black border-y border-zinc-200 dark:border-zinc-900 py-16 px-6">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-                <div class="flex flex-col items-center text-center gap-3">
-                    <iconify-icon icon="solar:verified-check-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
-                    <h3 class="font-bold text-zinc-900 dark:text-white">Equipos Seleccionados</h3>
-                    <p class="text-xs text-zinc-500 px-4">Revisados en más de 30 puntos antes de publicarse.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <iconify-icon icon="solar:battery-charge-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
-                    <h3 class="font-bold text-zinc-900 dark:text-white">Batería Informada</h3>
-                    <p class="text-xs text-zinc-500 px-4">Transparencia total sobre la condición de cada equipo.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <iconify-icon icon="solar:document-text-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
-                    <h3 class="font-bold text-zinc-900 dark:text-white">Garantía Escrita</h3>
-                    <p class="text-xs text-zinc-500 px-4">60 días de cobertura propia para tu tranquilidad.</p>
-                </div>
-                <div class="flex flex-col items-center text-center gap-3">
-                    <iconify-icon icon="solar:shield-check-bold" class="text-4xl text-hassel-celeste"></iconify-icon>
-                    <h3 class="font-bold text-zinc-900 dark:text-white">IMEI Verificado</h3>
-                    <p class="text-xs text-zinc-500 px-4">Equipos 100% legales y libres para cualquier compañía.</p>
+                    <p class="text-zinc-500">No hay equipos disponibles en esta categoría por el momento.</p>
                 </div>
             </div>
         </section>
@@ -158,30 +136,31 @@
                         <span class="font-medium">¿Toman equipos como parte de pago?</span>
                         <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
                     </button>
-                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Sí, tomamos iPhone del 11 en adelante en excelentes condiciones.</p></div>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Sí, tomamos iPhone del 11 en adelante en excelentes condiciones y libres de iCloud.</p></div>
                 </div>
                 <div class="faq-item bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
                     <button class="w-full px-6 py-5 text-left flex justify-between items-center outline-none">
                         <span class="font-medium">¿Qué formas de pago aceptan?</span>
                         <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
                     </button>
-                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Aceptamos dólares, pesos al cambio del día y tarjetas de crédito con recargo.</p></div>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Aceptamos dólares cara grande/azul, pesos al cambio blue del día y transferencias bancarias.</p></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-black py-16 px-6 border-t border-white/10 text-center md:text-left">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div><h3 class="text-2xl font-bebas mb-4">Hassel BA</h3><p class="text-zinc-500 text-sm">Todo para tus dispositivos Apple.</p></div>
-            <div><h4 class="font-bold mb-4">Contacto</h4><div class="flex flex-col gap-2 text-sm text-zinc-400">
-                <a href="https://wa.me/5491136404202" class="hover:text-hassel-celeste transition">WhatsApp</a>
-                <a href="https://instagram.com/hasselba" class="hover:text-hassel-celeste transition">Instagram</a>
-                <span>Berazategui, Buenos Aires</span>
-            </div></div>
-            <div><h4 class="font-bold mb-4">Ubicación</h4><div class="h-40 rounded-xl overflow-hidden bg-zinc-900 flex items-center justify-center text-xs text-zinc-600 italic">Mapa de Berazategui</div></div>
+    <footer class="bg-black py-16 px-6 border-t border-white/10 text-center">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-zinc-400">
+            <div><h3 class="text-2xl font-bebas text-white mb-2">Hassel BA</h3><p class="text-sm">Todo para tus dispositivos Apple.</p></div>
+            <div><h4 class="font-bold mb-4 text-white">Contacto</h4>
+                <div class="flex flex-col gap-2 text-sm">
+                    <a href="https://wa.me/5491136404202" class="hover:text-hassel-celeste transition">WhatsApp</a>
+                    <a href="https://instagram.com/hasselba" class="hover:text-hassel-celeste transition">Instagram</a>
+                </div>
+            </div>
+            <div><h4 class="font-bold mb-4 text-white">Ubicación</h4><p class="text-sm">Berazategui, Buenos Aires</p></div>
         </div>
-        <div class="mt-16 text-center text-zinc-600 text-xs tracking-widest uppercase italic">© 2026 Hassel BA — Todos los derechos reservados</div>
+        <div class="mt-16 text-zinc-600 text-xs uppercase tracking-widest">© 2026 Hassel BA — Todos los derechos reservados</div>
     </footer>
 
     <script>
@@ -193,7 +172,6 @@
             { cat: 'iphone-preowned', modelo: "13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A" },
             { cat: 'iphone-preowned', modelo: "12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+" },
             { cat: 'iphone-new', modelo: "15 Pro", gb: "128GB", color: "Natural Titanium", bat: 100, usd: 1250, grade: "Nuevo" },
-            { cat: 'macbook', modelo: "Air M1", gb: "256GB", color: "Space Gray", bat: "98", usd: 750, grade: "A+" }
             { cat: 'iphone-outlet', modelo: "11", gb: "64GB", color: "White", bat: 82, usd: 290, grade: "B+" }
         ];
 
@@ -242,18 +220,20 @@
             const grid = document.getElementById('stock-grid');
             const data = STOCK_TOTAL.filter(i => i.cat === currentCategory);
             grid.innerHTML = data.map(i => createCardText(i)).join('');
-            document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS ENCONTRADOS`;
+            document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS EN STOCK`;
             document.getElementById('no-stock').classList.toggle('hidden', data.length > 0);
         }
 
         function filtrarStock(cat) {
             currentCategory = cat;
             renderStock();
-            document.getElementById('productos-seccion').scrollIntoView({ behavior: 'smooth' });
+            const seccion = document.getElementById('productos-seccion');
+            if(seccion) seccion.scrollIntoView({ behavior: 'smooth' });
         }
 
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
+        // Manejo de FAQ
         document.querySelectorAll('.faq-item button').forEach(btn => {
             btn.addEventListener('click', () => {
                 const item = btn.parentElement;
@@ -267,7 +247,7 @@
             const n = document.getElementById('service-nombre').value;
             const m = document.getElementById('service-modelo').value;
             const msg = document.getElementById('service-mensaje').value;
-            if (!n || !m || !msg) return alert("Completá todos los campos.");
+            if (!n || !m || !msg) return alert("Por favor, completá todos los campos.");
             const texto = `Hola Hassel! Mi nombre es ${n}, tengo un ${m}.\n\nConsulta: ${msg}`;
             window.open(`https://wa.me/5491136404202?text=${encodeURIComponent(texto)}`, '_blank');
         }
