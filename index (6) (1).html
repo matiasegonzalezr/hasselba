@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <link rel="icon" type="image/png" href="img/isotipo-dark.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hassel BA - Especialistas en Apple. Venta de iPhone nuevos y usados seleccionados. Servicio técnico especializado en Berazategui.">
+<meta name="keywords" content="iPhone, Apple, Berazategui, Servicio Técnico, iPhone 16, iPhone 17, usados seleccionados">
+    <title>Hassel BA | Todo para tus dispositivos Apple</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hassel: {
+                            azul: '#264E9A',
+                            celeste: '#008ACB',
+                            negro: '#1A1A1A',
+                            rojo: '#C3122F',
+                            blanco: '#FAFAFA'
+                        }
+                    },
+                    fontFamily: {
+                        bebas: ['"Bebas Neue"', 'sans-serif'],
+                        dm: ['"DM Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <style>
+        body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+.font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05rem; }
+
+/* Estilo Glassmorfismo */
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-hover:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Animación de fondo */
+.bg-gradient-animate {
+    background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+}
+
+.faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+.faq-item.active .faq-content { max-height: 500px; }
+.faq-item.active .faq-icon { transform: rotate(180deg); }
+
+/* Animación de entrada de las cards */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-card { animation: fadeIn 0.5s ease forwards; }
+    </style>
+</head>
+<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 overflow-x-hidden">
+
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+            <a href="#hero" class="flex items-center gap-3 hover:opacity-80 transition">
+                <img src="img/imagotipo-a.png" alt="Hassel" class="h-8 md:h-10 w-auto">
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/80">
+                <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">iPhone PreOwned</button>
+                <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">iPhone New</button>
+                <button onclick="filtrarStock('iphone-outlet')" class="hover:text-hassel-rojo transition text-hassel-rojo/80">iPhone Outlet</button>
+                <a href="#service" class="hover:text-hassel-celeste transition">Service</a>
+                <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/5491136404202" class="bg-hassel-celeste hover:bg-hassel-azul text-white font-bold px-4 py-2 rounded-full text-xs uppercase transition flex items-center gap-2">
+                    <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
+                    <span>Consultar</span>
+                </a>
+                <button onclick="toggleMenu()" class="md:hidden text-white"><iconify-icon icon="solar:menu-dots-bold" width="28"></iconify-icon></button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden bg-black border-t border-white/10 md:hidden p-6 space-y-4">
+            <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">📱 iPhone PreOwned</button>
+            <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas w-full text-left uppercase">✨ iPhone New</button>
+            <button onclick="filtrarStock('iphone-outlet'); toggleMenu()" class="block text-hassel-rojo text-xl font-bebas w-full text-left uppercase">🔥 iPhone Outlet</button>
+            <button onclick="toggleMenu(); location.href='#service'" class="block text-white text-xl font-bebas w-full text-left uppercase">🛠 Service</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative min-h-[70vh] flex items-center justify-center pt-32 pb-12 bg-black overflow-hidden">
+            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-hassel-azul/20 blur-[120px] rounded-full"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-hassel-celeste/10 blur-[120px] rounded-full"></div>
+            <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+                <h1 class="font-bebas text-7xl md:text-9xl text-white leading-none mb-4">HASSEL BA</h1>
+                <p class="font-bebas text-2xl md:text-4xl text-hassel-celeste tracking-[0.2em] uppercase mb-12">TODO PARA TUS DISPOSITIVOS APPLE</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="filtrarStock('iphone-preowned')" class="w-full sm:w-auto bg-white text-black font-bold px-10 py-5 rounded-2xl hover:bg-hassel-celeste hover:text-white transition uppercase text-sm tracking-widest">VER STOCK IPHONE</button>
+                    <a href="#service" class="w-full sm:w-auto border border-white/20 text-white font-bold px-10 py-5 rounded-2xl hover:bg-white/5 transition text-sm tracking-widest">SERVICIO TÉCNICO</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="productos-seccion" class="relative py-24 bg-black overflow-hidden min-h-screen">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-hassel-azul/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-hassel-celeste/10 blur-[120px] rounded-full"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <h2 id="titulo-categoria" class="font-bebas text-6xl text-white tracking-tight uppercase">STOCK DISPONIBLE</h2>
+                <p class="text-zinc-500 mt-2 font-medium tracking-wide">VALORES EXPRESADOS AL VALOR DOLAR BLUE VENTA DEL DIA </p>
+            </div>
+            <div class="glass px-6 py-2 rounded-full border border-white/10">
+                <span id="contador-productos" class="text-hassel-celeste font-bold text-xs tracking-widest uppercase"></span>
+            </div>
+        </div>
+        
+        <div id="stock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+
+        <div id="no-stock" class="hidden text-center py-20">
+            <iconify-icon icon="solar:box-minimalistic-linear" width="64" class="text-zinc-700 mx-auto mb-4"></iconify-icon>
+            <p class="text-zinc-500 font-bebas text-2xl uppercase tracking-widest">Sin stock en esta categoría</p>
+        </div>
+    </div>
+</section>
+
+        <section id="service" class="py-24 bg-zinc-100 dark:bg-zinc-900">
+            <div class="max-w-3xl mx-auto px-6 text-center">
+                <h2 class="font-bebas text-5xl text-zinc-900 dark:text-white mb-4">SERVICE ESPECIALIZADO</h2>
+                <p class="text-zinc-500 mb-10">Reparaciones y soporte técnico enfocado en Apple.</p>
+                <div class="space-y-4 text-left">
+                    <input type="text" id="service-nombre" placeholder="Tu nombre" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste">
+                    <input type="text" id="service-modelo" placeholder="Modelo de equipo (Ej: iPhone 13 Pro)" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste">
+                    <textarea id="service-mensaje" placeholder="¿Qué falla tiene?" rows="4" class="w-full p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white outline-none focus:border-hassel-celeste"></textarea>
+                    <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-600 text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+                        <iconify-icon icon="ic:baseline-whatsapp" width="24"></iconify-icon>
+                        ENVIAR CONSULTA AL SERVICE
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-24 px-6 max-w-3xl mx-auto">
+            <h2 class="text-4xl font-bebas text-center mb-12">Preguntas Frecuentes</h2>
+            <div class="space-y-4">
+                <div class="faq-item bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center outline-none">
+                        <span class="font-medium">¿Toman equipos como parte de pago?</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
+                    </button>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Sí, tomamos iPhone del 11 en adelante en excelentes condiciones y libres de iCloud.</p></div>
+                </div>
+                <div class="faq-item bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden">
+                    <button class="w-full px-6 py-5 text-left flex justify-between items-center outline-none">
+                        <span class="font-medium">¿Qué formas de pago aceptan?</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" class="faq-icon text-zinc-400 transition-transform"></iconify-icon>
+                    </button>
+                    <div class="faq-content px-6 text-zinc-500 text-sm"><p class="pb-4">Aceptamos dólares cara grande/azul, pesos al cambio blue del día y transferencias bancarias.</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black py-16 px-6 border-t border-white/10 text-center">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-zinc-400">
+            <div><h3 class="text-2xl font-bebas text-white mb-2">Hassel BA</h3><p class="text-sm">Todo para tus dispositivos Apple.</p></div>
+            <div><h4 class="font-bold mb-4 text-white">Contacto</h4>
+                <div class="flex flex-col gap-2 text-sm">
+                    <a href="https://wa.me/5491136404202" class="hover:text-hassel-celeste transition">WhatsApp</a>
+                    <a href="https://instagram.com/hasselba" class="hover:text-hassel-celeste transition">Instagram</a>
+                </div>
+            </div>
+            <div><h4 class="font-bold mb-4 text-white">Ubicación</h4><p class="text-sm">148 1170, Berazategui, Buenos Aires</p></div>
+        </div>
+        <div class="mt-16 text-zinc-600 text-xs uppercase tracking-widest">© 2026 Hassel BA — Todos los derechos reservados</div>
+    </footer>
+
+    <script>
+        // CONFIGURACIÓN DE DATOS
+// Dividimos el link para mayor seguridad visual
+const PARTE_A = 'https://docs.google.com/spreadsheets/d/e/';
+const PARTE_B = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkWlDq8HQ1AdcUrXjuOitRw06EbOc5YELWtSla5CfFTYTGaYUYHkaM07lEsuM7J7_NbQo7AZyWNXDu/pub?output=csv'.replace(PARTE_A, ''); 
+const URL_FINAL = PARTE_A + PARTE_B;
+
+let valorDolarBlue = 1460;
+let currentCategory = 'iphone-preowned';
+let STOCK_TOTAL = [];
+
+// 1. OBTENER DÓLAR
+async function fetchDolar() {
+    try {
+        const res = await fetch('https://dolarapi.com/v1/dolares/blue');
+        const data = await res.json();
+        valorDolarBlue = data.venta;
+        console.log("Dólar actualizado:", valorDolarBlue);
+    } catch (e) {
+        console.error("Error dólapi, usando base.");
+    }
+}
+
+// 2. OBTENER STOCK DE GOOGLE
+async function cargarStockGoogle() {
+    try {
+        const res = await fetch(URL_FINAL);
+        const csv = await res.text();
+        const filas = csv.split('\n').slice(1); // Ignorar encabezado
+        
+        STOCK_TOTAL = filas.map(linea => {
+            const c = linea.split(',');
+            return {
+                cat: c[0]?.trim(),
+                modelo: c[1]?.trim(),
+                gb: c[2]?.trim(),
+                color: c[3]?.trim(),
+                bat: c[4]?.trim(),
+                usd: parseFloat(c[5]),
+                grade: c[6]?.trim()
+            };
+        }).filter(i => i.modelo); // Limpiar filas vacías
+
+        renderStock();
+    } catch (e) {
+        console.error("Error cargando Sheets:", e);
+    }
+}
+
+// 3. DIBUJAR CARDS
+function createCardText(item) {
+    const precioPesos = item.usd * (valorDolarBlue + 15);
+    const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
+    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+    
+    // Badge de grado con estilo translúcido
+    const gradoColors = {
+        'A+': 'bg-green-500/10 text-green-400 border-green-500/20',
+        'A': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        'B+': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+        'Nuevo': 'bg-hassel-celeste/10 text-hassel-celeste border-hassel-celeste/20'
+    };
+    const estiloGrado = gradoColors[item.grade] || 'bg-white/10 text-white/50 border-white/10';
+
+    return `
+    <div class="glass glass-hover p-8 rounded-[2.5rem] flex flex-col justify-between transition-all duration-500 animate-card">
+        <div>
+            <div class="flex justify-between items-start mb-6">
+                <span class="text-[10px] font-bold px-3 py-1 rounded-full border ${estiloGrado} uppercase tracking-widest">
+                    GRADO ${item.grade}
+                </span>
+                <iconify-icon icon="apple-fill" class="text-white/10" width="20"></iconify-icon>
+            </div>
+            
+            <h3 class="font-bebas text-4xl text-white uppercase tracking-wide leading-none mb-2">iPhone ${item.modelo}</h3>
+            <p class="text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">${item.gb} <span class="mx-2 text-white/10">|</span> ${item.color}</p>
+            
+            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
+                <iconify-icon icon="solar:battery-charge-bold" class="text-green-500" width="20"></iconify-icon>
+                <span class="text-white/60 text-xs font-bold uppercase tracking-widest">Batería: <span class="text-white">${item.bat}%</span></span>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-end pt-6 border-t border-white/5">
+            <div class="flex flex-col">
+                <p class="text-4xl font-bebas text-hassel-celeste leading-none mb-1">USD ${item.usd}</p>
+                <p class="text-[10px] text-white/20 font-bold tracking-widest uppercase">$${precioPesos.toLocaleString('es-AR')}</p>
+            </div>
+            <a href="${waLink}" target="_blank" class="bg-white/5 hover:bg-hassel-celeste text-white p-4 rounded-2xl transition-all duration-300 border border-white/10 hover:border-hassel-celeste shadow-xl group">
+                <iconify-icon icon="ic:baseline-whatsapp" width="28" class="group-hover:scale-110 transition-transform"></iconify-icon>
+            </a>
+        </div>
+    </div>`;
+}
+function renderStock() {
+    const grid = document.getElementById('stock-grid');
+    if (!grid) return;
+    const data = STOCK_TOTAL.filter(i => i.cat === currentCategory);
+    grid.innerHTML = data.map(i => createCardText(i)).join('');
+    document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS EN STOCK`;
+    document.getElementById('no-stock').classList.toggle('hidden', data.length > 0);
+}
+
+function filtrarStock(cat) {
+    currentCategory = cat;
+    renderStock();
+    document.getElementById('productos-seccion')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
+function enviarServiceWhatsApp() {
+    const n = document.getElementById('service-nombre').value;
+    const m = document.getElementById('service-modelo').value;
+    const msg = document.getElementById('service-mensaje').value;
+    if (!n || !m || !msg) return alert("Por favor, completá todos los campos.");
+    const texto = `Hola Hassel! Mi nombre es ${n}, tengo un ${m}.\n\nConsulta: ${msg}`;
+    window.open(`https://wa.me/5491136404202?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+// INICIO
+window.onload = async () => {
+    await fetchDolar();
+    await cargarStockGoogle();
+};
+    </script>
+</body>
+</html>
