@@ -164,95 +164,118 @@
     </footer>
 
     <script>
-        let valorDolarBlue = 1460;
-        let currentCategory = 'iphone-preowned';
+        // CONFIGURACIÓN DE DATOS
+// Dividimos el link para mayor seguridad visual
+const PARTE_A = 'https://docs.google.com/spreadsheets/d/e/';
+const PARTE_B = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkWlDq8HQ1AdcUrXjuOitRw06EbOc5YELWtSla5CfFTYTGaYUYHkaM07lEsuM7J7_NbQo7AZyWNXDu/pub?output=csv'.replace(PARTE_A, ''); 
+const URL_FINAL = PARTE_A + PARTE_B;
 
-        const STOCK_TOTAL = [
-            { cat: 'iphone-preowned', modelo: "14 Pro", gb: "256GB", color: "Deep Purple", bat: 95, usd: 1050, grade: "A+" },
-            { cat: 'iphone-preowned', modelo: "13", gb: "128GB", color: "Midnight", bat: 88, usd: 580, grade: "A" },
-            { cat: 'iphone-preowned', modelo: "12", gb: "64GB", color: "Black", bat: 85, usd: 350, grade: "B+" },
-            { cat: 'iphone-new', modelo: "15 Pro", gb: "128GB", color: "Natural Titanium", bat: 100, usd: 1250, grade: "Nuevo" },
-            { cat: 'iphone-outlet', modelo: "11", gb: "64GB", color: "White", bat: 82, usd: 290, grade: "B+" }
-        ];
+let valorDolarBlue = 1460;
+let currentCategory = 'iphone-preowned';
+let STOCK_TOTAL = [];
 
-        async function fetchDolar() {
-            try {
-                const res = await fetch('https://dolarapi.com/v1/dolares/blue');
-                const data = await res.json();
-                valorDolarBlue = data.venta;
-                renderStock();
-            } catch (e) { renderStock(); }
-        }
+// 1. OBTENER DÓLAR
+async function fetchDolar() {
+    try {
+        const res = await fetch('https://dolarapi.com/v1/dolares/blue');
+        const data = await res.json();
+        valorDolarBlue = data.venta;
+        console.log("Dólar actualizado:", valorDolarBlue);
+    } catch (e) {
+        console.error("Error dólapi, usando base.");
+    }
+}
 
-        function createCardText(item) {
-            const precioPesos = item.usd * (valorDolarBlue + 15);
-            const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
-            const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
-            const colores = { 'A+': 'bg-green-500', 'A': 'bg-blue-600', 'B+': 'bg-orange-500', 'Nuevo': 'bg-hassel-celeste' };
-            
-            return `
-            <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-[2.5rem] shadow-sm flex flex-col justify-between hover:border-hassel-celeste transition-all">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-[10px] font-bold px-2 py-1 rounded text-white ${colores[item.grade] || 'bg-zinc-500'}">GRADO ${item.grade}</span>
-                        <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
-                    </div>
-                    <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white uppercase tracking-wide leading-none mb-1">iPhone ${item.modelo}</h3>
-                    <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
-                    <div class="flex items-center gap-2 text-sm mb-6 font-bold text-zinc-700 dark:text-zinc-300">
-                        <iconify-icon icon="solar:battery-charge-bold" class="text-green-500" width="20"></iconify-icon>
-                        Batería: ${item.bat}%
-                    </div>
-                </div>
-                <div class="flex justify-between items-center pt-6 border-t border-zinc-50 dark:border-zinc-800">
-                    <div class="flex flex-col">
-                        <p class="text-3xl font-bebas text-zinc-900 dark:text-white leading-none">USD ${item.usd}</p>
-                        <p class="text-[10px] text-zinc-500 font-bold">$${precioPesos.toLocaleString('es-AR')}</p>
-                    </div>
-                    <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-110 transition shadow-lg shadow-green-500/20">
-                        <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
-                    </a>
-                </div>
-            </div>`;
-        }
+// 2. OBTENER STOCK DE GOOGLE
+async function cargarStockGoogle() {
+    try {
+        const res = await fetch(URL_FINAL);
+        const csv = await res.text();
+        const filas = csv.split('\n').slice(1); // Ignorar encabezado
+        
+        STOCK_TOTAL = filas.map(linea => {
+            const c = linea.split(',');
+            return {
+                cat: c[0]?.trim(),
+                modelo: c[1]?.trim(),
+                gb: c[2]?.trim(),
+                color: c[3]?.trim(),
+                bat: c[4]?.trim(),
+                usd: parseFloat(c[5]),
+                grade: c[6]?.trim()
+            };
+        }).filter(i => i.modelo); // Limpiar filas vacías
 
-        function renderStock() {
-            const grid = document.getElementById('stock-grid');
-            const data = STOCK_TOTAL.filter(i => i.cat === currentCategory);
-            grid.innerHTML = data.map(i => createCardText(i)).join('');
-            document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS EN STOCK`;
-            document.getElementById('no-stock').classList.toggle('hidden', data.length > 0);
-        }
+        renderStock();
+    } catch (e) {
+        console.error("Error cargando Sheets:", e);
+    }
+}
 
-        function filtrarStock(cat) {
-            currentCategory = cat;
-            renderStock();
-            const seccion = document.getElementById('productos-seccion');
-            if(seccion) seccion.scrollIntoView({ behavior: 'smooth' });
-        }
+// 3. DIBUJAR CARDS
+function createCardText(item) {
+    const precioPesos = item.usd * (valorDolarBlue + 15);
+    const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de USD ${item.usd}. ¿Me pasás fotos?`;
+    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+    const colores = { 'A+': 'bg-green-500', 'A': 'bg-blue-600', 'B+': 'bg-orange-500', 'Nuevo': 'bg-hassel-celeste' };
+    
+    return `
+    <div class="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-6 rounded-[2.5rem] shadow-sm flex flex-col justify-between hover:border-hassel-celeste transition-all animate-fade-in">
+        <div>
+            <div class="flex justify-between items-start mb-4">
+                <span class="text-[10px] font-bold px-2 py-1 rounded text-white ${colores[item.grade] || 'bg-zinc-500'}">GRADO ${item.grade}</span>
+                <iconify-icon icon="apple-fill" class="text-zinc-300" width="18"></iconify-icon>
+            </div>
+            <h3 class="font-bebas text-3xl text-zinc-900 dark:text-white uppercase tracking-wide leading-none mb-1">iPhone ${item.modelo}</h3>
+            <p class="text-zinc-500 text-xs mb-4">${item.gb} • ${item.color}</p>
+            <div class="flex items-center gap-2 text-sm mb-6 font-bold text-zinc-700 dark:text-zinc-300">
+                <iconify-icon icon="solar:battery-charge-bold" class="text-green-500" width="20"></iconify-icon>
+                Batería: ${item.bat}%
+            </div>
+        </div>
+        <div class="flex justify-between items-center pt-6 border-t border-zinc-50 dark:border-zinc-800">
+            <div class="flex flex-col">
+                <p class="text-3xl font-bebas text-zinc-900 dark:text-white leading-none">USD ${item.usd}</p>
+                <p class="text-[10px] text-zinc-500 font-bold">$${precioPesos.toLocaleString('es-AR')}</p>
+            </div>
+            <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white p-3 rounded-2xl hover:scale-110 transition shadow-lg shadow-green-500/20">
+                <iconify-icon icon="ic:baseline-whatsapp" width="28"></iconify-icon>
+            </a>
+        </div>
+    </div>`;
+}
 
-        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+function renderStock() {
+    const grid = document.getElementById('stock-grid');
+    if (!grid) return;
+    const data = STOCK_TOTAL.filter(i => i.cat === currentCategory);
+    grid.innerHTML = data.map(i => createCardText(i)).join('');
+    document.getElementById('contador-productos').innerText = `${data.length} EQUIPOS EN STOCK`;
+    document.getElementById('no-stock').classList.toggle('hidden', data.length > 0);
+}
 
-        // Manejo de FAQ
-        document.querySelectorAll('.faq-item button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const item = btn.parentElement;
-                const wasActive = item.classList.contains('active');
-                document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-                if (!wasActive) item.classList.add('active');
-            });
-        });
+function filtrarStock(cat) {
+    currentCategory = cat;
+    renderStock();
+    document.getElementById('productos-seccion')?.scrollIntoView({ behavior: 'smooth' });
+}
 
-        function enviarServiceWhatsApp() {
-            const n = document.getElementById('service-nombre').value;
-            const m = document.getElementById('service-modelo').value;
-            const msg = document.getElementById('service-mensaje').value;
-            if (!n || !m || !msg) return alert("Por favor, completá todos los campos.");
-            const texto = `Hola Hassel! Mi nombre es ${n}, tengo un ${m}.\n\nConsulta: ${msg}`;
-            window.open(`https://wa.me/5491136404202?text=${encodeURIComponent(texto)}`, '_blank');
-        }
+function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
-        window.onload = fetchDolar;
+function enviarServiceWhatsApp() {
+    const n = document.getElementById('service-nombre').value;
+    const m = document.getElementById('service-modelo').value;
+    const msg = document.getElementById('service-mensaje').value;
+    if (!n || !m || !msg) return alert("Por favor, completá todos los campos.");
+    const texto = `Hola Hassel! Mi nombre es ${n}, tengo un ${m}.\n\nConsulta: ${msg}`;
+    window.open(`https://wa.me/5491136404202?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+// INICIO
+window.onload = async () => {
+    await fetchDolar();
+    await cargarStockGoogle();
+};
     </script>
 </body>
 </html>
