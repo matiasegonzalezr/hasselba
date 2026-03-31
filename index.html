@@ -702,16 +702,26 @@ showSlide(0);
 fetchDolarAPI();
 
       function enviarServiceWhatsApp() {
-    // 1. Obtenemos los valores de los campos
     const nombre = document.getElementById('service-nombre').value;
     const modelo = document.getElementById('service-modelo').value;
     const mensaje = document.getElementById('service-mensaje').value;
 
-    // 2. Validamos que no estén vacíos (Opcional pero recomendado)
     if (!nombre || !modelo || !mensaje) {
-        alert("Por favor, completá todos los campos para enviarnos tu consulta.");
+        alert("Por favor, completá todos los campos.");
         return;
     }
+
+    // Usamos saltos de línea reales dentro de un "Template String" (las comillas inclinadas)
+    const textoFinal = `Hola Hassel! Mi nombre es ${nombre}, tengo un ${modelo}.
+
+Consulta: ${mensaje}`;
+    
+    // Creamos el link. Al no usar encodeURIComponent en todo el bloque, 
+    // sino dejar que el navegador lo maneje, suele salir más limpio.
+    const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(textoFinal)}`;
+    
+    window.open(waLink, '_blank');
+}
 
     // 3. Armamos el mensaje para WhatsApp
     // %0A es un salto de línea en WhatsApp
