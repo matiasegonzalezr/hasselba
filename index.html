@@ -102,77 +102,42 @@
 </head>
 <body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 transition-colors duration-300 relative overflow-x-hidden selection:bg-hassel selection:text-white">
 
-    <!-- Navbar -->
-  <header class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
-  <div class="max-w-7xl mx-auto grid grid-cols-3 items-center px-6 py-4">
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
 
-    <!-- IZQUIERDA -->
-    <div class="flex justify-start">
-      <a href="index.html">
-        <img src="img/imagotipo-a.png" alt="Hassel" style="height: 32px;">
-      </a>
-    </div>
-
-    <!-- CENTRO -->
-    <nav class="hidden md:flex justify-center items-center gap-8 text-sm text-white">
-
-      <div class="relative group py-2">
-        <button class="hover:text-[#008ACB] transition">
-          Tienda
-        </button>
-
-        <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-[500px] z-50 hidden group-hover:block">
-          <div class="bg-black border border-white/10 rounded-xl p-6">
-
-            <div class="grid grid-cols-2 gap-6 text-sm">
-
-              <div>
-                <p class="text-gray-400 mb-2">iPhone</p>
-                <a href="iphone-preowned.html" class="block hover:text-[#008ACB]">iPhone PreOwned</a>
-                <a href="iphone-new.html" class="block hover:text-[#008ACB]">iPhone New</a>
-                <a href="iphone-outlet.html" class="block hover:text-[#008ACB]">iPhone Outlet</a>
-              </div>
-
-              <div>
-                <p class="text-gray-400 mb-2">MacBook</p>
-                <a href="macbook-preowned.html" class="block hover:text-[#008ACB]">MacBook PreOwned</a>
-                <a href="macbook-new.html" class="block hover:text-[#008ACB]">MacBook New</a>
-              </div>
-
-              <div>
-                <p class="text-gray-400 mb-2">Otros</p>
-                <a href="apple-watch.html" class="block hover:text-[#008ACB]">Apple Watch</a>
-                <a href="service.html" class="block hover:text-[#008ACB]">Service</a>
-              </div>
-
+        <div class="flex items-center gap-3">
+            <img src="img/imagotipo-a.png" alt="Hassel" class="h-8 md:h-10 w-auto">
+            <div class="hidden sm:flex flex-col">
+                <span class="font-bebas text-xl md:text-2xl tracking-wider text-white leading-none">HASSEL BA</span>
+                <span class="text-[9px] text-hassel-celeste tracking-[0.2em] uppercase font-bold">Apple Specialist</span>
             </div>
-
-          </div>
         </div>
-      </div>
 
-      <a href="nosotros.html" class="hover:text-[#008ACB]">Nosotros</a>
-      <a href="contacto.html" class="hover:text-[#008ACB]">Contacto</a>
+        <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/80">
+            <button onclick="filtrarStock('iphone-preowned')" class="hover:text-hassel-celeste transition">PreOwned</button>
+            <button onclick="filtrarStock('iphone-new')" class="hover:text-hassel-celeste transition">Nuevos</button>
+            <button onclick="filtrarStock('macbook')" class="hover:text-hassel-celeste transition">Macs</button>
+            <a href="#faq" class="hover:text-hassel-celeste transition text-white/40">FAQ</a>
+        </nav>
 
-    </nav>
-
-    <!-- DERECHA -->
-    <div class="flex justify-end items-center gap-4">
-
-      <!-- DÓLAR -->
-    <!-- <span id="usd-rate" class="text-xs text-white/60">
-        USD: $1
-      </span> -->
-
-      <!-- WHATSAPP -->
-      <a href="https://wa.me/5491136404202"
-         class="hidden md:inline-block bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition">
-         WhatsApp
-      </a>
-
+        <div class="flex items-center gap-4">
+            <a href="https://wa.me/5491136404202" class="bg-hassel-celeste hover:bg-hassel-azul text-white font-bold px-4 py-2 rounded-full text-xs uppercase tracking-tight transition flex items-center gap-2">
+                <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
+                <span class="hidden sm:inline">Consultar</span>
+            </a>
+            
+            <button onclick="toggleMenu()" class="md:hidden text-white flex items-center">
+                <iconify-icon icon="solar:menu-dots-bold" width="28"></iconify-icon>
+            </button>
+        </div>
     </div>
 
-  </div>
+    <div id="mobile-menu" class="hidden bg-hassel-negro border-t border-white/10 md:hidden p-6 space-y-4 animate-fade-in">
+        <button onclick="filtrarStock('iphone-preowned'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">📱 iPhone PreOwned</button>
+        <button onclick="filtrarStock('iphone-new'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">✨ iPhone New</button>
+        <button onclick="filtrarStock('macbook'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">💻 MacBooks</button>
+        <button onclick="filtrarStock('watch'); toggleMenu()" class="block text-white text-xl font-bebas tracking-widest w-full text-left uppercase">⌚ Apple Watch</button>
+    </div>
 </header>
 
     <main>
