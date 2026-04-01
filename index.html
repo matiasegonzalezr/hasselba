@@ -181,19 +181,45 @@ html:not(.dark) .text-white\/40 {
         </section>
 
         <section id="service" class="py-24 bg-zinc-950 border-t border-white/5">
-            <div class="max-w-2xl mx-auto px-6 text-center">
-                <h2 class="font-triomphe text-5xl text-white italic mb-4">SERVICE ESPECIALIZADO</h2>
-                <p class="font-myriad text-zinc-500 mb-10 text-sm tracking-wide">Reparaciones y soporte técnico enfocado en Apple.</p>
-                <div class="space-y-4 text-left font-myriad">
-                    <input type="text" id="service-nombre" placeholder="Tu nombre" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition">
-                    <input type="text" id="service-modelo" placeholder="Modelo de equipo" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition">
-                    <textarea id="service-mensaje" placeholder="¿Qué falla tiene?" rows="4" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition"></textarea>
-                    <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#d90724] hover:bg-red-700 text-white font-bold py-5 rounded-2xl transition flex items-center justify-center gap-2 shadow-xl tracking-widest text-xs">
-                        ENVIAR CONSULTA AL SERVICE
-                    </button>
-                </div>
+    <div class="max-w-2xl mx-auto px-6 text-center">
+        <h2 class="font-triomphe text-5xl text-white italic mb-4">SERVICE ESPECIALIZADO</h2>
+        <p class="font-myriad text-zinc-400 mb-6 text-sm tracking-wide">Reparaciones y soporte técnico especializado en dispositivos Apple. Todos los trabajos incluyen garantía.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">🔋 Batería</p>
+                <p class="text-zinc-500 text-[11px]">Reemplazo con batería de calidad</p>
             </div>
-        </section>
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">📱 Pantalla</p>
+                <p class="text-zinc-500 text-[11px]">Reparación y cambio de display</p>
+            </div>
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">🔌 Carga</p>
+                <p class="text-zinc-500 text-[11px]">Conector y problemas de carga</p>
+            </div>
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">📷 Cámara</p>
+                <p class="text-zinc-500 text-[11px]">Reemplazo de módulo de cámara</p>
+            </div>
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">💧 Humedad</p>
+                <p class="text-zinc-500 text-[11px]">Limpieza y recuperación</p>
+            </div>
+            <div class="glass px-4 py-3 rounded-2xl text-left">
+                <p class="text-white text-xs font-bold uppercase tracking-widest mb-1">🔧 Diagnóstico</p>
+                <p class="text-zinc-500 text-[11px]">Revisión completa sin cargo</p>
+            </div>
+        </div>
+        <div class="space-y-4 text-left font-myriad">
+            <input type="text" id="service-nombre" placeholder="Tu nombre" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition">
+            <input type="text" id="service-modelo" placeholder="Modelo de equipo" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition">
+            <textarea id="service-mensaje" placeholder="¿Qué falla tiene?" rows="4" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-[#008ACB] transition"></textarea>
+            <button onclick="enviarServiceWhatsApp()" class="w-full bg-[#d90724] hover:bg-red-700 text-white font-bold py-5 rounded-2xl transition flex items-center justify-center gap-2 shadow-xl tracking-widest text-xs">
+                ENVIAR CONSULTA AL SERVICE
+            </button>
+        </div>
+    </div>
+</section>
     </main>
 
    <footer class="bg-black py-16 px-6 border-t border-white/10 font-myriad">
