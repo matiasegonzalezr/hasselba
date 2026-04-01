@@ -161,132 +161,165 @@
     </footer>
 
     <script>
-        const URL_FINAL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkWlDq8HQ1AdcUrXjuOitRw06EbOc5YELWtSla5CfFTYTGaYUYHkaM07lEsuM7J7_NbQo7AZyWNXDu/pub?output=csv';
+    // URL de tu Google Sheets (Web Hassel Stock)
+    const URL_FINAL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkWlDq8HQ1AdcUrXjuOitRw06EbOc5YELWtSla5CfFTYTGaYUYHkaM07lEsuM7J7_NbQo7AZyWNXDu/pub?output=csv';
 
-        let valorDolarBlue = 1400;
-        let currentCategory = 'iphone-preowned';
-        let familiaSeleccionada = 'TODOS';
-        let STOCK_TOTAL = [];
+    let valorDolarBlue = 1400;
+    let currentCategory = 'iphone-preowned';
+    let familiaSeleccionada = 'TODOS';
+    let STOCK_TOTAL = [];
 
-        async function cargarDatos() {
-            try {
-                const resD = await fetch('https://dolarapi.com/v1/dolares/blue');
-                const d = await resD.json();
-                valorDolarBlue = d.venta;
+    async function cargarDatos() {
+        try {
+            // 1. Obtener precio del Dólar
+            const resD = await fetch('https://dolarapi.com/v1/dolares/blue');
+            const d = await resD.json();
+            valorDolarBlue = d.venta;
 
-                const resS = await fetch(URL_FINAL);
-                const csv = await resS.text();
-                const filas = csv.split('\n').slice(1);
-                
-                STOCK_TOTAL = filas.map(linea => {
-                    const c = linea.split(',');
-                    return {
-                        cat: c[0]?.trim(),
-                        modelo: c[1]?.trim(),
-                        gb: c[2]?.trim(),
-                        color: c[3]?.trim(),
-                        bat: c[4]?.trim(),
-                        usd: parseFloat(c[5]),
-                        grade: c[6]?.trim()
-                    };
-                }).filter(i => i.modelo && !isNaN(i.usd));
-
-                renderStock();
-            } catch (e) { console.error("Error cargando datos"); }
-        }
-
-        function createCardText(item) {
-            const precioPesos = Math.round(item.usd * valorDolarBlue);
-            const waMsg = `Hola Hassel! Me interesa el iPhone ${item.modelo} de ${item.gb}.`;
-            const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+            // 2. Obtener Stock desde Google Sheets
+            const resS = await fetch(URL_FINAL);
+            const csv = await resS.text();
+            const filas = csv.split('\n').slice(1);
             
-            const badgeStyle = (item.grade === 'A+' || item.grade === 'Nuevo') 
-                ? 'border-[#d90724] text-[#d90724] bg-[#d90724]/10' 
-                : 'border-white/20 text-white/40 bg-white/5';
+            STOCK_TOTAL = filas.map(linea => {
+                const c = linea.split(',');
+                return {
+                    cat: c[0]?.trim(),
+                    modelo: c[1]?.trim(),
+                    gb: c[2]?.trim(),
+                    color: c[3]?.trim(),
+                    bat: c[4]?.trim(),
+                    usd: parseFloat(c[5]),
+                    grade: c[6]?.trim()
+                };
+            }).filter(i => i.modelo && !isNaN(i.usd));
 
-            return `
-            <div class="glass p-8 rounded-[2.5rem] flex flex-col justify-between border-white/5 hover:border-[#d90724]/30 transition-all duration-500 animate-card">
+            renderStock();
+        } catch (e) { 
+            console.error("Error cargando datos:", e); 
+        }
+    }
+
+    function createCardText(item) {
+        const precioPesos = Math.round(item.usd * valorDolarBlue);
+        
+        // CORRECCIÓN: Quitamos "iPhone" del modelo si ya lo trae para que no diga "iPhone iPhone"
+        const modeloLimpio = item.modelo.replace(/iPhone/gi, '').trim();
+        
+        const waMsg = `Hola Hassel! Me interesa el iPhone ${modeloLimpio} de ${item.gb}.`;
+        const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(waMsg)}`;
+        
+        const badgeStyle = (item.grade === 'A+' || item.grade === 'Nuevo') 
+            ? 'border-[#d90724] text-[#d90724] bg-[#d90724]/10' 
+            : 'border-white/20 text-white/40 bg-white/5';
+
+        return `
+        <div class="glass p-8 rounded-[2.5rem] flex flex-col justify-between border-white/5 hover:border-[#d90724]/30 transition-all duration-500 animate-card">
+            <div>
+                <div class="flex justify-between items-start mb-6">
+                    <span class="font-triomphe text-[10px] font-bold px-3 py-1 rounded-full border ${badgeStyle} uppercase tracking-widest">
+                        GRADO ${item.grade}
+                    </span>
+                    <iconify-icon icon="apple-fill" class="text-white/10" width="22"></iconify-icon>
+                </div>
+                
+                <h3 class="font-triomphe text-5xl text-white uppercase italic leading-none mb-2 tracking-tight">
+                    iPhone ${modeloLimpio}
+                </h3>
+                
+                <p class="font-myriad text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">
+                    ${item.gb} <span class="text-[#008acb] px-1">|</span> ${item.color}
+                </p>
+                
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
+                    <iconify-icon icon="solar:battery-charge-bold" class="text-[#008acb]" width="18"></iconify-icon>
+                    <span class="font-myriad text-white/60 text-[10px] font-bold uppercase tracking-widest">
+                        Batería: <span class="text-white">${item.bat.replace('%', '')}%</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-end pt-6 border-t border-white/5">
                 <div>
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="font-triomphe text-[10px] font-bold px-3 py-1 rounded-full border ${badgeStyle} uppercase tracking-widest">
-                            GRADO ${item.grade}
-                        </span>
-                        <iconify-icon icon="apple-fill" class="text-white/10" width="22"></iconify-icon>
-                    </div>
-                    <h3 class="font-triomphe text-5xl text-white uppercase italic leading-none mb-2 tracking-tight">iPhone ${item.modelo}</h3>
-                    <p class="font-myriad text-white/40 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">${item.gb} <span class="text-[#008ACB] px-1">|</span> ${item.color}</p>
-                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 mb-10">
-                        <iconify-icon icon="solar:battery-charge-bold" class="text-[#008ACB]" width="18"></iconify-icon>
-                        <span class="font-myriad text-white/60 text-[10px] font-bold uppercase tracking-widest">Batería: <span class="text-white">${item.bat}%</span></span>
-                    </div>
+                    <p class="font-triomphe text-4xl text-[#d90724] leading-none mb-1">USD ${item.usd}</p>
+                    <p class="font-myriad text-[10px] text-white/20 font-bold tracking-widest uppercase">
+                        $${precioPesos.toLocaleString('es-AR')}
+                    </p>
                 </div>
-                <div class="flex justify-between items-end pt-6 border-t border-white/5">
-                    <div>
-                        <p class="font-triomphe text-4xl text-[#d90724] leading-none mb-1">USD ${item.usd}</p>
-                        <p class="font-myriad text-[10px] text-white/20 font-bold tracking-widest uppercase">$${precioPesos.toLocaleString('es-AR')}</p>
-                    </div>
-                    <a href="${waLink}" target="_blank" class="bg-[#d90724] text-white w-14 h-14 rounded-2xl flex items-center justify-center transition-transform hover:scale-110 shadow-lg shadow-red-900/20">
-                        <iconify-icon icon="ic:baseline-whatsapp" width="30"></iconify-icon>
-                    </a>
-                </div>
-            </div>`;
-        }
+                
+                <a href="${waLink}" target="_blank" 
+                   class="bg-[#d90724] hover:bg-[#ff0000] text-white w-14 h-14 rounded-2xl transition-all duration-300 flex items-center justify-center shadow-lg shadow-red-900/20">
+                    <iconify-icon icon="ic:baseline-whatsapp" width="30"></iconify-icon>
+                </a>
+            </div>
+        </div>`;
+    }
 
-        function renderStock() {
-            const grid = document.getElementById('stock-grid');
-            const subBarra = document.getElementById('sub-filtros-modelos');
-            let productos = STOCK_TOTAL.filter(i => i.cat === currentCategory);
+    function renderStock() {
+        const grid = document.getElementById('stock-grid');
+        const subBarra = document.getElementById('sub-filtros-modelos');
+        if (!grid) return;
 
-            if (currentCategory === 'iphone-preowned') {
-                subBarra.classList.remove('hidden');
-                const familias = ['TODOS', ...new Set(productos.map(i => {
-                    const num = i.modelo.match(/\d+/);
-                    return num ? `iPhone ${num[0]}` : i.modelo;
-                }))].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+        // Filtramos por la categoría principal (iphone-preowned u iphone-outlet)
+        let productos = STOCK_TOTAL.filter(i => i.cat === currentCategory);
 
-                subBarra.innerHTML = familias.map(f => `
-                    <button onclick="filtrarPorFamilia('${f}')" 
-                        class="px-6 py-2 rounded-xl font-triomphe text-[10px] tracking-widest transition-all border 
-                        ${familiaSeleccionada === f ? 'bg-[#d90724] text-white border-[#d90724]' : 'glass text-white/40 border-white/5'}">
-                        ${f.toUpperCase()}
-                    </button>
-                `).join('');
+        // Lógica de Sub-filtros por Familia (Solo para PreOwned)
+        if (currentCategory === 'iphone-preowned' && productos.length > 0) {
+            subBarra.classList.remove('hidden');
+            
+            // Extraer números de modelo para agrupar (ej: de "13 Pro" saca "13")
+            const familias = ['TODOS', ...new Set(productos.map(i => {
+                const num = i.modelo.match(/\d+/);
+                return num ? `iPhone ${num[0]}` : i.modelo;
+            }))].sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
 
-                if (familiaSeleccionada !== 'TODOS') {
-                    const numeroFam = familiaSeleccionada.replace('iPhone ', '');
-                    productos = productos.filter(i => i.modelo.startsWith(numeroFam));
-                }
-            } else {
-                subBarra.classList.add('hidden');
-                familiaSeleccionada = 'TODOS';
+            subBarra.innerHTML = familias.map(f => `
+                <button onclick="filtrarPorFamilia('${f}')" 
+                    class="px-6 py-2 rounded-xl font-triomphe text-[10px] tracking-widest transition-all border 
+                    ${familiaSeleccionada === f ? 'bg-[#d90724] text-white border-[#d90724]' : 'glass text-white/40 border-white/5 hover:border-white/20'}">
+                    ${f.toUpperCase()}
+                </button>
+            `).join('');
+
+            // Aplicar el filtro de familia si no es 'TODOS'
+            if (familiaSeleccionada !== 'TODOS') {
+                const numeroFamilia = familiaSeleccionada.match(/\d+/)[0];
+                productos = productos.filter(i => {
+                    const n = i.modelo.match(/\d+/);
+                    return n && n[0] === numeroFamilia;
+                });
             }
-
-            grid.innerHTML = productos.map(i => createCardText(i)).join('');
-            document.getElementById('contador-productos').innerText = `${productos.length} EQUIPOS EN STOCK`;
-            document.getElementById('no-stock').classList.toggle('hidden', productos.length > 0);
-        }
-
-        function filtrarStock(cat) {
-            currentCategory = cat;
+        } else {
+            subBarra.classList.add('hidden');
             familiaSeleccionada = 'TODOS';
-            renderStock();
-            document.getElementById('productos-seccion').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function filtrarPorFamilia(fam) {
-            familiaSeleccionada = fam;
-            renderStock();
-        }
+        grid.innerHTML = productos.map(i => createCardText(i)).join('');
+        document.getElementById('contador-productos').innerText = `${productos.length} EQUIPOS EN STOCK`;
+        document.getElementById('no-stock').classList.toggle('hidden', productos.length > 0);
+    }
 
-        function enviarServiceWhatsApp() {
-            const n = document.getElementById('service-nombre').value;
-            const m = document.getElementById('service-modelo').value;
-            const msg = document.getElementById('service-mensaje').value;
-            if (!n || !m || !msg) return alert("Completá los campos");
-            window.open(`https://wa.me/5491136404202?text=Hola! Soy ${n}, tengo un ${m}: ${msg}`, '_blank');
-        }
+    function filtrarStock(cat) {
+        currentCategory = cat;
+        familiaSeleccionada = 'TODOS';
+        renderStock();
+        document.getElementById('productos-seccion')?.scrollIntoView({ behavior: 'smooth' });
+    }
 
-        window.onload = cargarDatos;
-    </script>
+    function filtrarPorFamilia(fam) {
+        familiaSeleccionada = fam;
+        renderStock();
+    }
+
+    function enviarServiceWhatsApp() {
+        const n = document.getElementById('service-nombre').value;
+        const m = document.getElementById('service-modelo').value;
+        const msg = document.getElementById('service-mensaje').value;
+        if (!n || !m || !msg) return alert("Por favor, completá todos los campos.");
+        window.open(`https://wa.me/5491136404202?text=Hola Hassel! Soy ${n}, tengo un ${m}. Consulta: ${msg}`, '_blank');
+    }
+
+    window.onload = cargarDatos;
+</script>
 </body>
 </html>
