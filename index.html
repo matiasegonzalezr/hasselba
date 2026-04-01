@@ -283,31 +283,36 @@ html:not(.dark) .text-white\/40 {
     let STOCK_TOTAL = [];
 
     async function cargarDatos() {
-        try {
-            const resD = await fetch('https://dolarapi.com/v1/dolares/blue');
-            const d = await resD.json();
-            valorDolarBlue = d.venta;
+    document.getElementById('loading').classList.remove('hidden');
+    try {
+        const resD = await fetch('https://dolarapi.com/v1/dolares/blue');
+        const d = await resD.json();
+        valorDolarBlue = d.venta;
 
-            const resS = await fetch(URL_FINAL);
-            const csv = await resS.text();
-            const filas = csv.split('\n').slice(1);
-            
-            STOCK_TOTAL = filas.map(linea => {
-                const c = linea.split(',');
-                return {
-                    cat: c[0]?.trim(),
-                    modelo: c[1]?.trim(),
-                    gb: c[2]?.trim(),
-                    color: c[3]?.trim(),
-                    bat: c[4]?.trim(),
-                    usd: parseFloat(c[5]),
-                    grade: c[6]?.trim()
-                };
-            }).filter(i => i.modelo && !isNaN(i.usd));
+        const resS = await fetch(URL_FINAL);
+        const csv = await resS.text();
+        const filas = csv.split('\n').slice(1);
+        
+        STOCK_TOTAL = filas.map(linea => {
+            const c = linea.split(',');
+            return {
+                cat: c[0]?.trim(),
+                modelo: c[1]?.trim(),
+                gb: c[2]?.trim(),
+                color: c[3]?.trim(),
+                bat: c[4]?.trim(),
+                usd: parseFloat(c[5]),
+                grade: c[6]?.trim()
+            };
+        }).filter(i => i.modelo && !isNaN(i.usd));
 
-            renderStock();
-        } catch (e) { console.error("Error:", e); }
+    } catch (e) { 
+        console.error("Error:", e); 
+    } finally {
+        document.getElementById('loading').classList.add('hidden');
+        renderStock();
     }
+}
 
     function createCardText(item) {
         const precioPesos = Math.round(item.usd * valorDolarBlue);
