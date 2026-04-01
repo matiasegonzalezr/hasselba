@@ -68,6 +68,26 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-card { animation: fadeIn 0.5s ease forwards; }
+        /* Estilos para Modo Claro */
+html:not(.dark) body {
+    background-color: #f5f5f7; /* Gris claro tipo Apple */
+    color: #1a1a1a;
+}
+
+html:not(.dark) .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+html:not(.dark) h3, html:not(.dark) h1 {
+    color: #1a1a1a;
+}
+
+html:not(.dark) .text-white\/40 {
+    color: rgba(0, 0, 0, 0.5);
+}
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -84,7 +104,10 @@
                 <button onclick="filtrarStock('iphone-outlet')" class="hover:text-[#d90724] transition text-[#d90724]/80">iPhone Outlet</button>
                 <a href="#service" class="hover:text-[#008ACB] transition">Service</a>
             </nav>
-
+        <button onclick="toggleDarkMode()" class="p-2 mr-2 rounded-full hover:bg-white/10 transition-colors text-white/60 hover:text-white" id="theme-toggle">
+    <iconify-icon icon="solar:sun-bold-duotone" id="theme-toggle-light-icon" class="hidden" width="24"></iconify-icon>
+    <iconify-icon icon="solar:moon-bold-duotone" id="theme-toggle-dark-icon" width="24"></iconify-icon>
+</button>
             <a href="https://wa.me/5491136404202" class="bg-[#008ACB] hover:bg-[#264E9A] text-white font-bold px-5 py-2 rounded-full text-[10px] uppercase tracking-widest transition flex items-center gap-2">
                 <iconify-icon icon="ic:baseline-whatsapp" width="16"></iconify-icon>
                 <span>Consultar</span>
@@ -285,6 +308,43 @@
     }
 
     window.onload = cargarDatos;
+    function toggleDarkMode() {
+    const html = document.documentElement;
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    if (html.classList.contains('dark')) {
+        // Pasar a MODO CLARO
+        html.classList.remove('dark');
+        darkIcon.classList.add('hidden');
+        lightIcon.classList.remove('hidden');
+        localStorage.setItem('theme', 'light');
+    } else {
+        // Pasar a MODO OSCURO
+        html.classList.add('dark');
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Lógica para mantener el modo preferido al recargar la página
+(function checkTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    if (savedTheme === 'light') {
+        html.classList.remove('dark');
+        darkIcon?.classList.add('hidden');
+        lightIcon?.classList.remove('hidden');
+    } else {
+        html.classList.add('dark'); // Por defecto Hassel es Dark
+        darkIcon?.classList.remove('hidden');
+        lightIcon?.classList.add('hidden');
+    }
+})();
 </script>
 </body>
 </html>
