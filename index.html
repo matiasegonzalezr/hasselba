@@ -140,23 +140,28 @@ html:not(.dark) .text-white\/40 {
     </header>
 
     <main>
-        <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center pt-20 bg-black overflow-hidden">
-            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#264E9A]/20 blur-[120px] rounded-full"></div>
-            <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#008ACB]/10 blur-[120px] rounded-full"></div>
-            
-            <div class="relative z-10 text-center px-6">
-                <h1 class="font-triomphe text-8xl md:text-[12rem] leading-none text-white italic tracking-tighter">
-                    HASSEL <span class="text-[#d90724]">BA</span>
-                </h1>
-                <p class="font-myriad font-light tracking-[0.4em] text-xs md:text-sm uppercase text-white/50 mt-4 mb-12">
-                    Todo para tus dispositivos Apple
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button onclick="filtrarStock('iphone-preowned')" class="w-full sm:w-auto bg-white text-black font-bold px-10 py-5 rounded-2xl hover:bg-[#008ACB] hover:text-white transition uppercase text-[10px] tracking-[0.2em]">VER STOCK IPHONE</button>
-                    <a href="#service" class="w-full sm:w-auto border border-white/20 text-white font-bold px-10 py-5 rounded-2xl hover:bg-white/5 transition text-[10px] tracking-[0.2em]">SERVICIO TÉCNICO</a>
-                </div>
-            </div>
-        </section>
+        <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center pt-20 bg-white overflow-hidden bg-cover bg-center bg-no-repeat" style="background-image: url('./bg-accent-blue.jpg');">
+    
+    <div class="relative z-10 text-center px-6">
+        <h1 class="font-triomphe text-8xl md:text-[12rem] leading-none text-slate-900 italic tracking-tighter">
+            HASSEL <span class="text-[#d90724]">BA</span>
+        </h1>
+        
+        <p class="font-myriad font-light tracking-[0.4em] text-xs md:text-sm uppercase text-slate-500 mt-4 mb-12">
+            Todo para tus dispositivos Apple!!!!
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button onclick="filtrarStock('iphone-preowned')" class="w-full sm:w-auto bg-black text-white font-bold px-10 py-5 rounded-2xl hover:bg-[#008ACB] transition uppercase text-[10px] tracking-[0.2em]">
+                VER STOCK IPHONE
+            </button>
+
+            <a href="#service" class="w-full sm:w-auto border border-black/20 text-black font-bold px-10 py-5 rounded-2xl hover:bg-black/5 transition text-[10px] tracking-[0.2em]">
+                SERVICIO TÉCNICO
+            </a>
+        </div>
+    </div>
+</section>
 
         <section class="py-20 bg-zinc-950 border-t border-white/5">
     <div class="max-w-5xl mx-auto px-6 text-center">
