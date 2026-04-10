@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="icon" href="img/ISOTIPO - A.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassel BA</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f5f5f7;
+            color: #1a1a1a;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 px-4 py-3 flex items-center justify-between glass">
+        <div class="flex items-center">
+            <a href="#hero" onclick="cerrarMenu()">
+                <img src="img/IMAGOTIPO - A (1).png" alt="Hassel" class="h-6 block">
+            </a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div id="dolar-header" class="hidden sm:block text-[11px] text-black/60 whitespace-nowrap">
+                Cotización USD ...
+            </div>
+
+            <div class="hidden sm:flex items-center bg-black/5 rounded-full px-3 py-2">
+                <iconify-icon icon="lucide:search" class="text-base text-black/50"></iconify-icon>
+                <input id="buscador-stock" type="text" placeholder="Buscar iPhone"
+                    class="bg-transparent outline-none text-sm ml-2 w-32">
+            </div>
+
+            <button onclick="toggleBuscadorMobile()" class="sm:hidden text-xl leading-none">
+                <iconify-icon icon="lucide:search"></iconify-icon>
+            </button>
+
+            <button onclick="toggleMenu()" class="text-2xl leading-none">
+                ☰
+            </button>
+        </div>
+    </header>
+
+    <!-- BUSCADOR MOBILE -->
+    <div id="buscador-mobile-wrap"
+        class="hidden fixed top-[60px] left-0 w-full z-40 px-4 py-3 bg-white/90 backdrop-blur-md border-b border-black/5 sm:hidden">
+        <div class="flex items-center bg-black/5 rounded-full px-3 py-3">
+            <iconify-icon icon="lucide:search" class="text-base text-black/50"></iconify-icon>
+            <input id="buscador-stock-mobile" type="text" placeholder="Buscar iPhone, color, GB..."
+                class="bg-transparent outline-none text-sm ml-2 w-full">
+        </div>
+    </div>
+
+    <!-- OVERLAY -->
+    <div id="menu-overlay"
+        onclick="toggleMenu()"
+        class="fixed inset-0 bg-black/30 z-40 hidden">
+    </div>
+
+    <!-- MENU -->
+    <div id="menu"
+        class="fixed top-0 right-0 z-50 hidden flex-col justify-between p-8 bg-white shadow-2xl"
+        style="height: 100vh; width: 380px; max-width: 90vw;">
+
+        <div class="flex justify-between items-center">
+            <img src="img/IMAGOTIPO - A (1).png" class="h-6 block" alt="Hassel">
+
+            <button onclick="toggleMenu()" class="text-2xl">
+                ✕
+            </button>
+        </div>
+
+        <div class="flex flex-col gap-6 text-2xl font-semibold">
+            <a href="#hero" onclick="toggleMenu()">Inicio</a>
+            <a href="#preowned" onclick="toggleMenu()">iPhone PreOwned</a>
+            <a href="#new" onclick="toggleMenu()">iPhone New</a>
+            <a href="#outlet" onclick="toggleMenu()">iPhone Outlet</a>
+            <a href="#service-form" onclick="toggleMenu()">Servicio Técnico</a>
+        </div>
+
+        <div class="flex flex-col gap-3 text-sm text-black/60">
+            <a href="https://wa.me/5491136404202" target="_blank">WhatsApp</a>
+            <a href="https://instagram.com/hassel.ba" target="_blank">Instagram</a>
+        </div>
+    </div>
+
+    <section id="resultados-busqueda" class="hidden px-5 pb-10">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-xl font-semibold mb-4">
+                Resultados
+            </h2>
+
+            <div id="grid-resultados" class="grid gap-4"></div>
+        </div>
+    </section>
+
+    <section id="hero" class="pt-32 pb-16 px-5 bg-[#f5f5f7]">
+        <div class="max-w-6xl mx-auto">
+
+            <div class="grid lg:grid-cols-2 gap-10 items-center mb-10">
+
+                <div>
+                    <p class="text-[11px] uppercase tracking-[0.28em] text-black/45 mb-3">
+                        Hassel BA
+                    </p>
+
+                    <h1 class="text-4xl md:text-6xl font-semibold text-black leading-[0.95] mb-5">
+                        Tu próximo iPhone <br> está en Hassel.
+                    </h1>
+
+                    <p class="text-base md:text-lg text-black/60 max-w-xl mb-8">
+                        Equipos seleccionados, atención personalizada y servicio técnico especializado en Berazategui.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 mb-8">
+                        <a href="#categorias"
+                            class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Ver iPhones disponibles
+                        </a>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20asesoramiento%20para%20elegir%20un%20iPhone."
+                            target="_blank"
+                            class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#1F8F5F] text-white text-sm font-medium hover:opacity-90 transition">
+                            Hablar por WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARRUSEL -->
+                <div class="relative">
+                    <!-- FLECHA IZQUIERDA -->
+<button onclick="heroPrev()"
+  class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
+  ‹
+</button>
+
+<!-- FLECHA DERECHA -->
+<button onclick="heroNext()"
+  class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
+  ›
+</button>
+                    <div class="relative overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-sm">
+                        <div id="hero-slider" class="flex transition-transform duration-700 ease-in-out">
+                            <img src="img/Gemini_Generated_Image_5dhy9v5dhy9v5dhy.png" alt="Frente del local"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
+                            <img src="img/IMG_9926 (1).jpg" alt="Algunos Accesorios"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
+                            <img src="img/local-hero-5.jpg" alt="Accesorios y fundas en Hassel BA"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
+                            <img src="img/local-hero-4.jpg" alt="Accesorios y fundas en Hassel BA"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
+                            <img src="img/local-hero-7.jpg" alt="Accesorios y fundas en Hassel BA"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
+                                
+                        </div>
+
+                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+                    </div>
+
+                    <div id="hero-dots" class="flex items-center justify-center gap-2 mt-4">
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black" aria-label="Slide 1"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 2"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 3"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 4"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 5"></button>
+</div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <a href="#preowned"
+                    class="rounded-3xl bg-white border border-black/10 p-5 hover:shadow-sm transition">
+                    <span class="block text-lg font-semibold text-black mb-1">iPhone PreOwned</span>
+                    <p class="text-sm text-black/55">Usados seleccionados</p>
+                </a>
+
+                <a href="#new" class="rounded-3xl bg-white border border-black/10 p-5 hover:shadow-sm transition">
+                    <span class="block text-lg font-semibold text-black mb-1">iPhone New</span>
+                    <p class="text-sm text-black/55">Sellados con garantía oficial Apple.</p>
+                </a>
+
+                <a href="#outlet"
+                    class="rounded-3xl bg-[#f8f8f8] border border-black/15 p-5 hover:shadow-sm transition">
+                    <span class="block text-lg font-semibold text-black mb-1">iPhone Outlet</span>
+                    <p class="text-sm text-black/55">Precios especiales por detalles estéticos</p>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="px-5 pb-10 bg-[#f5f5f7]">
+        <div class="max-w-md mx-auto">
+            <div class="relative rounded-3xl overflow-hidden">
+                <img src="img/Apple-Trade-In-iPhone_big.jpg.large.jpg"
+                    class="w-full h-[180px] object-cover" alt="Plan Canje">
+
+                <div class="absolute inset-0 bg-black/40"></div>
+
+                <div class="absolute inset-0 flex flex-col justify-end p-4 text-white">
+                    <h3 class="text-lg font-semibold mb-1">
+                        Plan Canje
+                    </h3>
+
+                    <p class="text-xs opacity-80 mb-3">
+                        Entregá tu iPhone usado y pagá la diferencia
+                    </p>
+
+                    <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20consultar%20por%20plan%20canje"
+                        target="_blank"
+                        class="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white text-black text-xs font-medium w-fit">
+                        Consultar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section id="categorias" class="py-16 px-5 bg-white">
+        <div class="max-w-md mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-black">
+                Elegí tu iPhone
+            </h2>
+
+            <div class="flex flex-col gap-4">
+                <a href="#preowned"
+                    class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
+                    <div>
+                        <p class="text-lg font-semibold text-black">iPhone PreOwned</p>
+                        <p class="text-sm text-black/50">Equipos seleccionados</p>
+                    </div>
+                    <span>→</span>
+                </a>
+
+                <a href="#new"
+                    class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
+                    <div>
+                        <p class="text-lg font-semibold text-black">iPhone New</p>
+                        <p class="text-sm text-black/50">Sellados con garantía</p>
+                    </div>
+                    <span>→</span>
+                </a>
+
+                <a href="#outlet"
+                    class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
+                    <div>
+                        <p class="text-lg font-semibold text-black">iPhone Outlet</p>
+                        <p class="text-sm text-black/50">Mejor precio disponible</p>
+                    </div>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREOWNED -->
+    <section id="preowned" class="py-16 px-5 bg-[#f5f5f7]">
+        <div class="max-w-md mx-auto">
+            <div class="mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">PreOwned</p>
+                <h2 class="text-2xl font-semibold text-black mb-2">Equipos seleccionados</h2>
+                <p class="text-sm text-black/55">
+                    Usados elegidos, revisados y listos para llevar.
+                </p>
+                <p class="text-sm text-black/50 mt-2">
+                    Todos los equipos incluyen funda a elección, vidrio templado y cable de carga.
+                </p>
+            </div>
+
+            <div class="relative mb-5">
+                <div id="preowned-filtros-wrap" class="overflow-x-auto pr-10">
+                    <div id="preowned-filtros" class="flex gap-2 min-w-max pb-2"></div>
+                </div>
+
+                <button id="preowned-fade"
+                    onclick="scrollFiltrosPreowned()"
+                    class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent flex items-center justify-end pr-2">
+                    <span class="text-black/30 text-xl">›</span>
+                </button>
+            </div>
+
+            <div class="grid gap-4">
+                <article class="rounded-3xl bg-white border border-black/8 p-5">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 13</h3>
+                        <p class="text-sm text-black/50">128GB · Pink</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">88% batería</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Grade A+</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 399</p>
+                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2013%20128GB%20Pink"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl bg-white border border-black/8 p-5">
+                    <div class="mb-5">
+                        <h3 class="text-xl font-semibold text-black">iPhone 14 Pro Max</h3>
+                        <p class="text-sm text-black/50">256GB · Space Black</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-6 text-sm">
+                        <span class="px-3 py-1 rounded-full bg-black/5 text-black/70">100% batería</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5 text-black/70">Grade A</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 660</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2014%20Pro%20Max%20256GB"
+                            target="_blank" class="px-5 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl bg-white border border-black/8 p-5">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 15 Pro (C/ SIM)</h3>
+                        <p class="text-sm text-black/50">256GB · Black Titanium</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">89% batería</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Grade A+</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 670</p>
+                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2015%20Pro%20(C%2F%20SIM)%20256GB%20Black%20Titanium"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <div id="preowned-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+    <!-- NEW -->
+    <section id="new" class="py-16 px-5 bg-white">
+        <div class="max-w-md mx-auto">
+            <div class="mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">New</p>
+                <h2 class="text-2xl font-semibold text-black mb-2">iPhones nuevos</h2>
+                <p class="text-sm text-black/55">
+                    Equipos sellados, listos para entregar.
+                </p>
+            </div>
+
+            <div class="grid gap-4">
+                <article class="rounded-3xl border border-black/8 p-5 bg-[#f5f5f7]">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 15</h3>
+                        <p class="text-sm text-black/50">128GB</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 720</p>
+                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2015%20128GB"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl border border-black/8 p-5 bg-[#f5f5f7]">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 17</h3>
+                        <p class="text-sm text-black/50">256GB · Black / Sage / Lavender / Blue</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 960</p>
+                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2017%20256GB"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl border border-black/8 p-5 bg-[#f5f5f7]">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 17 Pro Max</h3>
+                        <p class="text-sm text-black/50">256GB · Orange / Blue / Silver</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
+                    </div>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">USD 1490</p>
+                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2017%20Pro%20Max%20256GB"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <div id="new-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+    <!-- OUTLET -->
+    <section id="outlet" class="py-16 px-5 bg-[#f5f5f7]">
+        <div class="max-w-md mx-auto">
+            <div class="mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Outlet</p>
+                <h2 class="text-2xl font-semibold text-black mb-2">Oportunidades</h2>
+                <p class="text-sm text-black/55">
+                    Equipos con detalles puntuales, a mejor precio.
+                </p>
+            </div>
+
+            <div class="grid gap-4">
+                <article class="rounded-3xl bg-white border border-black/8 p-5">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 12 (Msj Display)</h3>
+                        <p class="text-sm text-black/50">128GB · Midnight</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">86% batería</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Outlet</span>
+                    </div>
+
+                    <p class="text-sm text-black/50 mb-5">
+                        Equipo outlet con detalle informado al momento de la compra.
+                    </p>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">Consultar</p>
+                            <p class="text-xs text-black/45">Precio por WhatsApp</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2012%20(Msj%20Display)%20128GB%20Midnight"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl bg-white border border-black/8 p-5">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold text-black">iPhone 13 Mini (Msj Display)</h3>
+                        <p class="text-sm text-black/50">128GB · Blue</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
+                        <span class="px-3 py-1 rounded-full bg-black/5">100% batería</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Grade B+</span>
+                        <span class="px-3 py-1 rounded-full bg-black/5">Outlet</span>
+                    </div>
+
+                    <p class="text-sm text-black/50 mb-5">
+                        Equipo outlet con detalle informado al momento de la compra.
+                    </p>
+
+                    <div class="flex items-end justify-between gap-4">
+                        <div>
+                            <p class="text-2xl font-semibold text-black">Consultar</p>
+                            <p class="text-xs text-black/45">Precio por WhatsApp</p>
+                        </div>
+
+                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2013%20Mini%20(Msj%20Display)%20128GB%20Blue"
+                            target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
+                            Consultar
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <div id="outlet-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+    <section class="py-16 px-5 bg-white">
+        <div class="max-w-md mx-auto">
+            <div class="mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Hassel</p>
+                <h2 class="text-2xl font-semibold text-black mb-2">Comprar mejor también es elegir bien dónde.</h2>
+                <p class="text-sm text-black/55">
+                    Atención personalizada, equipos seleccionados y seguimiento real antes y después de la compra.
+                </p>
+            </div>
+
+            <div class="grid gap-3">
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-4">
+                    <p class="text-sm font-semibold text-black mb-1">Equipos seleccionados</p>
+                    <p class="text-sm text-black/55">Revisados y elegidos para que compres con más tranquilidad.</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-4">
+                    <p class="text-sm font-semibold text-black mb-1">Atención personalizada</p>
+                    <p class="text-sm text-black/55">Te ayudamos a elegir según uso, presupuesto y estado del equipo.</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-4">
+                    <p class="text-sm font-semibold text-black mb-1">Compra por WhatsApp</p>
+                    <p class="text-sm text-black/55">Respuesta directa, simple y sin vueltas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE -->
+<section id="service" class="py-20 px-5 bg-white border-t border-black/10">
+    <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+
+        <!-- IZQUIERDA -->
+        <div>
+            <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">
+                Servicio técnico
+            </p>
+
+            <h2 class="text-3xl font-semibold text-black mb-4">
+                Tu iPhone, en manos expertas.
+            </h2>
+
+            <p class="text-sm text-black/55 mb-8 max-w-md">
+                Diagnóstico, cambios de batería, pantalla y reparaciones para dispositivos Apple.
+                Atención directa y seguimiento por WhatsApp.
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Batería</p>
+                    <p class="text-xs text-black/50">Reemplazo de batería</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Pantalla</p>
+                    <p class="text-xs text-black/50">Cambio de display</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Carga</p>
+                    <p class="text-xs text-black/50">Problemas de carga</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Cámara</p>
+                    <p class="text-xs text-black/50">Reparación de cámara</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Humedad</p>
+                    <p class="text-xs text-black/50">Limpieza interna</p>
+                </div>
+
+                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
+                    <p class="text-xs font-semibold mb-1">Diagnóstico</p>
+                    <p class="text-xs text-black/50">Revisión completa</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DERECHA (FORMULARIO CORRECTO) -->
+        <div id="service-form" class="rounded-3xl border border-black/10 bg-[#f5f5f7] p-6 scroll-mt-28">
+
+            <h3 class="text-lg font-semibold text-black mb-2">
+                Solicitar revisión
+            </h3>
+
+            <p class="text-sm text-black/50 mb-6">
+                Completá los datos y te respondemos por WhatsApp.
+            </p>
+
+            <div class="space-y-4">
+                <input type="text" id="service-nombre" placeholder="Tu nombre"
+                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
+
+                <input type="text" id="service-modelo" placeholder="Modelo de equipo"
+                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
+
+                <textarea id="service-mensaje" placeholder="¿Qué le pasa a tu equipo?" rows="4"
+                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none"></textarea>
+
+                <button onclick="enviarServiceWhatsApp()"
+                    class="w-full bg-black text-white py-4 rounded-full text-sm font-medium">
+                    Enviar consulta por WhatsApp
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+    <section class="py-20 px-5 bg-[#f5f5f7]">
+        <div class="max-w-md mx-auto text-center">
+            <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Contacto</p>
+            <h2 class="text-3xl font-semibold text-black mb-3">¿No sabés cuál elegir?</h2>
+            <p class="text-sm text-black/55 mb-8">
+                Escribinos y te ayudamos a encontrar el iPhone indicado para vos.
+            </p>
+
+            <a href="https://wa.me/5491136404202" target="_blank"
+                class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium">
+                Hablar por WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <footer class="mt-20 px-5 py-12 border-t border-black/10 bg-white">
+        <div class="max-w-5xl mx-auto grid gap-12">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Hassel BA</h3>
+                <p class="text-sm text-black/60 max-w-sm">
+                    iPhones seleccionados, revisados y listos para llevar.
+                    Asesoramiento real para que compres bien.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="col-span-1">
+                    <p class="font-medium mb-3">Dónde estamos</p>
+                    <div class="rounded-xl overflow-hidden border border-black/10">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3277.844554754841!2d-58.213578924655586!3d-34.75950836574179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32fa351d80801%3A0x67d01f839536c181!2sHassel%20BA!5e0!3m2!1ses!2$ar!4v1775493428956!5m2!1ses!2sar"
+                            class="w-full h-40" style="border:0;" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">Horarios</p>
+                    <ul class="text-sm text-black/60 space-y-1">
+                        <li>Lunes a sábado</li>
+                        <li>10:00 a 14:00</li>
+                        <li>16:00 a 19:30</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">Contacto</p>
+                    <ul class="text-sm text-black/60 space-y-2">
+                        <li>
+                            <a href="https://wa.me/5491136404202" target="_blank">WhatsApp</a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/hassel.ba/" target="_blank">Instagram</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-black/10">
+                <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20consultar%20por%20un%20iPhone"
+                    target="_blank"
+                    class="w-full block text-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium">
+                    Hablar por WhatsApp
+                </a>
+            </div>
+
+            <div class="text-xs text-black/40 text-center">
+                © 2026 Hassel BA — Berazategui
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("menu");
+        const overlay = document.getElementById("menu-overlay");
+
+        if (!menu || !overlay) return;
+
+        const abierto = !menu.classList.contains("hidden");
+
+        if (abierto) {
+          menu.classList.add("hidden");
+          menu.classList.remove("flex");
+          overlay.classList.add("hidden");
+        } else {
+          menu.classList.remove("hidden");
+          menu.classList.add("flex");
+          overlay.classList.remove("hidden");
+        }
+      }
+
+      function cerrarMenu() {
+        const menu = document.getElementById("menu");
+        const overlay = document.getElementById("menu-overlay");
+
+        if (!menu || !overlay) return;
+
+        menu.classList.add("hidden");
+        menu.classList.remove("flex");
+        overlay.classList.add("hidden");
+      }
+    </script>
+</body>
+
+</html>
