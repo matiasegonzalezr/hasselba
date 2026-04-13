@@ -3,25 +3,25 @@
 @font-face {
   font-family: 'Triomphe';
   src: url('./fonts/triomphe-regular-autoinstr.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 400;
 }
 
 @font-face {
   font-family: 'Triomphe';
   src: url('./fonts/triomphe-bold-autoinstr.ttf') format('truetype');
-  font-weight: bold;
+  font-weight: 700;
 }
 
 @font-face {
   font-family: 'Myriad Pro';
   src: url('./fonts/Myriad Pro Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-weight: 400;
 }
 
 @font-face {
   font-family: 'Myriad Pro';
   src: url('./fonts/Myriad Pro Bold.ttf') format('truetype');
-  font-weight: bold;
+  font-weight: 700;
 }
 
 /* BASE */
@@ -31,6 +31,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: #f5f5f7;
   color: #1a1a1a;
+  margin: 0;
 }
 
 /* CLASES CUSTOM */
@@ -48,6 +49,7 @@ body {
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -56,17 +58,25 @@ body {
 #preowned-filtros-wrap {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 #preowned-filtros-wrap::-webkit-scrollbar {
   display: none;
 }
 
-#preowned-filtros-wrap {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 #preowned-fade {
   transition: opacity 0.2s ease;
+}
+
+/* FIX UNIVERSAL IMÁGENES CARDS */
+
+article img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 24px;
+  background: #ededf0;
 }
