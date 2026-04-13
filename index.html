@@ -5,7 +5,25 @@
     <link rel="icon" href="img/ISOTIPO - A.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hassel BA | Todos para tus dispositivos Apple</title>
+
+    <!-- SEO: Title optimizado -->
+    <title>iPhone en Berazategui | Nuevos, Usados y Outlet – Hassel BA</title>
+
+    <!-- SEO: Meta description -->
+    <meta name="description" content="Comprá tu iPhone en Berazategui. Equipos nuevos sellados, usados seleccionados y outlet con garantía. Atención por WhatsApp, servicio técnico Apple y plan canje. Hassel BA, desde 2020.">
+
+    <!-- SEO: Canonical -->
+    <link rel="canonical" href="https://magnificent-kitten-d58e09.netlify.app/">
+
+    <!-- Open Graph (WhatsApp / redes) -->
+    <meta property="og:title" content="Hassel BA – Tu próximo iPhone está acá">
+    <meta property="og:description" content="iPhones nuevos, usados y outlet en Berazategui. Precios en pesos, servicio técnico y plan canje. Desde 2020.">
+    <meta property="og:image" content="https://magnificent-kitten-d58e09.netlify.app/img/og-hassel.jpg">
+    <meta property="og:url" content="https://magnificent-kitten-d58e09.netlify.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_AR">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
@@ -17,6 +35,50 @@
             margin: 0;
         }
     </style>
+
+    <!-- Schema: LocalBusiness para Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ElectronicsStore",
+      "name": "Hassel BA",
+      "url": "https://magnificent-kitten-d58e09.netlify.app/",
+      "telephone": "+5491136404202",
+      "description": "Venta de iPhones nuevos, usados y outlet en Berazategui. Servicio técnico Apple y plan canje. Desde 2020.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Calle 14 571",
+        "addressLocality": "Berazategui",
+        "addressRegion": "Buenos Aires",
+        "addressCountry": "AR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -34.7595,
+        "longitude": -58.2136
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "10:00",
+          "closes": "14:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "16:00",
+          "closes": "19:30"
+        }
+      ],
+      "sameAs": [
+        "https://www.instagram.com/hassel.ba/",
+        "https://wa.me/5491136404202"
+      ],
+      "foundingDate": "2020",
+      "priceRange": "$$"
+    }
+    </script>
 </head>
 
 <body>
@@ -25,15 +87,14 @@
     <header class="fixed top-0 left-0 w-full z-50 px-4 py-3 flex items-center justify-between glass">
         <div class="flex items-center">
             <a href="#hero" onclick="cerrarMenu()">
-                <img src="img/IMAGOTIPO - A (1).png" alt="Hassel" class="h-6 block">
+                <img src="img/IMAGOTIPO - A (1).png" alt="Hassel BA – iPhones en Berazategui" class="h-6 block">
             </a>
         </div>
 
         <div class="flex items-center gap-3">
-            <div id="dolar-header" class="hidden sm:block text-[11px] text-black/60 whitespace-nowrap">
+            <div id="dolar-header" class="text-[10px] sm:text-[11px] text-black/60 whitespace-nowrap">
                 Cotización USD ...
             </div>
-
             <div class="hidden sm:flex items-center bg-black/5 rounded-full px-3 py-2">
                 <iconify-icon icon="lucide:search" class="text-base text-black/50"></iconify-icon>
                 <input id="buscador-stock" type="text" placeholder="Buscar iPhone"
@@ -72,11 +133,8 @@
         style="height: 100vh; width: 380px; max-width: 90vw;">
 
         <div class="flex justify-between items-center">
-            <img src="img/IMAGOTIPO - A (1).png" class="h-6 block" alt="Hassel">
-
-            <button onclick="toggleMenu()" class="text-2xl">
-                ✕
-            </button>
+            <img src="img/IMAGOTIPO - A (1).png" class="h-6 block" alt="Hassel BA">
+            <button onclick="toggleMenu()" class="text-2xl">✕</button>
         </div>
 
         <div class="flex flex-col gap-6 text-2xl font-semibold">
@@ -95,30 +153,27 @@
 
     <section id="resultados-busqueda" class="hidden px-5 pb-10">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-xl font-semibold mb-4">
-                Resultados
-            </h2>
-
-            <div id="grid-resultados" class="grid gap-4"></div>
+            <h2 class="text-xl font-semibold mb-4">Resultados</h2>
+            <div id="grid-resultados" class="grid gap-4 sm:grid-cols-2"></div>
         </div>
     </section>
 
+    <!-- HERO -->
     <section id="hero" class="pt-32 pb-16 px-5 bg-[#f5f5f7]">
         <div class="max-w-6xl mx-auto">
 
             <div class="grid lg:grid-cols-2 gap-10 items-center mb-10">
 
                 <div>
-                    <p class="text-[11px] uppercase tracking-[0.28em] text-black/45 mb-3">
-                        Hassel BA
-                    </p>
+                    <p class="text-[11px] uppercase tracking-[0.28em] text-black/45 mb-3">Hassel BA</p>
 
+                    <!-- SEO: H1 optimizado con keyword principal -->
                     <h1 class="text-4xl md:text-6xl font-semibold text-black leading-[0.95] mb-5">
-                        Tu próximo iPhone <br> está en Hassel.
+                        Comprá tu iPhone<br> en Berazategui.
                     </h1>
 
                     <p class="text-base md:text-lg text-black/60 max-w-xl mb-8">
-                        Equipos seleccionados, atención personalizada y servicio técnico especializado en Berazategui.
+                        Equipos seleccionados, atención personalizada y servicio técnico especializado. Hassel BA, desde 2020.
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-3 mb-8">
@@ -137,40 +192,59 @@
 
                 <!-- CARRUSEL -->
                 <div class="relative">
-                    <!-- FLECHA IZQUIERDA -->
-<button onclick="heroPrev()"
-  class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
-  ‹
-</button>
+                    <button onclick="heroPrev()"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
+                        ‹
+                    </button>
+                    <button onclick="heroNext()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
+                        ›
+                    </button>
 
-<!-- FLECHA DERECHA -->
-<button onclick="heroNext()"
-  class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center shadow">
-  ›
-</button>
                     <div class="relative overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-sm">
                         <div id="hero-slider" class="flex transition-transform duration-700 ease-in-out">
-                            <img src="img/Gemini_Generated_Image_5dhy9v5dhy9v5dhy.jpg" alt="Frente del local"
+                            <img src="img/Gemini_Generated_Image_5dhy9v5dhy9v5dhy.png"
+                                alt="Local Hassel BA – iPhone en Berazategui"
                                 class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/IMG_9926 (1).jpg" alt="Algunos Accesorios"
+                            <img src="img/IMG_9926 (1).jpg"
+                                alt="Accesorios iPhone en Hassel BA Berazategui"
                                 class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/local-hero-5.jpg" alt="Accesorios y fundas en Hassel BA"
+                            <img src="img/local-hero-5.jpg"
+                                alt="Fundas y accesorios iPhone – Hassel BA"
                                 class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/local-hero-7.jpg" alt="Accesorios y fundas en Hassel BA"
+                            <img src="img/local-hero-4.jpg"
+                                alt="Interior del local Hassel BA Berazategui"
                                 class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                                
+                            <img src="img/local-hero-7.jpg"
+                                alt="Equipos iPhone seleccionados – Hassel BA"
+                                class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
                         </div>
-
                         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
                     </div>
 
                     <div id="hero-dots" class="flex items-center justify-center gap-2 mt-4">
-    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black" aria-label="Slide 1"></button>
-    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 2"></button>
-    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 3"></button>
-    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 4"></button>
+                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black" aria-label="Slide 1"></button>
+                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 2"></button>
+                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 3"></button>
+                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 4"></button>
+                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20" aria-label="Slide 5"></button>
+                    </div>
+                </div>
+            </div>
 
-</div>
+            <!-- NÚMEROS DE CONFIANZA -->
+            <div class="grid grid-cols-3 gap-4 mb-10">
+                <div class="rounded-2xl bg-white border border-black/8 p-5 text-center">
+                    <p class="text-3xl font-semibold text-black">+500</p>
+                    <p class="text-xs text-black/50 mt-1">iPhones vendidos</p>
+                </div>
+                <div class="rounded-2xl bg-white border border-black/8 p-5 text-center">
+                    <p class="text-3xl font-semibold text-black">5+</p>
+                    <p class="text-xs text-black/50 mt-1">Años en el mercado</p>
+                </div>
+                <div class="rounded-2xl bg-white border border-black/8 p-5 text-center">
+                    <p class="text-3xl font-semibold text-black">100%</p>
+                    <p class="text-xs text-black/50 mt-1">Atención personalizada</p>
                 </div>
             </div>
 
@@ -180,12 +254,10 @@
                     <span class="block text-lg font-semibold text-black mb-1">iPhone PreOwned</span>
                     <p class="text-sm text-black/55">Usados seleccionados</p>
                 </a>
-
                 <a href="#new" class="rounded-3xl bg-white border border-black/10 p-5 hover:shadow-sm transition">
                     <span class="block text-lg font-semibold text-black mb-1">iPhone New</span>
                     <p class="text-sm text-black/55">Sellados con garantía oficial Apple.</p>
                 </a>
-
                 <a href="#outlet"
                     class="rounded-3xl bg-[#f8f8f8] border border-black/15 p-5 hover:shadow-sm transition">
                     <span class="block text-lg font-semibold text-black mb-1">iPhone Outlet</span>
@@ -197,22 +269,14 @@
     </section>
 
     <section class="px-5 pb-10 bg-[#f5f5f7]">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="relative rounded-3xl overflow-hidden">
                 <img src="img/Apple-Trade-In-iPhone_big.jpg.large.jpg"
-                    class="w-full h-[180px] object-cover" alt="Plan Canje">
-
+                    class="w-full h-[180px] object-cover" alt="Plan Canje iPhone – Hassel BA Berazategui">
                 <div class="absolute inset-0 bg-black/40"></div>
-
                 <div class="absolute inset-0 flex flex-col justify-end p-4 text-white">
-                    <h3 class="text-lg font-semibold mb-1">
-                        Plan Canje
-                    </h3>
-
-                    <p class="text-xs opacity-80 mb-3">
-                        Entregá tu iPhone usado y pagá la diferencia
-                    </p>
-
+                    <h3 class="text-lg font-semibold mb-1">Plan Canje</h3>
+                    <p class="text-xs opacity-80 mb-3">Entregá tu iPhone usado y pagá la diferencia</p>
                     <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20consultar%20por%20plan%20canje"
                         target="_blank"
                         class="inline-flex items-center justify-center px-4 py-2 rounded-full bg-white text-black text-xs font-medium w-fit">
@@ -223,12 +287,39 @@
         </div>
     </section>
 
+    <!-- CÓMO COMPRO -->
+    <section class="py-16 px-5 bg-white border-t border-black/5">
+        <div class="max-w-3xl mx-auto">
+            <div class="mb-10">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Proceso</p>
+                <h2 class="text-2xl font-semibold text-black mb-2">¿Cómo compro?</h2>
+                <p class="text-sm text-black/55">Simple, rápido y sin vueltas.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-5">
+                    <div class="w-8 h-8 rounded-full bg-black text-white text-sm font-semibold flex items-center justify-center mb-4">1</div>
+                    <p class="text-sm font-semibold text-black mb-1">Elegís tu iPhone</p>
+                    <p class="text-sm text-black/55">Explorá el catálogo: PreOwned, New u Outlet según tu presupuesto.</p>
+                </div>
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-5">
+                    <div class="w-8 h-8 rounded-full bg-black text-white text-sm font-semibold flex items-center justify-center mb-4">2</div>
+                    <p class="text-sm font-semibold text-black mb-1">Nos escribís por WhatsApp</p>
+                    <p class="text-sm text-black/55">Te cotizamos en pesos al instante y te asesoramos para elegir bien.</p>
+                </div>
+                <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-5">
+                    <div class="w-8 h-8 rounded-full bg-black text-white text-sm font-semibold flex items-center justify-center mb-4">3</div>
+                    <p class="text-sm font-semibold text-black mb-1">Retirás en el local</p>
+                    <p class="text-sm text-black/55">Pasás por Berazategui o coordinamos entrega. El equipo sale revisado y listo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CATEGORÍAS -->
     <section id="categorias" class="py-16 px-5 bg-white">
-        <div class="max-w-md mx-auto">
-            <h2 class="text-2xl font-semibold mb-6 text-black">
-                Elegí tu iPhone
-            </h2>
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-6 text-black">Elegí tu iPhone</h2>
 
             <div class="flex flex-col gap-4">
                 <a href="#preowned"
@@ -239,7 +330,6 @@
                     </div>
                     <span>→</span>
                 </a>
-
                 <a href="#new"
                     class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
                     <div>
@@ -248,7 +338,6 @@
                     </div>
                     <span>→</span>
                 </a>
-
                 <a href="#outlet"
                     class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
                     <div>
@@ -263,23 +352,18 @@
 
     <!-- PREOWNED -->
     <section id="preowned" class="py-16 px-5 bg-[#f5f5f7]">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">PreOwned</p>
                 <h2 class="text-2xl font-semibold text-black mb-2">Equipos seleccionados</h2>
-                <p class="text-sm text-black/55">
-                    Usados elegidos, revisados y listos para llevar.
-                </p>
-                <p class="text-sm text-black/50 mt-2">
-                    Todos los equipos incluyen funda a elección, vidrio templado y cable de carga.
-                </p>
+                <p class="text-sm text-black/55">Usados elegidos, revisados y listos para llevar.</p>
+                <p class="text-sm text-black/50 mt-2">Todos los equipos incluyen funda a elección, vidrio templado y cable de carga.</p>
             </div>
 
             <div class="relative mb-5">
                 <div id="preowned-filtros-wrap" class="overflow-x-auto pr-10">
                     <div id="preowned-filtros" class="flex gap-2 min-w-max pb-2"></div>
                 </div>
-
                 <button id="preowned-fade"
                     onclick="scrollFiltrosPreowned()"
                     class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent flex items-center justify-end pr-2">
@@ -287,24 +371,21 @@
                 </button>
             </div>
 
-            <div class="grid gap-4">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <article class="rounded-3xl bg-white border border-black/8 p-5">
                     <div class="mb-4">
                         <h3 class="text-xl font-semibold text-black">iPhone 13</h3>
                         <p class="text-sm text-black/50">128GB · Pink</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">88% batería</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Grade A+</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 399</p>
-                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-13-128">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2013%20128GB%20Pink"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -317,17 +398,15 @@
                         <h3 class="text-xl font-semibold text-black">iPhone 14 Pro Max</h3>
                         <p class="text-sm text-black/50">256GB · Space Black</p>
                     </div>
-
                     <div class="flex flex-wrap gap-2 mb-6 text-sm">
                         <span class="px-3 py-1 rounded-full bg-black/5 text-black/70">100% batería</span>
                         <span class="px-3 py-1 rounded-full bg-black/5 text-black/70">Grade A</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 660</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-14pm-256">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2014%20Pro%20Max%20256GB"
                             target="_blank" class="px-5 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -340,18 +419,15 @@
                         <h3 class="text-xl font-semibold text-black">iPhone 15 Pro (C/ SIM)</h3>
                         <p class="text-sm text-black/50">256GB · Black Titanium</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">89% batería</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Grade A+</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 670</p>
-                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-15pro-256">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2015%20Pro%20(C%2F%20SIM)%20256GB%20Black%20Titanium"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -366,33 +442,28 @@
 
     <!-- NEW -->
     <section id="new" class="py-16 px-5 bg-white">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">New</p>
                 <h2 class="text-2xl font-semibold text-black mb-2">iPhones nuevos</h2>
-                <p class="text-sm text-black/55">
-                    Equipos sellados, listos para entregar.
-                </p>
+                <p class="text-sm text-black/55">Equipos sellados, listos para entregar.</p>
             </div>
 
-            <div class="grid gap-4">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <article class="rounded-3xl border border-black/8 p-5 bg-[#f5f5f7]">
                     <div class="mb-4">
                         <h3 class="text-xl font-semibold text-black">iPhone 15</h3>
                         <p class="text-sm text-black/50">128GB</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 720</p>
-                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-15-128">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2015%20128GB"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -405,18 +476,15 @@
                         <h3 class="text-xl font-semibold text-black">iPhone 17</h3>
                         <p class="text-sm text-black/50">256GB · Black / Sage / Lavender / Blue</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 960</p>
-                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-17-256">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2017%20256GB"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -429,18 +497,15 @@
                         <h3 class="text-xl font-semibold text-black">iPhone 17 Pro Max</h3>
                         <p class="text-sm text-black/50">256GB · Orange / Blue / Silver</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
                     </div>
-
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">USD 1490</p>
-                            <p class="text-xs text-black/45">Consultar cotización en pesos</p>
+                            <p class="text-xs text-black/45" id="precio-pesos-17pm-256">Cargando precio en pesos...</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2017%20Pro%20Max%20256GB"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -455,37 +520,29 @@
 
     <!-- OUTLET -->
     <section id="outlet" class="py-16 px-5 bg-[#f5f5f7]">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Outlet</p>
                 <h2 class="text-2xl font-semibold text-black mb-2">Oportunidades</h2>
-                <p class="text-sm text-black/55">
-                    Equipos con detalles puntuales, a mejor precio.
-                </p>
+                <p class="text-sm text-black/55">Equipos con detalles puntuales, a mejor precio.</p>
             </div>
 
-            <div class="grid gap-4">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <article class="rounded-3xl bg-white border border-black/8 p-5">
                     <div class="mb-4">
                         <h3 class="text-xl font-semibold text-black">iPhone 12 (Msj Display)</h3>
                         <p class="text-sm text-black/50">128GB · Midnight</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">86% batería</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Outlet</span>
                     </div>
-
-                    <p class="text-sm text-black/50 mb-5">
-                        Equipo outlet con detalle informado al momento de la compra.
-                    </p>
-
+                    <p class="text-sm text-black/50 mb-5">Equipo outlet con detalle informado al momento de la compra.</p>
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">Consultar</p>
                             <p class="text-xs text-black/45">Precio por WhatsApp</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2012%20(Msj%20Display)%20128GB%20Midnight"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -498,23 +555,17 @@
                         <h3 class="text-xl font-semibold text-black">iPhone 13 Mini (Msj Display)</h3>
                         <p class="text-sm text-black/50">128GB · Blue</p>
                     </div>
-
                     <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-black/60">
                         <span class="px-3 py-1 rounded-full bg-black/5">100% batería</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Grade B+</span>
                         <span class="px-3 py-1 rounded-full bg-black/5">Outlet</span>
                     </div>
-
-                    <p class="text-sm text-black/50 mb-5">
-                        Equipo outlet con detalle informado al momento de la compra.
-                    </p>
-
+                    <p class="text-sm text-black/50 mb-5">Equipo outlet con detalle informado al momento de la compra.</p>
                     <div class="flex items-end justify-between gap-4">
                         <div>
                             <p class="text-2xl font-semibold text-black">Consultar</p>
                             <p class="text-xs text-black/45">Precio por WhatsApp</p>
                         </div>
-
                         <a href="https://wa.me/5491136404202?text=Hola%20Hassel,%20me%20interesa%20el%20iPhone%2013%20Mini%20(Msj%20Display)%20128GB%20Blue"
                             target="_blank" class="px-4 py-3 rounded-full bg-black text-white text-sm font-medium">
                             Consultar
@@ -527,14 +578,13 @@
         </div>
     </section>
 
+    <!-- POR QUÉ HASSEL -->
     <section class="py-16 px-5 bg-white">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Hassel</p>
                 <h2 class="text-2xl font-semibold text-black mb-2">Comprar mejor también es elegir bien dónde.</h2>
-                <p class="text-sm text-black/55">
-                    Atención personalizada, equipos seleccionados y seguimiento real antes y después de la compra.
-                </p>
+                <p class="text-sm text-black/55">Atención personalizada, equipos seleccionados y seguimiento real antes y después de la compra.</p>
             </div>
 
             <div class="grid gap-3">
@@ -542,12 +592,10 @@
                     <p class="text-sm font-semibold text-black mb-1">Equipos seleccionados</p>
                     <p class="text-sm text-black/55">Revisados y elegidos para que compres con más tranquilidad.</p>
                 </div>
-
                 <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-4">
                     <p class="text-sm font-semibold text-black mb-1">Atención personalizada</p>
                     <p class="text-sm text-black/55">Te ayudamos a elegir según uso, presupuesto y estado del equipo.</p>
                 </div>
-
                 <div class="rounded-2xl border border-black/8 bg-[#f5f5f7] p-4">
                     <p class="text-sm font-semibold text-black mb-1">Compra por WhatsApp</p>
                     <p class="text-sm text-black/55">Respuesta directa, simple y sin vueltas.</p>
@@ -557,97 +605,114 @@
     </section>
 
     <!-- SERVICE -->
-<section id="service" class="py-20 px-5 bg-white border-t border-black/10">
-    <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+    <section id="service" class="py-20 px-5 bg-white border-t border-black/10">
+        <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
 
-        <!-- IZQUIERDA -->
-        <div>
-            <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">
-                Servicio técnico
-            </p>
+            <!-- IZQUIERDA -->
+            <div>
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Servicio técnico</p>
+                <h2 class="text-3xl font-semibold text-black mb-4">Tu iPhone, en manos expertas.</h2>
+                <p class="text-sm text-black/55 mb-6 max-w-md">
+                    Diagnóstico, cambios de batería, pantalla y reparaciones para dispositivos Apple.
+                    Atención directa y seguimiento por WhatsApp.
+                </p>
 
-            <h2 class="text-3xl font-semibold text-black mb-4">
-                Tu iPhone, en manos expertas.
-            </h2>
-
-            <p class="text-sm text-black/55 mb-8 max-w-md">
-                Diagnóstico, cambios de batería, pantalla y reparaciones para dispositivos Apple.
-                Atención directa y seguimiento por WhatsApp.
-            </p>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Batería</p>
-                    <p class="text-xs text-black/50">Reemplazo de batería</p>
+                <!-- GARANTÍA -->
+                <div class="rounded-2xl bg-black text-white p-4 mb-6 text-sm">
+                    <p class="font-semibold mb-1">60 días de garantía en todas las reparaciones</p>
+                    <p class="text-white/60 text-xs">Si el problema reaparece, lo solucionamos sin costo adicional.</p>
                 </div>
 
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Pantalla</p>
-                    <p class="text-xs text-black/50">Cambio de display</p>
+                <!-- TABLA DE PRECIOS -->
+                <div class="rounded-2xl border border-black/10 overflow-hidden mb-4">
+                    <div class="bg-black/5 px-4 py-2 border-b border-black/10">
+                        <p class="text-xs font-semibold text-black/60 uppercase tracking-wider">Servicio · Precio aprox. · Tiempo</p>
+                    </div>
+                    <div class="divide-y divide-black/5">
+                        <div class="flex items-center justify-between px-4 py-3 bg-white">
+                            <div>
+                                <p class="text-sm font-medium text-black">Cambio de batería</p>
+                                <p class="text-xs text-black/45">Batería original compatible</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-black">desde USD 35</p>
+                                <p class="text-xs text-black/40">En el día</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-3 bg-white">
+                            <div>
+                                <p class="text-sm font-medium text-black">Cambio de pantalla</p>
+                                <p class="text-xs text-black/45">Display de calidad</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-black">desde USD 60</p>
+                                <p class="text-xs text-black/40">En el día</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-3 bg-white">
+                            <div>
+                                <p class="text-sm font-medium text-black">Conector de carga</p>
+                                <p class="text-xs text-black/45">Limpieza o reemplazo</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-black">desde USD 20</p>
+                                <p class="text-xs text-black/40">En el día</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-3 bg-white">
+                            <div>
+                                <p class="text-sm font-medium text-black">Limpieza por humedad</p>
+                                <p class="text-xs text-black/45">Limpieza interna profunda</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-black">desde USD 25</p>
+                                <p class="text-xs text-black/40">24–48 hs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-3 bg-white">
+                            <div>
+                                <p class="text-sm font-medium text-black">Diagnóstico</p>
+                                <p class="text-xs text-black/45">Revisión completa del equipo</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-black">Gratis</p>
+                                <p class="text-xs text-black/40">En el día.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Carga</p>
-                    <p class="text-xs text-black/50">Problemas de carga</p>
-                </div>
+                <p class="text-xs text-black/40">Los precios son aproximados y pueden variar según el modelo del equipo. Consultanos para un presupuesto exacto.</p>
+            </div>
 
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Cámara</p>
-                    <p class="text-xs text-black/50">Reparación de cámara</p>
-                </div>
+            <!-- DERECHA: FORMULARIO -->
+            <div id="service-form" class="rounded-3xl border border-black/10 bg-[#f5f5f7] p-6 scroll-mt-28">
+                <h3 class="text-lg font-semibold text-black mb-2">Solicitar revisión</h3>
+                <p class="text-sm text-black/50 mb-6">Completá los datos y te respondemos por WhatsApp.</p>
 
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Humedad</p>
-                    <p class="text-xs text-black/50">Limpieza interna</p>
-                </div>
-
-                <div class="rounded-2xl border border-black/10 bg-[#f5f5f7] p-4">
-                    <p class="text-xs font-semibold mb-1">Diagnóstico</p>
-                    <p class="text-xs text-black/50">Revisión completa</p>
+                <div class="space-y-4">
+                    <input type="text" id="service-nombre" placeholder="Tu nombre"
+                        class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
+                    <input type="text" id="service-modelo" placeholder="Modelo de equipo"
+                        class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
+                    <textarea id="service-mensaje" placeholder="¿Qué le pasa a tu equipo?" rows="4"
+                        class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none"></textarea>
+                    <button onclick="enviarServiceWhatsApp()"
+                        class="w-full bg-black text-white py-4 rounded-full text-sm font-medium">
+                        Enviar consulta por WhatsApp
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <!-- DERECHA (FORMULARIO CORRECTO) -->
-        <div id="service-form" class="rounded-3xl border border-black/10 bg-[#f5f5f7] p-6 scroll-mt-28">
-
-            <h3 class="text-lg font-semibold text-black mb-2">
-                Solicitar revisión
-            </h3>
-
-            <p class="text-sm text-black/50 mb-6">
-                Completá los datos y te respondemos por WhatsApp.
-            </p>
-
-            <div class="space-y-4">
-                <input type="text" id="service-nombre" placeholder="Tu nombre"
-                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
-
-                <input type="text" id="service-modelo" placeholder="Modelo de equipo"
-                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none">
-
-                <textarea id="service-mensaje" placeholder="¿Qué le pasa a tu equipo?" rows="4"
-                    class="w-full p-4 rounded-2xl bg-white border border-black/10 outline-none"></textarea>
-
-                <button onclick="enviarServiceWhatsApp()"
-                    class="w-full bg-black text-white py-4 rounded-full text-sm font-medium">
-                    Enviar consulta por WhatsApp
-                </button>
-            </div>
 
         </div>
+    </section>
 
-    </div>
-</section>
-
+    <!-- CONTACTO -->
     <section class="py-20 px-5 bg-[#f5f5f7]">
         <div class="max-w-md mx-auto text-center">
             <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">Contacto</p>
             <h2 class="text-3xl font-semibold text-black mb-3">¿No sabés cuál elegir?</h2>
-            <p class="text-sm text-black/55 mb-8">
-                Escribinos y te ayudamos a encontrar el iPhone indicado para vos.
-            </p>
-
+            <p class="text-sm text-black/55 mb-8">Escribinos y te ayudamos a encontrar el iPhone indicado para vos.</p>
             <a href="https://wa.me/5491136404202" target="_blank"
                 class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium">
                 Hablar por WhatsApp
@@ -655,13 +720,14 @@
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="mt-20 px-5 py-12 border-t border-black/10 bg-white">
         <div class="max-w-5xl mx-auto grid gap-12">
             <div>
                 <h3 class="text-lg font-semibold mb-2">Hassel BA</h3>
                 <p class="text-sm text-black/60 max-w-sm">
                     iPhones seleccionados, revisados y listos para llevar.
-                    Asesoramiento real para que compres bien.
+                    Asesoramiento real para que compres bien. Desde 2020 en Berazategui.
                 </p>
             </div>
 
@@ -671,7 +737,8 @@
                     <div class="rounded-xl overflow-hidden border border-black/10">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3277.844554754841!2d-58.213578924655586!3d-34.75950836574179!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a32fa351d80801%3A0x67d01f839536c181!2sHassel%20BA!5e0!3m2!1ses!2$ar!4v1775493428956!5m2!1ses!2sar"
-                            class="w-full h-40" style="border:0;" loading="lazy"></iframe>
+                            class="w-full h-40" style="border:0;" loading="lazy"
+                            title="Ubicación de Hassel BA en Berazategui"></iframe>
                     </div>
                 </div>
 
@@ -687,12 +754,8 @@
                 <div>
                     <p class="font-medium mb-3">Contacto</p>
                     <ul class="text-sm text-black/60 space-y-2">
-                        <li>
-                            <a href="https://wa.me/5491136404202" target="_blank">WhatsApp</a>
-                        </li>
-                        <li>
-                            <a href="https://www.instagram.com/hassel.ba/" target="_blank">Instagram</a>
-                        </li>
+                        <li><a href="https://wa.me/5491136404202" target="_blank">WhatsApp</a></li>
+                        <li><a href="https://www.instagram.com/hassel.ba/" target="_blank">Instagram</a></li>
                     </ul>
                 </div>
             </div>
@@ -717,11 +780,8 @@
       function toggleMenu() {
         const menu = document.getElementById("menu");
         const overlay = document.getElementById("menu-overlay");
-
         if (!menu || !overlay) return;
-
         const abierto = !menu.classList.contains("hidden");
-
         if (abierto) {
           menu.classList.add("hidden");
           menu.classList.remove("flex");
@@ -736,14 +796,12 @@
       function cerrarMenu() {
         const menu = document.getElementById("menu");
         const overlay = document.getElementById("menu-overlay");
-
         if (!menu || !overlay) return;
-
         menu.classList.add("hidden");
         menu.classList.remove("flex");
         overlay.classList.add("hidden");
       }
     </script>
-</body>
 
+</body>
 </html>
