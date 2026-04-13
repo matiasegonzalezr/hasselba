@@ -20,8 +20,8 @@ async function cargarDolar() {
 
     const dolarHeader = document.getElementById("dolar-header");
     if (dolarHeader && dolarWeb > 0) {
-  dolarHeader.textContent = `Cotización USD $${dolarWeb.toLocaleString("es-AR")}`;
-}
+      dolarHeader.textContent = `Cotización USD $${dolarWeb.toLocaleString("es-AR")}`;
+    }
   } catch (error) {
     console.error("Error cargando dólar:", error);
 
@@ -199,6 +199,40 @@ function crearBotonesFiltroPreowned(productos) {
   setTimeout(actualizarIndicadorFiltrosPreowned, 50);
 }
 
+const sliders = {};
+
+function moverSlide(id, direccion) {
+  const slider = document.getElementById(`slider-${id}`);
+  if (!slider) return;
+
+  const total = slider.children.length;
+  if (total <= 1) return;
+
+  if (sliders[id] === undefined) sliders[id] = 0;
+
+  sliders[id] += direccion;
+
+  if (sliders[id] < 0) sliders[id] = total - 1;
+  if (sliders[id] >= total) sliders[id] = 0;
+
+  slider.style.transform = `translateX(-${sliders[id] * 100}%)`;
+}
+
+function resolverRutaImagen(valor) {
+  const img = (valor || "").trim();
+  if (!img) return "";
+
+  if (
+    img.startsWith("http://") ||
+    img.startsWith("https://") ||
+    img.startsWith("img/")
+  ) {
+    return img;
+  }
+
+  return `img/${img}`;
+}
+
 function construirCard(p) {
   const categoria = (p.CATEGORIA || "").toLowerCase().trim();
 
@@ -209,6 +243,16 @@ function construirCard(p) {
   const precio = p.USD || "";
   const grade = p.GRADE || "";
   const detalle = p.DETALLE || "";
+
+  const id = `${modelo}-${gb}-${color}`
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]/g, "");
+
+  const imagenes = [p.IMAGEN_1, p.IMAGEN_2, p.IMAGEN_3]
+    .filter(Boolean)
+    .map(resolverRutaImagen);
+
+  const imagenesFinales = imagenes.length ? imagenes : ["img/iphone.jpg"];
 
   const bateriaTag = bateria
     ? `<span class="px-3 py-1 rounded-full bg-black/5">${bateria} batería</span>`
@@ -228,6 +272,7 @@ function construirCard(p) {
   const mensaje = `Hola Hassel! Quiero consultar por el ${modelo} ${gb}${
     color ? ` ${color}` : ""
   } que vi en la web. ¿Lo tienen disponible?`;
+
   const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(mensaje)}`;
 
   const esNuevo = categoria === "iphone-new";
@@ -235,9 +280,7 @@ function construirCard(p) {
 
   const outletDetalle = esOutlet
     ? `<p class="text-sm text-black/50 mb-4">${
-        detalle
-          ? detalle
-          : "Equipo outlet con detalle informado al momento de la compra."
+        detalle || "Equipo outlet con detalle informado al momento de la compra."
       }</p>`
     : "";
 
@@ -254,6 +297,37 @@ function construirCard(p) {
 
   return `
     <article class="rounded-3xl bg-white border border-black/8 p-4">
+
+      <div class="mb-4 relative">
+        <div class="overflow-hidden rounded-2xl aspect-square">
+          <div id="slider-${id}" class="flex h-full transition-transform duration-300 ease-out">
+            ${imagenesFinales
+              .map(
+                (img) => `
+              <img src="${img}" alt="${modelo}" class="w-full h-full aspect-square object-cover flex-shrink-0">
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+
+        ${
+          imagenesFinales.length > 1
+            ? `
+            <button onclick="moverSlide('${id}', -1)"
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-black/10 text-black">
+              ‹
+            </button>
+
+            <button onclick="moverSlide('${id}', 1)"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-black/10 text-black">
+              ›
+            </button>
+          `
+            : ""
+        }
+      </div>
+
       <div class="mb-3">
         <h3 class="text-lg font-semibold text-black leading-tight">${modelo}</h3>
         <p class="text-sm text-black/50">${gb}${colorTexto}</p>
@@ -270,25 +344,21 @@ function construirCard(p) {
 
       <div class="flex items-end justify-between gap-3">
         <div>
-          <div class="flex flex-col">
-            <p class="text-xl font-semibold text-black leading-none">
-              ${precioTexto}
-            </p>
+          <p class="text-xl font-semibold text-black leading-none">
+            ${precioTexto}
+          </p>
 
-            <p class="text-sm font-medium text-[#1F8F5F] mt-1">
-  ${precioPesos ? `$${precioPesos.toLocaleString("es-AR")}` : ""}
-</p>
-          </div>
+          <p class="text-sm font-medium text-[#1F8F5F] mt-1">
+            ${precioPesos ? `$${precioPesos.toLocaleString("es-AR")}` : ""}
+          </p>
         </div>
 
-        <a
-          href="${waLink}"
-          target="_blank"
-          class="px-4 py-2.5 rounded-full bg-black text-white text-xs font-medium whitespace-nowrap"
-        >
+        <a href="${waLink}" target="_blank"
+          class="px-4 py-2.5 rounded-full bg-black text-white text-xs font-medium">
           Consultar
         </a>
       </div>
+
     </article>
   `;
 }
