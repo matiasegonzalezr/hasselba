@@ -307,12 +307,7 @@ function construirCard(p) {
               <div class="relative w-full h-full aspect-square flex-shrink-0">
                 <img src="${img}" alt="${modelo}" class="w-full h-full aspect-square object-cover">
 
-                <img
-  src="img/ISOTIPO_sin_fondo.png"
-  alt="Hassel"
-  class="absolute bottom-3 right-3 w-10 pointer-events-none select-none"
-  style="opacity: 0.75;"
->
+              
               </div>
             `
               )
