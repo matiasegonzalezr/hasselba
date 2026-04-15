@@ -310,7 +310,7 @@ function construirCard(p) {
                 <img
                   src="img/ISOTIPO - B.png"
                   alt="Hassel"
-                  class="absolute bottom-2 right-2 w-5 opacity-70 pointer-events-none select-none"
+class="absolute bottom-3 right-3 w-10 pointer-events-none select-none"
                 >
               </div>
             `
