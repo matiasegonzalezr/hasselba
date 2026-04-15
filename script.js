@@ -311,7 +311,7 @@ function construirCard(p) {
   src="img/ISOTIPO - B.png"
   alt="Hassel"
   class="absolute bottom-3 right-3 w-10 pointer-events-none select-none"
-  style="filter: invert(1) drop-shadow(0 0 3px rgba(0,0,0,0.5));"
+  style="mix-blend-mode: screen; opacity: 0.85;"
 >
               </div>
             `
