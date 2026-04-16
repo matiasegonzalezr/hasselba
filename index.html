@@ -130,7 +130,7 @@
     <!-- MENU -->
     <div id="menu"
         class="fixed top-0 right-0 z-50 hidden flex-col justify-between p-8 bg-white shadow-2xl"
-        style="height: 100vh; width: 380px; max-width: 90vw;">
+style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-width: 90vw;">
 
         <div class="flex justify-between items-center">
             <img src="img/IMAGOTIPO - A (1).png" class="h-6 block" alt="Hassel BA">
@@ -366,7 +366,7 @@
                 </div>
                 <button id="preowned-fade"
                     onclick="scrollFiltrosPreowned()"
-                    class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent flex items-center justify-end pr-2">
+class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent items-center justify-end pr-2">
                     <span class="text-black/30 text-xl">›</span>
                 </button>
             </div>
@@ -776,32 +776,6 @@
 
     <script src="script.js"></script>
 
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById("menu");
-        const overlay = document.getElementById("menu-overlay");
-        if (!menu || !overlay) return;
-        const abierto = !menu.classList.contains("hidden");
-        if (abierto) {
-          menu.classList.add("hidden");
-          menu.classList.remove("flex");
-          overlay.classList.add("hidden");
-        } else {
-          menu.classList.remove("hidden");
-          menu.classList.add("flex");
-          overlay.classList.remove("hidden");
-        }
-      }
-
-      function cerrarMenu() {
-        const menu = document.getElementById("menu");
-        const overlay = document.getElementById("menu-overlay");
-        if (!menu || !overlay) return;
-        menu.classList.add("hidden");
-        menu.classList.remove("flex");
-        overlay.classList.add("hidden");
-      }
-    </script>
-
+    
 </body>
 </html>
