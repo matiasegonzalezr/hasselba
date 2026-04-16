@@ -277,6 +277,7 @@ function construirCard(p) {
 
   const esNuevo = categoria === "iphone-new";
   const esOutlet = categoria === "iphone-outlet";
+  const esPreowned = categoria === "iphone-preowned";
 
   const outletDetalle = esOutlet
     ? `<p class="text-sm text-black/50 mb-4">${
@@ -289,6 +290,10 @@ function construirCard(p) {
       <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
       <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
     `
+    : "";
+
+  const preownedTag = esPreowned
+    ? `<span class="px-3 py-1 rounded-full bg-black/5">PreOwned</span>`
     : "";
 
   const outletTag = esOutlet
@@ -340,6 +345,7 @@ function construirCard(p) {
       <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-black/60">
         ${bateriaTag}
         ${gradeTag}
+        ${preownedTag}
         ${nuevoTags}
         ${outletTag}
       </div>
