@@ -375,11 +375,11 @@ function construirCard(p) {
 
 function renderProductos() {
   const preownedGrid = document.querySelector("#preowned .grid");
-  const newGrid = document.querySelector("#new .grid");
+  const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
 
   const preownedVerMas = document.getElementById("preowned-vermas");
-  const newVerMas = document.getElementById("new-vermas");
+  const newVerMas = document.getElementById("iphone-new-vermas");
   const outletVerMas = document.getElementById("outlet-vermas");
 
   if (!preownedGrid || !newGrid || !outletGrid) return;
@@ -431,7 +431,7 @@ function renderProductos() {
     newVerMas.innerHTML =
       nuevos.length > 4
         ? `
-        <button onclick="toggleVerMas('new')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+        <button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
           ${mostrarTodosNew ? "Ver menos" : "Ver más"}
         </button>
       `
@@ -475,7 +475,7 @@ function toggleVerMas(categoria) {
     mostrarTodosPreowned = !mostrarTodosPreowned;
   }
 
-  if (categoria === "new") {
+  if (categoria === "iphone-new") {
     mostrarTodosNew = !mostrarTodosNew;
   }
 
