@@ -130,7 +130,7 @@
     <!-- MENU -->
     <div id="menu"
         class="fixed top-0 right-0 z-50 hidden flex-col justify-between p-8 bg-white shadow-2xl"
-style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-width: 90vw;">
+        style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-width: 90vw;">
 
         <div class="flex justify-between items-center">
             <img src="img/IMAGOTIPO - A (1).png" class="h-6 block" alt="Hassel BA">
@@ -140,7 +140,7 @@ style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-wid
         <div class="flex flex-col gap-6 text-2xl font-semibold">
             <a href="#hero" onclick="toggleMenu()">Inicio</a>
             <a href="#preowned" onclick="toggleMenu()">iPhone PreOwned</a>
-            <a href="#new" onclick="toggleMenu()">iPhone New</a>
+            <a href="#iphone-new" onclick="toggleMenu()">iPhone New</a>
             <a href="#outlet" onclick="toggleMenu()">iPhone Outlet</a>
             <a href="#service-form" onclick="toggleMenu()">Servicio Técnico</a>
         </div>
@@ -254,7 +254,7 @@ style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-wid
                     <span class="block text-lg font-semibold text-black mb-1">iPhone PreOwned</span>
                     <p class="text-sm text-black/55">Usados seleccionados</p>
                 </a>
-                <a href="#new" class="rounded-3xl bg-white border border-black/10 p-5 hover:shadow-sm transition">
+                <a href="#iphone-new" class="rounded-3xl bg-white border border-black/10 p-5 hover:shadow-sm transition">
                     <span class="block text-lg font-semibold text-black mb-1">iPhone New</span>
                     <p class="text-sm text-black/55">Sellados con garantía oficial Apple.</p>
                 </a>
@@ -330,7 +330,7 @@ style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-wid
                     </div>
                     <span>→</span>
                 </a>
-                <a href="#new"
+                <a href="#iphone-new"
                     class="rounded-2xl border border-black/10 p-5 flex justify-between items-center hover:bg-black/5 transition">
                     <div>
                         <p class="text-lg font-semibold text-black">iPhone New</p>
@@ -366,7 +366,7 @@ style="height: 100dvh; min-height: -webkit-fill-available; width: 380px; max-wid
                 </div>
                 <button id="preowned-fade"
                     onclick="scrollFiltrosPreowned()"
-class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent items-center justify-end pr-2">
+                    class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7] to-transparent items-center justify-end pr-2">
                     <span class="text-black/30 text-xl">›</span>
                 </button>
             </div>
@@ -441,7 +441,7 @@ class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7]
     </section>
 
     <!-- NEW -->
-    <section id="new" class="py-16 px-5 bg-white">
+    <section id="iphone-new" class="py-16 px-5 bg-white">
         <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 mb-2">New</p>
@@ -514,7 +514,7 @@ class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7]
                 </article>
             </div>
 
-            <div id="new-vermas" class="mt-5"></div>
+            <div id="iphone-new-vermas" class="mt-5"></div>
         </div>
     </section>
 
@@ -776,6 +776,6 @@ class="hidden absolute top-0 right-0 h-full w-14 bg-gradient-to-l from-[#f5f5f7]
 
     <script src="script.js"></script>
 
-    
+
 </body>
 </html>
