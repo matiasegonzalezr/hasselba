@@ -117,3 +117,21 @@ article img {
   border-radius: 24px;
   background: #ededf0;
 }
+
+/* FIX sliders cards Safari iPhone */
+
+[id^="slider-"]{
+  width:100%;
+  max-width:100%;
+  will-change: transform;
+}
+
+[id^="slider-"] > div{
+  flex: 0 0 100%;
+  min-width:100%;
+  max-width:100%;
+}
+
+article{
+  overflow:hidden;
+}
