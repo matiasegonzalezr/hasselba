@@ -305,11 +305,11 @@ function construirCard(p) {
 
       <div class="mb-4 relative">
         <div class="overflow-hidden rounded-2xl aspect-square">
-          <div id="slider-${id}" class="flex h-full transition-transform duration-300 ease-out">
+          <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
             ${imagenesFinales
               .map(
                 (img) => `
-              <div class="relative w-full h-full aspect-square flex-shrink-0">
+              <div class="relative basis-full min-w-full w-full h-full aspect-square shrink-0 overflow-hidden">
                 <img src="${img}" alt="${modelo}" class="w-full h-full aspect-square object-cover">
 
               
