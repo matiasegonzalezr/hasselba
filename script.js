@@ -1,9 +1,9 @@
 let productosGlobales = [];
 let familiaPreownedActiva = "todos";
 
-let mostrarTodosPreowned = false;
-let mostrarTodosNew = false;
-let mostrarTodosOutlet = false;
+let mostrarTodosPreowned = 4;
+let mostrarTodosNew = 4;
+let mostrarTodosOutlet = 4;
 
 let terminoBusqueda = "";
 
@@ -79,8 +79,8 @@ function productoCoincideBusqueda(p, termino) {
   return normalizarTexto(base).includes(normalizarTexto(termino));
 }
 
-function limitarProductos(lista, mostrarTodos) {
-  return mostrarTodos ? lista : lista.slice(0, 4);
+function limitarProductos(lista, cantidadVisible) {
+  return lista.slice(0, cantidadVisible);
 }
 
 function toggleBuscadorMobile() {
@@ -177,7 +177,7 @@ function crearBotonesFiltroPreowned(productos) {
   contenedor.querySelectorAll(".filtro-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       familiaPreownedActiva = btn.dataset.familia;
-      mostrarTodosPreowned = false;
+      mostrarTodosPreowned = 4;
 
       contenedor.querySelectorAll(".filtro-btn").forEach((b) => {
         b.classList.remove("bg-black", "text-white");
@@ -421,7 +421,7 @@ function renderProductos() {
       preownedFiltrados.length > 4
         ? `
         <button onclick="toggleVerMas('preowned')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
-          ${mostrarTodosPreowned ? "Ver menos" : "Ver más"}
+          ${mostrarTodosPreowned >= preownedFiltrados.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -432,7 +432,7 @@ function renderProductos() {
       nuevos.length > 4
         ? `
         <button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
-          ${mostrarTodosNew ? "Ver menos" : "Ver más"}
+          ${mostrarTodosNew >= nuevos.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -443,7 +443,7 @@ function renderProductos() {
       outlet.length > 4
         ? `
         <button onclick="toggleVerMas('outlet')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
-          ${mostrarTodosOutlet ? "Ver menos" : "Ver más"}
+          ${mostrarTodosOutlet >= outlet.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -472,15 +472,44 @@ function renderProductos() {
 
 function toggleVerMas(categoria) {
   if (categoria === "preowned") {
-    mostrarTodosPreowned = !mostrarTodosPreowned;
+    const preowned = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    const preownedFiltrados =
+      familiaPreownedActiva === "todos"
+        ? preowned
+        : preowned.filter((p) => obtenerFamilia(p.MODELO || "") === familiaPreownedActiva);
+
+    if (mostrarTodosPreowned >= preownedFiltrados.length) {
+      mostrarTodosPreowned = 4;
+    } else {
+      mostrarTodosPreowned += 4;
+    }
   }
 
   if (categoria === "iphone-new") {
-    mostrarTodosNew = !mostrarTodosNew;
+    const nuevos = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-new")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosNew >= nuevos.length) {
+      mostrarTodosNew = 4;
+    } else {
+      mostrarTodosNew += 4;
+    }
   }
 
   if (categoria === "outlet") {
-    mostrarTodosOutlet = !mostrarTodosOutlet;
+    const outlet = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-outlet")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosOutlet >= outlet.length) {
+      mostrarTodosOutlet = 4;
+    } else {
+      mostrarTodosOutlet += 4;
+    }
   }
 
   renderProductos();
@@ -516,7 +545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     buscadorDesktop.addEventListener("input", (e) => {
       terminoBusqueda = e.target.value;
       familiaPreownedActiva = "todos";
-      mostrarTodosPreowned = false;
+      mostrarTodosPreowned = 4;
       renderProductos();
     });
   }
@@ -525,7 +554,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     buscadorMobile.addEventListener("input", (e) => {
       terminoBusqueda = e.target.value;
       familiaPreownedActiva = "todos";
-      mostrarTodosPreowned = false;
+      mostrarTodosPreowned = 4;
       renderProductos();
     });
   }
