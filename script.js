@@ -302,7 +302,6 @@ function construirCard(p) {
 
   return `
     <article class="rounded-3xl bg-white border border-black/8 p-4">
-
       <div class="mb-4 relative">
         <div class="overflow-hidden rounded-2xl aspect-square">
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
@@ -311,8 +310,6 @@ function construirCard(p) {
                 (img) => `
               <div class="relative basis-full min-w-full w-full h-full aspect-square shrink-0 overflow-hidden">
                 <img src="${img}" alt="${modelo}" class="w-full h-full aspect-square object-cover">
-
-              
               </div>
             `
               )
@@ -368,7 +365,6 @@ function construirCard(p) {
           Consultar
         </a>
       </div>
-
     </article>
   `;
 }
@@ -517,10 +513,10 @@ function toggleVerMas(categoria) {
 
 async function cargarProductos() {
   const urlIphones =
-  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPhone";
+    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(urlIphones);
     const data = await res.json();
 
     productosGlobales = Array.isArray(data) ? data : [];
