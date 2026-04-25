@@ -516,8 +516,8 @@ function toggleVerMas(categoria) {
 }
 
 async function cargarProductos() {
-  const url =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/Hoja%201";
+  const urlIphones =
+  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPhone";
 
   try {
     const res = await fetch(url);
