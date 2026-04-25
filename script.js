@@ -516,25 +516,14 @@ function toggleVerMas(categoria) {
 }
 
 async function cargarProductos() {
-  const urlIphones =
+  const url =
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/Hoja%201";
 
-  const urlMacbooks =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBooks";
-
   try {
-    const [resIphones, resMacbooks] = await Promise.all([
-      fetch(urlIphones),
-      fetch(urlMacbooks)
-    ]);
+    const res = await fetch(url);
+    const data = await res.json();
 
-    const dataIphones = await resIphones.json();
-    const dataMacbooks = await resMacbooks.json();
-
-    productosGlobales = [
-      ...(Array.isArray(dataIphones) ? dataIphones : []),
-      ...(Array.isArray(dataMacbooks) ? dataMacbooks : [])
-    ];
+    productosGlobales = Array.isArray(data) ? data : [];
 
     crearBotonesFiltroPreowned(
       productosGlobales.filter(
@@ -543,7 +532,6 @@ async function cargarProductos() {
     );
 
     renderProductos();
-
   } catch (error) {
     console.error("Error cargando productos:", error);
   }
