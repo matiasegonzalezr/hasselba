@@ -4,6 +4,9 @@ let familiaPreownedActiva = "todos";
 let mostrarTodosPreowned = 4;
 let mostrarTodosNew = 4;
 let mostrarTodosOutlet = 4;
+let mostrarTodosMacbooks = 4;
+
+let ordenGlobal = "mas-nuevos";
 
 let terminoBusqueda = "";
 
@@ -61,6 +64,41 @@ function normalizarTexto(texto) {
     .trim();
 }
 
+function cambiarOrden(valor) {
+  ordenGlobal = valor;
+  renderProductos();
+}
+
+function aplicarOrden(a, b) {
+  if (ordenGlobal === "menor-precio") {
+    const precioA = Number(a.USD || 0) || 99999; // Mandar sin precio al final
+    const precioB = Number(b.USD || 0) || 99999;
+    return precioA - precioB;
+  }
+  if (ordenGlobal === "mejor-bateria") {
+    const batA = parseInt(a.BATERIA || "0");
+    const batB = parseInt(b.BATERIA || "0");
+    
+    const ciclosA = parseInt(a.CICLOS || "9999");
+    const ciclosB = parseInt(b.CICLOS || "9999");
+
+    const esMacbookA = (a.CATEGORIA || "").toLowerCase().includes("macbook");
+    const esMacbookB = (b.CATEGORIA || "").toLowerCase().includes("macbook");
+
+    if (esMacbookA && esMacbookB) {
+      return ciclosA - ciclosB; // menor cantidad de ciclos es mejor
+    }
+    
+    if (!esMacbookA && !esMacbookB) {
+      return batB - batA; // mayor porcentaje de batería es mejor
+    }
+    return 0;
+  }
+
+  // mas-nuevos (default)
+  return obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO);
+}
+
 function productoCoincideBusqueda(p, termino) {
   if (!termino) return true;
 
@@ -71,7 +109,11 @@ function productoCoincideBusqueda(p, termino) {
     p.BATERIA,
     p.GRADE,
     p.CATEGORIA,
-    p.DETALLE
+    p.DETALLE,
+    p.CHIP,
+    p.RAM,
+    p.SSD,
+    p.ESTADO
   ]
     .filter(Boolean)
     .join(" ");
@@ -118,37 +160,72 @@ function cerrarMenu() {
   overlay.classList.add("hidden");
 }
 
-function actualizarIndicadorFiltrosPreowned() {
-  const wrap = document.getElementById("preowned-filtros-wrap");
-  const fade = document.getElementById("preowned-fade");
+function toggleAccordion(id) {
+  const content = document.getElementById(id);
+  const icon = document.getElementById(`icon-${id}`);
 
-  if (!wrap || !fade) return;
+  if (!content || !icon) return;
 
-  const hayOverflow = wrap.scrollWidth > wrap.clientWidth + 4;
-  const estaAlFinal = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 6;
-
-  if (hayOverflow && !estaAlFinal) {
-    fade.classList.remove("hidden");
+  if (content.classList.contains("hidden")) {
+    content.classList.remove("hidden");
+    content.classList.add("flex");
+    icon.style.transform = "rotate(45deg)";
   } else {
-    fade.classList.add("hidden");
+    content.classList.add("hidden");
+    content.classList.remove("flex");
+    icon.style.transform = "rotate(0deg)";
   }
 }
 
-function scrollFiltrosPreowned() {
-  const wrap = document.getElementById("preowned-filtros-wrap");
-  if (!wrap) return;
+function toggleModalFiltros() {
+  const modal = document.getElementById("modal-filtros");
+  if (!modal) return;
+  if (modal.classList.contains("translate-y-full")) {
+    modal.classList.remove("translate-y-full");
+    modal.classList.add("translate-y-0");
+    document.body.style.overflow = "hidden";
+  } else {
+    modal.classList.add("translate-y-full");
+    modal.classList.remove("translate-y-0");
+    document.body.style.overflow = "";
+  }
+}
 
-  wrap.scrollBy({
-    left: 120,
-    behavior: "smooth"
+function obtenerFiltrosActivos() {
+  const modelos = Array.from(document.querySelectorAll('.filtro-modelo:checked')).map(cb => cb.value);
+  const baterias = Array.from(document.querySelectorAll('.filtro-bateria:checked')).map(cb => parseInt(cb.value));
+  const precios = Array.from(document.querySelectorAll('.filtro-precio:checked')).map(cb => cb.value);
+  return { modelos, baterias, precios };
+}
+
+function filtrarPreowned(lista) {
+  const { modelos, baterias, precios } = obtenerFiltrosActivos();
+  return lista.filter((p) => {
+    if (modelos.length > 0 && !modelos.includes(obtenerFamilia(p.MODELO || ""))) return false;
+    if (baterias.length > 0) {
+      const batVal = parseInt(p.BATERIA || "0");
+      const minBat = Math.min(...baterias);
+      if (minBat === 100 && batVal < 100) return false;
+      if (minBat < 100 && batVal <= minBat) return false;
+    }
+    if (precios.length > 0) {
+      const pPrecio = Number(p.USD || 99999);
+      const cumplePrecio = precios.some(filtro => {
+        if (filtro === "500") return pPrecio <= 500;
+        if (filtro === "800") return pPrecio <= 800;
+        if (filtro === "1000") return pPrecio <= 1000;
+        if (filtro === "1000+") return pPrecio > 1000;
+        return false;
+      });
+      if (!cumplePrecio) return false;
+    }
+    return true;
   });
 }
 
-function crearBotonesFiltroPreowned(productos) {
-  const contenedor = document.getElementById("preowned-filtros");
-  const wrap = document.getElementById("preowned-filtros-wrap");
-
-  if (!contenedor) return;
+function inicializarFiltrosSidebar(productos) {
+  const contenedorModelos = document.getElementById("filtros-modelos");
+  if (!contenedorModelos) return;
 
   let familias = [...new Set(productos.map((p) => obtenerFamilia(p.MODELO || "")))];
   familias = familias.filter((familia) => familia && familia !== "Otros");
@@ -159,44 +236,20 @@ function crearBotonesFiltroPreowned(productos) {
     return numB - numA;
   });
 
-  contenedor.innerHTML = `
-    <button data-familia="todos" class="filtro-btn px-4 py-2 rounded-full border border-black/10 bg-black text-white text-sm whitespace-nowrap">
-      Todos
-    </button>
-    ${familias
-      .map(
-        (familia) => `
-      <button data-familia="${familia}" class="filtro-btn px-4 py-2 rounded-full border border-black/10 bg-white text-black text-sm whitespace-nowrap">
-        ${familia}
-      </button>
-    `
-      )
-      .join("")}
-  `;
+  contenedorModelos.innerHTML = familias.map(familia => `
+    <label class="flex items-center gap-3 text-sm text-black/80 cursor-pointer hover:text-black transition">
+      <input type="checkbox" value="${familia}" class="filtro-modelo accent-black w-4 h-4 rounded border-black/20">
+      <span>${familia}</span>
+    </label>
+  `).join("");
 
-  contenedor.querySelectorAll(".filtro-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      familiaPreownedActiva = btn.dataset.familia;
-      mostrarTodosPreowned = 4;
-
-      contenedor.querySelectorAll(".filtro-btn").forEach((b) => {
-        b.classList.remove("bg-black", "text-white");
-        b.classList.add("bg-white", "text-black");
-      });
-
-      btn.classList.remove("bg-white", "text-black");
-      btn.classList.add("bg-black", "text-white");
-
+  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio');
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      mostrarTodosPreowned = 6;
       renderProductos();
     });
   });
-
-  if (wrap) {
-    wrap.removeEventListener("scroll", actualizarIndicadorFiltrosPreowned);
-    wrap.addEventListener("scroll", actualizarIndicadorFiltrosPreowned, { passive: true });
-  }
-
-  setTimeout(actualizarIndicadorFiltrosPreowned, 50);
 }
 
 const sliders = {};
@@ -235,14 +288,19 @@ function resolverRutaImagen(valor) {
 
 function construirCard(p) {
   const categoria = (p.CATEGORIA || "").toLowerCase().trim();
+  const esMacbook = categoria === "macbook-preowned" || categoria === "macbook";
 
   const modelo = p.MODELO || "";
-  const gb = p.GB || "";
+  const gb = esMacbook ? (p.SSD || "") : (p.GB || "");
   const color = p.COLOR || "";
   const bateria = p.BATERIA || "";
+  const ciclos = p.CICLOS || "";
+  const chip = p.CHIP || "";
+  const ram = p.RAM || "";
   const precio = p.USD || "";
   const grade = p.GRADE || "";
   const detalle = p.DETALLE || "";
+  const estado = p.ESTADO || "";
 
   const id = `${modelo}-${gb}-${color}`
     .replace(/\s+/g, "-")
@@ -258,31 +316,60 @@ function construirCard(p) {
     ? `<span class="px-3 py-1 rounded-full bg-black/5">${bateria} batería</span>`
     : "";
 
+  const ciclosTag = ciclos
+    ? `<span class="px-3 py-1 rounded-full bg-black/5">${ciclos} ciclos</span>`
+    : "";
+
   const gradeTag = grade
     ? `<span class="px-3 py-1 rounded-full bg-black/5">Grade ${grade}</span>`
     : "";
 
-  const colorTexto = color ? ` · ${color}` : "";
+  let subTitulo = gb;
+  if (esMacbook) {
+    const parts = [];
+    if (chip) parts.push(chip);
+    if (ram) parts.push(`${ram} RAM`);
+    if (gb) parts.push(`${gb} SSD`);
+    if (color) parts.push(color);
+    subTitulo = parts.join(" · ");
+  } else {
+    if (color) subTitulo += ` · ${color}`;
+  }
+
   const precioTexto = precio ? `USD ${precio}` : "Consultar";
 
   const precioNumerico = Number(precio || 0);
   const precioPesos =
     precioNumerico && dolarWeb ? Math.round(precioNumerico * dolarWeb) : 0;
 
-  const mensaje = `Hola Hassel! Quiero consultar por el ${modelo} ${gb}${
-    color ? ` ${color}` : ""
-  } que vi en la web. ¿Lo tienen disponible?`;
+  let nombreProducto = esMacbook ? `la ${modelo}` : `el ${modelo}`;
+  if (esMacbook) {
+    if (chip) nombreProducto += ` ${chip}`;
+    if (ram) nombreProducto += ` ${ram} RAM`;
+    if (gb) nombreProducto += ` ${gb} SSD`;
+  } else {
+    if (gb) nombreProducto += ` ${gb}`;
+  }
+  if (color) nombreProducto += ` ${color}`;
+  
+  nombreProducto = nombreProducto.replace(/\s+/g, " ");
+
+  const mensaje = `Hola Hassel! Quiero consultar por ${nombreProducto} que vi en la web. ¿L${esMacbook ? "a" : "o"} tienen disponible?`;
 
   const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(mensaje)}`;
 
   const esNuevo = categoria === "iphone-new";
   const esOutlet = categoria === "iphone-outlet";
-  const esPreowned = categoria === "iphone-preowned";
+  const esPreowned = categoria === "iphone-preowned" || esMacbook;
 
   const outletDetalle = esOutlet
     ? `<p class="text-sm text-black/50 mb-4">${
         detalle || "Equipo outlet con detalle informado al momento de la compra."
       }</p>`
+    : "";
+
+  const estadoDetalle = esMacbook && estado
+    ? `<p class="text-sm text-black/50 mb-4">${estado}</p>`
     : "";
 
   const nuevoTags = esNuevo
@@ -301,7 +388,7 @@ function construirCard(p) {
     : "";
 
   return `
-    <article class="rounded-3xl bg-white border border-black/8 p-4">
+    <article class="reveal rounded-3xl bg-white border border-black/8 p-4">
       <div class="mb-4 relative">
         <div class="overflow-hidden rounded-2xl aspect-square">
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
@@ -309,7 +396,7 @@ function construirCard(p) {
               .map(
                 (img) => `
               <div class="relative basis-full min-w-full w-full h-full aspect-square shrink-0 overflow-hidden">
-                <img src="${img}" alt="${modelo}" class="w-full h-full aspect-square object-cover">
+                <img src="${img}" alt="${modelo}" loading="lazy" class="w-full h-full aspect-square object-cover" onerror="this.onerror=null; this.src='img/IMG_9926 (1).jpg';">
               </div>
             `
               )
@@ -336,11 +423,12 @@ function construirCard(p) {
 
       <div class="mb-3">
         <h3 class="text-lg font-semibold text-black leading-tight">${modelo}</h3>
-        <p class="text-sm text-black/50">${gb}${colorTexto}</p>
+        <p class="text-sm text-black/50">${subTitulo}</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-black/60">
         ${bateriaTag}
+        ${ciclosTag}
         ${gradeTag}
         ${preownedTag}
         ${nuevoTags}
@@ -348,6 +436,7 @@ function construirCard(p) {
       </div>
 
       ${outletDetalle}
+      ${estadoDetalle}
 
       <div class="flex items-end justify-between gap-3">
         <div>
@@ -370,47 +459,64 @@ function construirCard(p) {
 }
 
 function renderProductos() {
-  const preownedGrid = document.querySelector("#preowned .grid");
+  const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
+  const macbooksGrid = document.querySelector("#macbooks .grid");
 
   const preownedVerMas = document.getElementById("preowned-vermas");
   const newVerMas = document.getElementById("iphone-new-vermas");
   const outletVerMas = document.getElementById("outlet-vermas");
+  const macbooksVerMas = document.getElementById("macbooks-vermas");
 
-  if (!preownedGrid || !newGrid || !outletGrid) return;
-
-  preownedGrid.innerHTML = "";
-  newGrid.innerHTML = "";
-  outletGrid.innerHTML = "";
+  if (preownedGrid) preownedGrid.innerHTML = "";
+  if (newGrid) newGrid.innerHTML = "";
+  if (outletGrid) outletGrid.innerHTML = "";
+  if (macbooksGrid) macbooksGrid.innerHTML = "";
 
   const preowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO));
+    .sort(aplicarOrden);
 
   const nuevos = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO));
+    .sort(aplicarOrden);
 
   const outlet = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-outlet")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO));
+    .sort(aplicarOrden);
 
-  const preownedFiltrados =
-    familiaPreownedActiva === "todos"
-      ? preowned
-      : preowned.filter((p) => obtenerFamilia(p.MODELO || "") === familiaPreownedActiva);
+  const macbooks = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" || (p.CATEGORIA || "").toLowerCase().trim() === "macbook")
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort(aplicarOrden);
+
+  const preownedFiltrados = filtrarPreowned(preowned);
 
   const preownedVisibles = limitarProductos(preownedFiltrados, mostrarTodosPreowned);
   const nuevosVisibles = limitarProductos(nuevos, mostrarTodosNew);
   const outletVisibles = limitarProductos(outlet, mostrarTodosOutlet);
+  const macbooksVisibles = limitarProductos(macbooks, mostrarTodosMacbooks);
 
-  preownedGrid.innerHTML = preownedVisibles.map(construirCard).join("");
-  newGrid.innerHTML = nuevosVisibles.map(construirCard).join("");
-  outletGrid.innerHTML = outletVisibles.map(construirCard).join("");
+  const htmlEmptyState = `
+    <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+      <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 mb-4"></iconify-icon>
+      <p class="text-lg font-semibold text-black mb-2">No encontramos equipos exactos.</p>
+      <p class="text-sm text-black/50 mb-6 max-w-sm">Intentá con otros filtros o escribinos por WhatsApp para ver si te lo podemos conseguir.</p>
+      <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black text-white text-sm font-medium">Consultar por WhatsApp</a>
+    </div>
+  `;
+
+  if (preownedGrid) preownedGrid.innerHTML = preownedVisibles.length ? preownedVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(construirCard).join("") : htmlEmptyState;
+
+  // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
+  setTimeout(initReveals, 50);
 
   if (preownedVerMas) {
     preownedVerMas.innerHTML =
@@ -445,6 +551,17 @@ function renderProductos() {
         : "";
   }
 
+  if (macbooksVerMas) {
+    macbooksVerMas.innerHTML =
+      macbooks.length > 4
+        ? `
+        <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+          ${mostrarTodosMacbooks >= macbooks.length ? "Ver menos" : "Ver más"}
+        </button>
+      `
+        : "";
+  }
+
   const resultadosWrap = document.getElementById("resultados-busqueda");
   const gridResultados = document.getElementById("grid-resultados");
 
@@ -462,8 +579,6 @@ function renderProductos() {
   } else {
     resultadosWrap?.classList.add("hidden");
   }
-
-  setTimeout(actualizarIndicadorFiltrosPreowned, 50);
 }
 
 function toggleVerMas(categoria) {
@@ -472,10 +587,7 @@ function toggleVerMas(categoria) {
       .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
 
-    const preownedFiltrados =
-      familiaPreownedActiva === "todos"
-        ? preowned
-        : preowned.filter((p) => obtenerFamilia(p.MODELO || "") === familiaPreownedActiva);
+    const preownedFiltrados = filtrarPreowned(preowned);
 
     if (mostrarTodosPreowned >= preownedFiltrados.length) {
       mostrarTodosPreowned = 4;
@@ -508,20 +620,50 @@ function toggleVerMas(categoria) {
     }
   }
 
+  if (categoria === "macbooks") {
+    const macbooks = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" || (p.CATEGORIA || "").toLowerCase().trim() === "macbook")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosMacbooks >= macbooks.length) {
+      mostrarTodosMacbooks = 4;
+    } else {
+      mostrarTodosMacbooks += 4;
+    }
+  }
+
   renderProductos();
 }
 
 async function cargarProductos() {
+  mostrarSkeletons();
+
   const urlIphones =
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
+  const urlMacbooks =
+    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBook";
 
   try {
-    const res = await fetch(urlIphones);
-    const data = await res.json();
+    const [resIphones, resMacbooks] = await Promise.all([
+      fetch(urlIphones),
+      fetch(urlMacbooks).catch(() => ({ json: () => [] })) // en caso de que la URL de macbooks falle
+    ]);
 
-    productosGlobales = Array.isArray(data) ? data : [];
+    const dataIphones = await resIphones.json();
+    let dataMacbooks = [];
+    if (resMacbooks.ok) {
+        dataMacbooks = await resMacbooks.json();
+    }
 
-    crearBotonesFiltroPreowned(
+    const iphonesArr = Array.isArray(dataIphones) ? dataIphones : [];
+    const macbooksArr = Array.isArray(dataMacbooks) ? dataMacbooks : [];
+
+    // Por defecto asumo que vienen sin categoria "macbook-preowned"
+    macbooksArr.forEach(m => m.CATEGORIA = m.CATEGORIA || "macbook-preowned");
+
+    productosGlobales = [...iphonesArr, ...macbooksArr];
+
+    inicializarFiltrosSidebar(
       productosGlobales.filter(
         (p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned"
       )
@@ -530,7 +672,69 @@ async function cargarProductos() {
     renderProductos();
   } catch (error) {
     console.error("Error cargando productos:", error);
+    mostrarErrorVisual();
   }
+}
+
+function mostrarErrorVisual() {
+  const preownedGrid = document.querySelector("#preowned-grid");
+  const newGrid = document.querySelector("#iphone-new .grid");
+  const outletGrid = document.querySelector("#outlet .grid");
+  const macbooksGrid = document.querySelector("#macbooks .grid");
+
+  const htmlError = `
+    <div class="col-span-full p-8 text-center bg-white rounded-3xl border border-red-500/20 shadow-sm mt-4">
+      <p class="text-lg font-semibold text-black mb-2">Tuvimos un problema cargando el stock.</p>
+      <p class="text-sm text-black/60 mb-5">Por favor, revisá tu conexión o contactanos directamente para conocer el stock.</p>
+      <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20No%20me%20carga%20la%20página,%20quería%20consultar%20el%20stock." 
+         target="_blank" 
+         class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium hover:bg-black/80 transition">
+        Escribinos por WhatsApp
+      </a>
+    </div>
+  `;
+
+  if (preownedGrid) preownedGrid.innerHTML = htmlError;
+  if (newGrid) newGrid.innerHTML = htmlError;
+  if (outletGrid) outletGrid.innerHTML = htmlError;
+  if (macbooksGrid) macbooksGrid.innerHTML = htmlError;
+}
+
+function mostrarSkeletons() {
+  const preownedGrid = document.querySelector("#preowned-grid");
+  const newGrid = document.querySelector("#iphone-new .grid");
+  const outletGrid = document.querySelector("#outlet .grid");
+  const macbooksGrid = document.querySelector("#macbooks .grid");
+
+  const htmlSkeleton = `
+    <article class="rounded-3xl bg-white border border-black/8 p-4 animate-pulse">
+      <div class="mb-4 relative">
+        <div class="overflow-hidden rounded-2xl aspect-square bg-black/5"></div>
+      </div>
+      <div class="mb-3">
+        <div class="h-6 bg-black/5 rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-black/5 rounded w-1/2"></div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <div class="h-6 w-16 bg-black/5 rounded-full"></div>
+        <div class="h-6 w-20 bg-black/5 rounded-full"></div>
+      </div>
+      <div class="flex items-end justify-between gap-3">
+        <div>
+          <div class="h-7 w-24 bg-black/5 rounded mb-1"></div>
+          <div class="h-4 w-16 bg-black/5 rounded"></div>
+        </div>
+        <div class="h-9 w-24 bg-black/5 rounded-full"></div>
+      </div>
+    </article>
+  `;
+  
+  const repeatSkeletons = htmlSkeleton.repeat(4);
+
+  if (preownedGrid) preownedGrid.innerHTML = repeatSkeletons;
+  if (newGrid) newGrid.innerHTML = repeatSkeletons;
+  if (outletGrid) outletGrid.innerHTML = repeatSkeletons;
+  if (macbooksGrid) macbooksGrid.innerHTML = repeatSkeletons;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -549,18 +753,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (buscadorMobile) {
     buscadorMobile.addEventListener("input", (e) => {
       terminoBusqueda = e.target.value;
-      familiaPreownedActiva = "todos";
-      mostrarTodosPreowned = 4;
+      mostrarTodosPreowned = 6;
       renderProductos();
     });
   }
 
-  window.addEventListener("resize", actualizarIndicadorFiltrosPreowned);
-
   await cargarDolar();
   await cargarProductos();
-
-  setTimeout(actualizarIndicadorFiltrosPreowned, 100);
+  
+  setTimeout(initReveals, 100);
 });
 
 function enviarServiceWhatsApp() {
@@ -623,6 +824,18 @@ function iniciarHeroSlider() {
     });
   });
 
+  // Swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+  slider.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, {passive: true});
+  slider.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) heroNext();
+    if (touchEndX - touchStartX > 50) heroPrev();
+  }, {passive: true});
+
   heroSliderInterval = setInterval(siguienteHeroSlide, 4500);
 }
 
@@ -653,4 +866,23 @@ function heroPrev() {
   heroSlideActual = (heroSlideActual - 1 + totalSlides) % totalSlides;
   actualizarHeroSlider(heroSlideActual);
   reiniciarHeroSlider();
+}
+
+// ANIMACIONES REVEAL
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('reveal-active');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.1
+});
+
+function initReveals() {
+  const reveals = document.querySelectorAll('.reveal:not(.reveal-active)');
+  reveals.forEach(el => revealObserver.observe(el));
 }
