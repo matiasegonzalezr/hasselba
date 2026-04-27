@@ -237,8 +237,8 @@ function inicializarFiltrosSidebar(productos) {
   });
 
   contenedorModelos.innerHTML = familias.map(familia => `
-    <label class="flex items-center gap-3 text-sm text-black/80 cursor-pointer hover:text-black transition">
-      <input type="checkbox" value="${familia}" class="filtro-modelo accent-black w-4 h-4 rounded border-black/20">
+    <label class="flex items-center gap-3 text-sm text-black/80 dark:text-white/80 cursor-pointer hover:text-black dark:text-white transition">
+      <input type="checkbox" value="${familia}" class="filtro-modelo accent-black w-4 h-4 rounded border-black/20 dark:border-white/20">
       <span>${familia}</span>
     </label>
   `).join("");
@@ -313,15 +313,15 @@ function construirCard(p) {
   const imagenesFinales = imagenes.length ? imagenes : ["img/iphone.jpg"];
 
   const bateriaTag = bateria
-    ? `<span class="px-3 py-1 rounded-full bg-black/5">${bateria} batería</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${bateria} batería</span>`
     : "";
 
   const ciclosTag = ciclos
-    ? `<span class="px-3 py-1 rounded-full bg-black/5">${ciclos} ciclos</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${ciclos} ciclos</span>`
     : "";
 
   const gradeTag = grade
-    ? `<span class="px-3 py-1 rounded-full bg-black/5">Grade ${grade}</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Grade ${grade}</span>`
     : "";
 
   let subTitulo = gb;
@@ -363,32 +363,32 @@ function construirCard(p) {
   const esPreowned = categoria === "iphone-preowned" || esMacbook;
 
   const outletDetalle = esOutlet
-    ? `<p class="text-sm text-black/50 mb-4">${
+    ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${
         detalle || "Equipo outlet con detalle informado al momento de la compra."
       }</p>`
     : "";
 
   const estadoDetalle = esMacbook && estado
-    ? `<p class="text-sm text-black/50 mb-4">${estado}</p>`
+    ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${estado}</p>`
     : "";
 
   const nuevoTags = esNuevo
     ? `
-      <span class="px-3 py-1 rounded-full bg-black/5">Nuevo</span>
-      <span class="px-3 py-1 rounded-full bg-black/5">Sellado</span>
+      <span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Nuevo</span>
+      <span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Sellado</span>
     `
     : "";
 
   const preownedTag = esPreowned
-    ? `<span class="px-3 py-1 rounded-full bg-black/5">PreOwned</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">PreOwned</span>`
     : "";
 
   const outletTag = esOutlet
-    ? `<span class="px-3 py-1 rounded-full bg-black/5">Outlet</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Outlet</span>`
     : "";
 
   return `
-    <article class="reveal rounded-3xl bg-white border border-black/8 p-4">
+    <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4">
       <div class="mb-4 relative">
         <div class="overflow-hidden rounded-2xl aspect-square">
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
@@ -408,12 +408,12 @@ function construirCard(p) {
           imagenesFinales.length > 1
             ? `
             <button onclick="moverSlide('${id}', -1)"
-              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-black/10 text-black">
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
               ‹
             </button>
 
             <button onclick="moverSlide('${id}', 1)"
-              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-black/10 text-black">
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
               ›
             </button>
           `
@@ -422,11 +422,11 @@ function construirCard(p) {
       </div>
 
       <div class="mb-3">
-        <h3 class="text-lg font-semibold text-black leading-tight">${modelo}</h3>
-        <p class="text-sm text-black/50">${subTitulo}</p>
+        <h3 class="text-lg font-semibold text-black dark:text-white leading-tight">${modelo}</h3>
+        <p class="text-sm text-black/50 dark:text-white/50">${subTitulo}</p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-black/60">
+      <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-black/60 dark:text-white/60">
         ${bateriaTag}
         ${ciclosTag}
         ${gradeTag}
@@ -440,7 +440,7 @@ function construirCard(p) {
 
       <div class="flex items-end justify-between gap-3">
         <div>
-          <p class="text-xl font-semibold text-black leading-none">
+          <p class="text-xl font-semibold text-black dark:text-white leading-none">
             ${precioTexto}
           </p>
 
@@ -450,7 +450,7 @@ function construirCard(p) {
         </div>
 
         <a href="${waLink}" target="_blank"
-          class="px-4 py-2.5 rounded-full bg-black text-white text-xs font-medium">
+          class="px-4 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black text-xs font-medium">
           Consultar
         </a>
       </div>
@@ -503,10 +503,10 @@ function renderProductos() {
 
   const htmlEmptyState = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-      <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 mb-4"></iconify-icon>
-      <p class="text-lg font-semibold text-black mb-2">No encontramos equipos exactos.</p>
-      <p class="text-sm text-black/50 mb-6 max-w-sm">Intentá con otros filtros o escribinos por WhatsApp para ver si te lo podemos conseguir.</p>
-      <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black text-white text-sm font-medium">Consultar por WhatsApp</a>
+      <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
+      <p class="text-lg font-semibold text-black dark:text-white mb-2">No encontramos equipos exactos.</p>
+      <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Intentá con otros filtros o escribinos por WhatsApp para ver si te lo podemos conseguir.</p>
+      <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Consultar por WhatsApp</a>
     </div>
   `;
 
@@ -522,7 +522,7 @@ function renderProductos() {
     preownedVerMas.innerHTML =
       preownedFiltrados.length > 4
         ? `
-        <button onclick="toggleVerMas('preowned')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+        <button onclick="toggleVerMas('preowned')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosPreowned >= preownedFiltrados.length ? "Ver menos" : "Ver más"}
         </button>
       `
@@ -533,7 +533,7 @@ function renderProductos() {
     newVerMas.innerHTML =
       nuevos.length > 4
         ? `
-        <button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+        <button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosNew >= nuevos.length ? "Ver menos" : "Ver más"}
         </button>
       `
@@ -544,7 +544,7 @@ function renderProductos() {
     outletVerMas.innerHTML =
       outlet.length > 4
         ? `
-        <button onclick="toggleVerMas('outlet')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+        <button onclick="toggleVerMas('outlet')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosOutlet >= outlet.length ? "Ver menos" : "Ver más"}
         </button>
       `
@@ -555,7 +555,7 @@ function renderProductos() {
     macbooksVerMas.innerHTML =
       macbooks.length > 4
         ? `
-        <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 bg-white text-black text-sm font-medium">
+        <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosMacbooks >= macbooks.length ? "Ver menos" : "Ver más"}
         </button>
       `
@@ -574,7 +574,7 @@ function renderProductos() {
       resultadosWrap.classList.remove("hidden");
       gridResultados.innerHTML = resultados.length
         ? resultados.map(construirCard).join("")
-        : `<p class="text-sm text-black/50 col-span-full">No encontramos resultados.</p>`;
+        : `<p class="text-sm text-black/50 dark:text-white/50 col-span-full">No encontramos resultados.</p>`;
     }
   } else {
     resultadosWrap?.classList.add("hidden");
@@ -683,12 +683,12 @@ function mostrarErrorVisual() {
   const macbooksGrid = document.querySelector("#macbooks .grid");
 
   const htmlError = `
-    <div class="col-span-full p-8 text-center bg-white rounded-3xl border border-red-500/20 shadow-sm mt-4">
-      <p class="text-lg font-semibold text-black mb-2">Tuvimos un problema cargando el stock.</p>
-      <p class="text-sm text-black/60 mb-5">Por favor, revisá tu conexión o contactanos directamente para conocer el stock.</p>
+    <div class="col-span-full p-8 text-center bg-white dark:bg-zinc-900 rounded-3xl border border-red-500/20 shadow-sm mt-4">
+      <p class="text-lg font-semibold text-black dark:text-white mb-2">Tuvimos un problema cargando el stock.</p>
+      <p class="text-sm text-black/60 dark:text-white/60 mb-5">Por favor, revisá tu conexión o contactanos directamente para conocer el stock.</p>
       <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20No%20me%20carga%20la%20página,%20quería%20consultar%20el%20stock." 
          target="_blank" 
-         class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-sm font-medium hover:bg-black/80 transition">
+         class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium hover:bg-black/80 dark:bg-white/80 transition">
         Escribinos por WhatsApp
       </a>
     </div>
@@ -707,24 +707,24 @@ function mostrarSkeletons() {
   const macbooksGrid = document.querySelector("#macbooks .grid");
 
   const htmlSkeleton = `
-    <article class="rounded-3xl bg-white border border-black/8 p-4 animate-pulse">
+    <article class="rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 animate-pulse">
       <div class="mb-4 relative">
-        <div class="overflow-hidden rounded-2xl aspect-square bg-black/5"></div>
+        <div class="overflow-hidden rounded-2xl aspect-square bg-black/5 dark:bg-white/5"></div>
       </div>
       <div class="mb-3">
-        <div class="h-6 bg-black/5 rounded w-3/4 mb-2"></div>
-        <div class="h-4 bg-black/5 rounded w-1/2"></div>
+        <div class="h-6 bg-black/5 dark:bg-white/5 rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-black/5 dark:bg-white/5 rounded w-1/2"></div>
       </div>
       <div class="flex flex-wrap items-center gap-2 mb-4">
-        <div class="h-6 w-16 bg-black/5 rounded-full"></div>
-        <div class="h-6 w-20 bg-black/5 rounded-full"></div>
+        <div class="h-6 w-16 bg-black/5 dark:bg-white/5 rounded-full"></div>
+        <div class="h-6 w-20 bg-black/5 dark:bg-white/5 rounded-full"></div>
       </div>
       <div class="flex items-end justify-between gap-3">
         <div>
-          <div class="h-7 w-24 bg-black/5 rounded mb-1"></div>
-          <div class="h-4 w-16 bg-black/5 rounded"></div>
+          <div class="h-7 w-24 bg-black/5 dark:bg-white/5 rounded mb-1"></div>
+          <div class="h-4 w-16 bg-black/5 dark:bg-white/5 rounded"></div>
         </div>
-        <div class="h-9 w-24 bg-black/5 rounded-full"></div>
+        <div class="h-9 w-24 bg-black/5 dark:bg-white/5 rounded-full"></div>
       </div>
     </article>
   `;
@@ -799,7 +799,9 @@ function actualizarHeroSlider(index) {
 
   dots.forEach((dot, i) => {
     dot.classList.toggle("bg-black", i === heroSlideActual);
+    dot.classList.toggle("dark:bg-white", i === heroSlideActual);
     dot.classList.toggle("bg-black/20", i !== heroSlideActual);
+    dot.classList.toggle("dark:bg-white/20", i !== heroSlideActual);
   });
 }
 
