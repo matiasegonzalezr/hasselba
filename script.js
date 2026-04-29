@@ -489,10 +489,13 @@ function renderProductos() {
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
     .sort(aplicarOrden);
 
-  const macbooks = productosGlobales
-    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" || (p.CATEGORIA || "").toLowerCase().trim() === "macbook")
-    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort(aplicarOrden);
+ const macbooks = productosGlobales
+  .filter((p) =>
+    (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" ||
+    (p.CATEGORIA || "").toLowerCase().trim() === "macbook"
+  )
+  .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+  .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const preownedFiltrados = filtrarPreowned(preowned);
 
