@@ -5,6 +5,7 @@ let mostrarTodosPreowned = 4;
 let mostrarTodosNew = 4;
 let mostrarTodosOutlet = 4;
 let mostrarTodosMacbooks = 4;
+let mostrarTodosIpads = 4;
 
 let ordenGlobal = "mas-nuevos";
 
@@ -288,7 +289,8 @@ function resolverRutaImagen(valor) {
 
 function construirCard(p) {
   const categoria = (p.CATEGORIA || "").toLowerCase().trim();
-  const esMacbook = categoria === "macbook-preowned" || categoria === "macbook";
+  const esMacbook = categoria.includes("macbook");
+  const esIpad = categoria.includes("ipad");
 
   const modelo = p.MODELO || "";
   const gb = esMacbook ? (p.SSD || "") : (p.GB || "");
@@ -332,6 +334,12 @@ function construirCard(p) {
     if (gb) parts.push(`${gb} SSD`);
     if (color) parts.push(color);
     subTitulo = parts.join(" · ");
+  } else if (esIpad) {
+    const parts = [];
+    if (chip) parts.push(chip);
+    if (gb) parts.push(gb);
+    if (color) parts.push(color);
+    subTitulo = parts.join(" · ");
   } else {
     if (color) subTitulo += ` · ${color}`;
   }
@@ -347,6 +355,9 @@ function construirCard(p) {
     if (chip) nombreProducto += ` ${chip}`;
     if (ram) nombreProducto += ` ${ram} RAM`;
     if (gb) nombreProducto += ` ${gb} SSD`;
+  } else if (esIpad) {
+    if (chip) nombreProducto += ` ${chip}`;
+    if (gb) nombreProducto += ` ${gb}`;
   } else {
     if (gb) nombreProducto += ` ${gb}`;
   }
@@ -360,7 +371,7 @@ function construirCard(p) {
 
   const esNuevo = categoria === "iphone-new";
   const esOutlet = categoria === "iphone-outlet";
-  const esPreowned = categoria === "iphone-preowned" || esMacbook;
+  const esPreowned = categoria === "iphone-preowned" || esMacbook || esIpad;
 
   const outletDetalle = esOutlet
     ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${
@@ -463,16 +474,19 @@ function renderProductos() {
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
+  const ipadsGrid = document.querySelector("#ipads .grid");
 
   const preownedVerMas = document.getElementById("preowned-vermas");
   const newVerMas = document.getElementById("iphone-new-vermas");
   const outletVerMas = document.getElementById("outlet-vermas");
   const macbooksVerMas = document.getElementById("macbooks-vermas");
+  const ipadsVerMas = document.getElementById("ipads-vermas");
 
   if (preownedGrid) preownedGrid.innerHTML = "";
   if (newGrid) newGrid.innerHTML = "";
   if (outletGrid) outletGrid.innerHTML = "";
   if (macbooksGrid) macbooksGrid.innerHTML = "";
+  if (ipadsGrid) ipadsGrid.innerHTML = "";
 
   const preowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
@@ -489,13 +503,15 @@ function renderProductos() {
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
     .sort(aplicarOrden);
 
- const macbooks = productosGlobales
-  .filter((p) =>
-    (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" ||
-    (p.CATEGORIA || "").toLowerCase().trim() === "macbook"
-  )
-  .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-  .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+  const macbooks = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("macbook"))
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort(aplicarOrden);
+
+  const ipads = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("ipad"))
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort(aplicarOrden);
 
   const preownedFiltrados = filtrarPreowned(preowned);
 
@@ -503,6 +519,7 @@ function renderProductos() {
   const nuevosVisibles = limitarProductos(nuevos, mostrarTodosNew);
   const outletVisibles = limitarProductos(outlet, mostrarTodosOutlet);
   const macbooksVisibles = limitarProductos(macbooks, mostrarTodosMacbooks);
+  const ipadsVisibles = limitarProductos(ipads, mostrarTodosIpads);
 
   const htmlEmptyState = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
@@ -517,6 +534,7 @@ function renderProductos() {
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(construirCard).join("") : htmlEmptyState;
   if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(construirCard).join("") : htmlEmptyState;
   if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(construirCard).join("") : htmlEmptyState;
 
   // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
   setTimeout(initReveals, 50);
@@ -560,6 +578,17 @@ function renderProductos() {
         ? `
         <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosMacbooks >= macbooks.length ? "Ver menos" : "Ver más"}
+        </button>
+      `
+        : "";
+  }
+
+  if (ipadsVerMas) {
+    ipadsVerMas.innerHTML =
+      ipads.length > 4
+        ? `
+        <button onclick="toggleVerMas('ipads')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+          ${mostrarTodosIpads >= ipads.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -625,13 +654,25 @@ function toggleVerMas(categoria) {
 
   if (categoria === "macbooks") {
     const macbooks = productosGlobales
-      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned" || (p.CATEGORIA || "").toLowerCase().trim() === "macbook")
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("macbook"))
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
 
     if (mostrarTodosMacbooks >= macbooks.length) {
       mostrarTodosMacbooks = 4;
     } else {
       mostrarTodosMacbooks += 4;
+    }
+  }
+
+  if (categoria === "ipads") {
+    const ipads = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("ipad"))
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosIpads >= ipads.length) {
+      mostrarTodosIpads = 4;
+    } else {
+      mostrarTodosIpads += 4;
     }
   }
 
@@ -645,11 +686,14 @@ async function cargarProductos() {
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
   const urlMacbooks =
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBook";
+  const urlIpads =
+    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPad";
 
   try {
-    const [resIphones, resMacbooks] = await Promise.all([
+    const [resIphones, resMacbooks, resIpads] = await Promise.all([
       fetch(urlIphones),
-      fetch(urlMacbooks).catch(() => ({ json: () => [] })) // en caso de que la URL de macbooks falle
+      fetch(urlMacbooks).catch(() => ({ json: () => [] })), // en caso de que la URL de macbooks falle
+      fetch(urlIpads).catch(() => ({ json: () => [] })) // en caso de que la URL de ipads falle
     ]);
 
     const dataIphones = await resIphones.json();
@@ -657,14 +701,20 @@ async function cargarProductos() {
     if (resMacbooks.ok) {
         dataMacbooks = await resMacbooks.json();
     }
+    let dataIpads = [];
+    if (resIpads.ok) {
+        dataIpads = await resIpads.json();
+    }
 
     const iphonesArr = Array.isArray(dataIphones) ? dataIphones : [];
     const macbooksArr = Array.isArray(dataMacbooks) ? dataMacbooks : [];
+    const ipadsArr = Array.isArray(dataIpads) ? dataIpads : [];
 
     // Por defecto asumo que vienen sin categoria "macbook-preowned"
     macbooksArr.forEach(m => m.CATEGORIA = m.CATEGORIA || "macbook-preowned");
+    ipadsArr.forEach(i => i.CATEGORIA = i.CATEGORIA || "ipad-preowned");
 
-    productosGlobales = [...iphonesArr, ...macbooksArr];
+    productosGlobales = [...iphonesArr, ...macbooksArr, ...ipadsArr];
 
     inicializarFiltrosSidebar(
       productosGlobales.filter(
@@ -684,6 +734,7 @@ function mostrarErrorVisual() {
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
+  const ipadsGrid = document.querySelector("#ipads .grid");
 
   const htmlError = `
     <div class="col-span-full p-8 text-center bg-white dark:bg-zinc-900 rounded-3xl border border-red-500/20 shadow-sm mt-4">
@@ -701,6 +752,7 @@ function mostrarErrorVisual() {
   if (newGrid) newGrid.innerHTML = htmlError;
   if (outletGrid) outletGrid.innerHTML = htmlError;
   if (macbooksGrid) macbooksGrid.innerHTML = htmlError;
+  if (ipadsGrid) ipadsGrid.innerHTML = htmlError;
 }
 
 function mostrarSkeletons() {
@@ -708,6 +760,7 @@ function mostrarSkeletons() {
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
+  const ipadsGrid = document.querySelector("#ipads .grid");
 
   const htmlSkeleton = `
     <article class="rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 animate-pulse">
@@ -738,6 +791,7 @@ function mostrarSkeletons() {
   if (newGrid) newGrid.innerHTML = repeatSkeletons;
   if (outletGrid) outletGrid.innerHTML = repeatSkeletons;
   if (macbooksGrid) macbooksGrid.innerHTML = repeatSkeletons;
+  if (ipadsGrid) ipadsGrid.innerHTML = repeatSkeletons;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
