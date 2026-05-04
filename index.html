@@ -29,6 +29,7 @@
 
   <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="reviews.css">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -113,6 +114,14 @@
                     </div>
                 </div>
             </div>
+            <div class="group relative py-2">
+                <span class="cursor-pointer hover:text-black dark:text-white transition">iPad</span>
+                <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
+                    <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-black/5 dark:border-white/5 rounded-2xl shadow-xl p-2 flex flex-col gap-1 w-48">
+                        <a href="#ipads" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">PreOwned</a>
+                    </div>
+                </div>
+            </div>
             <a href="#service-form" class="py-2 hover:text-black dark:text-white transition">Servicio Técnico</a>
         </nav>
 
@@ -184,6 +193,16 @@
                 </button>
                 <div id="acc-macbook" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
                     <a href="#macbooks" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">PreOwned</a>
+                </div>
+            </div>
+
+            <div class="border-b border-black/5 dark:border-white/5 pb-2">
+                <button onclick="toggleAccordion('acc-ipad')" class="flex justify-between items-center w-full text-2xl font-semibold py-2 text-left">
+                    iPad
+                    <span id="icon-acc-ipad" class="text-2xl font-light transition-transform duration-300">+</span>
+                </button>
+                <div id="acc-ipad" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
+                    <a href="#ipads" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">PreOwned</a>
                 </div>
             </div>
 
@@ -313,6 +332,11 @@
                     <span class="block text-lg font-semibold text-black dark:text-white mb-1">MacBook</span>
                     <p class="text-sm text-black/55 dark:text-white/55">Usados seleccionados</p>
                 </a>
+                <a href="#ipads"
+                    class="reveal rounded-3xl bg-[#f8f8f8] dark:bg-[#1c1c1e] border border-black/15 dark:border-white/15 p-5 hover:shadow-sm transition" style="transition-delay: 500ms;">
+                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">iPad</span>
+                    <p class="text-sm text-black/55 dark:text-white/55">Usados seleccionados</p>
+                </a>
             </div>
 
         </div>
@@ -438,6 +462,14 @@
                     class="reveal rounded-2xl border border-black/10 dark:border-white/10 p-5 flex justify-between items-center hover:bg-black/5 dark:bg-white/5 transition" style="transition-delay: 400ms;">
                     <div>
                         <p class="text-lg font-semibold text-black dark:text-white">MacBook PreOwned</p>
+                        <p class="text-sm text-black/50 dark:text-white/50">Usados seleccionados</p>
+                    </div>
+                    <span>→</span>
+                </a>
+                <a href="#ipads"
+                    class="reveal rounded-2xl border border-black/10 dark:border-white/10 p-5 flex justify-between items-center hover:bg-black/5 dark:bg-white/5 transition" style="transition-delay: 500ms;">
+                    <div>
+                        <p class="text-lg font-semibold text-black dark:text-white">iPad PreOwned</p>
                         <p class="text-sm text-black/50 dark:text-white/50">Usados seleccionados</p>
                     </div>
                     <span>→</span>
@@ -698,6 +730,23 @@
         </div>
     </section>
 
+    <!-- IPADS PREOWNED -->
+    <section id="ipads" class="py-16 px-5 bg-[#f5f5f7] dark:bg-black">
+        <div class="max-w-3xl mx-auto">
+            <div class="reveal mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 dark:text-white/45 mb-2">iPad</p>
+                <h2 class="text-2xl font-semibold text-black dark:text-white mb-2">PreOwned</h2>
+                <p class="text-sm text-black/55 dark:text-white/55">Equipos usados y seleccionados.</p>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+                <!-- iPads inyectadas por JS -->
+            </div>
+
+            <div id="ipads-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
     <!-- POR QUÉ HASSEL -->
     <section class="py-16 px-5 bg-[#f5f5f7] dark:bg-black">
         <div class="max-w-3xl mx-auto">
@@ -827,6 +876,32 @@
         </div>
     </section>
 
+    <!-- RESEÑAS GOOGLE -->
+    <section id="google-reviews" class="py-20 px-5 bg-white dark:bg-zinc-900 border-t border-black/10 dark:border-white/10">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal mb-10 text-center">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 dark:text-white/45 mb-2">Opiniones</p>
+                <h2 class="text-3xl font-semibold text-black dark:text-white mb-4">Lo que dicen nuestros clientes</h2>
+                
+                <div id="google-reviews-header" class="mt-4">
+                    <!-- Se inyecta la calificación global desde JS -->
+                </div>
+            </div>
+
+            <div id="google-reviews-container" class="grid md:grid-cols-3 gap-6 auto-rows-fr">
+                <!-- Skeletons o Loading inicial (opcional, será reemplazado) -->
+                <p class="col-span-full text-center text-sm text-black/50 dark:text-white/50 py-8">Cargando reseñas de Google...</p>
+            </div>
+            
+            <div class="mt-8 flex justify-center">
+                <a href="https://g.page/r/YOUR_GOOGLE_SHORT_LINK/review" target="_blank"
+                   class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black/5 dark:bg-white/5 text-black dark:text-white text-sm font-medium hover:bg-black/10 dark:hover:bg-white/10 transition">
+                    Ver más opiniones en Google
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- CONTACTO -->
     <section class="py-20 px-5 bg-[#f5f5f7] dark:bg-black">
         <div class="max-w-md mx-auto text-center">
@@ -896,6 +971,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="reviews.js"></script>
 
 
 </body>
