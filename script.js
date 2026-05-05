@@ -369,9 +369,9 @@ function construirCard(p) {
 
   const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(mensaje)}`;
 
-  const esNuevo = categoria === "iphone-new";
-  const esOutlet = categoria === "iphone-outlet";
-  const esPreowned = categoria === "iphone-preowned" || esMacbook || esIpad;
+  const esNuevo = categoria.endsWith("-new");
+  const esOutlet = categoria.endsWith("-outlet");
+  const esPreowned = categoria.endsWith("-preowned") || (esMacbook && !esNuevo && !esOutlet) || (esIpad && !esNuevo && !esOutlet);
 
   const outletDetalle = esOutlet
     ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${
@@ -506,12 +506,20 @@ function renderProductos() {
   const macbooks = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("macbook"))
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort(aplicarOrden);
+    .sort((a, b) => {
+      const precioA = Number(a.USD || 0);
+      const precioB = Number(b.USD || 0);
+      return precioB - precioA;
+    });
 
   const ipads = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("ipad"))
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort(aplicarOrden);
+    .sort((a, b) => {
+      const precioA = Number(a.USD || 0);
+      const precioB = Number(b.USD || 0);
+      return precioB - precioA;
+    });
 
   const preownedFiltrados = filtrarPreowned(preowned);
 
