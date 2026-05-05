@@ -6,6 +6,8 @@ let mostrarTodosNew = 4;
 let mostrarTodosOutlet = 4;
 let mostrarTodosMacbooks = 4;
 let mostrarTodosIpads = 4;
+let mostrarTodosMacbooksNew = 4;
+let mostrarTodosIpadsNew = 4;
 
 let ordenGlobal = "mas-nuevos";
 
@@ -475,18 +477,24 @@ function renderProductos() {
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
+  const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
+  const ipadsNewGrid = document.querySelector("#ipads-new .grid");
 
   const preownedVerMas = document.getElementById("preowned-vermas");
   const newVerMas = document.getElementById("iphone-new-vermas");
   const outletVerMas = document.getElementById("outlet-vermas");
   const macbooksVerMas = document.getElementById("macbooks-vermas");
   const ipadsVerMas = document.getElementById("ipads-vermas");
+  const macbooksNewVerMas = document.getElementById("macbooks-new-vermas");
+  const ipadsNewVerMas = document.getElementById("ipads-new-vermas");
 
   if (preownedGrid) preownedGrid.innerHTML = "";
   if (newGrid) newGrid.innerHTML = "";
   if (outletGrid) outletGrid.innerHTML = "";
   if (macbooksGrid) macbooksGrid.innerHTML = "";
   if (ipadsGrid) ipadsGrid.innerHTML = "";
+  if (macbooksNewGrid) macbooksNewGrid.innerHTML = "";
+  if (ipadsNewGrid) ipadsNewGrid.innerHTML = "";
 
   const preowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
@@ -504,7 +512,16 @@ function renderProductos() {
     .sort(aplicarOrden);
 
   const macbooks = productosGlobales
-    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("macbook"))
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned")
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort((a, b) => {
+      const precioA = Number(a.USD || 0);
+      const precioB = Number(b.USD || 0);
+      return precioB - precioA;
+    });
+
+  const macbooksNew = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
     .sort((a, b) => {
       const precioA = Number(a.USD || 0);
@@ -513,7 +530,16 @@ function renderProductos() {
     });
 
   const ipads = productosGlobales
-    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("ipad"))
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-preowned")
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort((a, b) => {
+      const precioA = Number(a.USD || 0);
+      const precioB = Number(b.USD || 0);
+      return precioB - precioA;
+    });
+
+  const ipadsNew = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
     .sort((a, b) => {
       const precioA = Number(a.USD || 0);
@@ -527,7 +553,9 @@ function renderProductos() {
   const nuevosVisibles = limitarProductos(nuevos, mostrarTodosNew);
   const outletVisibles = limitarProductos(outlet, mostrarTodosOutlet);
   const macbooksVisibles = limitarProductos(macbooks, mostrarTodosMacbooks);
+  const macbooksNewVisibles = limitarProductos(macbooksNew, mostrarTodosMacbooksNew);
   const ipadsVisibles = limitarProductos(ipads, mostrarTodosIpads);
+  const ipadsNewVisibles = limitarProductos(ipadsNew, mostrarTodosIpadsNew);
 
   const htmlEmptyState = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
@@ -542,7 +570,9 @@ function renderProductos() {
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(construirCard).join("") : htmlEmptyState;
   if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(construirCard).join("") : htmlEmptyState;
   if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(construirCard).join("") : htmlEmptyState;
   if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(construirCard).join("") : htmlEmptyState;
 
   // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
   setTimeout(initReveals, 50);
@@ -591,12 +621,34 @@ function renderProductos() {
         : "";
   }
 
+  if (macbooksNewVerMas) {
+    macbooksNewVerMas.innerHTML =
+      macbooksNew.length > 4
+        ? `
+        <button onclick="toggleVerMas('macbooks-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+          ${mostrarTodosMacbooksNew >= macbooksNew.length ? "Ver menos" : "Ver más"}
+        </button>
+      `
+        : "";
+  }
+
   if (ipadsVerMas) {
     ipadsVerMas.innerHTML =
       ipads.length > 4
         ? `
         <button onclick="toggleVerMas('ipads')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
           ${mostrarTodosIpads >= ipads.length ? "Ver menos" : "Ver más"}
+        </button>
+      `
+        : "";
+  }
+
+  if (ipadsNewVerMas) {
+    ipadsNewVerMas.innerHTML =
+      ipadsNew.length > 4
+        ? `
+        <button onclick="toggleVerMas('ipads-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+          ${mostrarTodosIpadsNew >= ipadsNew.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -662,7 +714,7 @@ function toggleVerMas(categoria) {
 
   if (categoria === "macbooks") {
     const macbooks = productosGlobales
-      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("macbook"))
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned")
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
 
     if (mostrarTodosMacbooks >= macbooks.length) {
@@ -672,15 +724,39 @@ function toggleVerMas(categoria) {
     }
   }
 
+  if (categoria === "macbooks-new") {
+    const macbooksNew = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-new")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosMacbooksNew >= macbooksNew.length) {
+      mostrarTodosMacbooksNew = 4;
+    } else {
+      mostrarTodosMacbooksNew += 4;
+    }
+  }
+
   if (categoria === "ipads") {
     const ipads = productosGlobales
-      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim().includes("ipad"))
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-preowned")
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
 
     if (mostrarTodosIpads >= ipads.length) {
       mostrarTodosIpads = 4;
     } else {
       mostrarTodosIpads += 4;
+    }
+  }
+
+  if (categoria === "ipads-new") {
+    const ipadsNew = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-new")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosIpadsNew >= ipadsNew.length) {
+      mostrarTodosIpadsNew = 4;
+    } else {
+      mostrarTodosIpadsNew += 4;
     }
   }
 
@@ -743,6 +819,8 @@ function mostrarErrorVisual() {
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
+  const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
+  const ipadsNewGrid = document.querySelector("#ipads-new .grid");
 
   const htmlError = `
     <div class="col-span-full p-8 text-center bg-white dark:bg-zinc-900 rounded-3xl border border-red-500/20 shadow-sm mt-4">
@@ -761,6 +839,8 @@ function mostrarErrorVisual() {
   if (outletGrid) outletGrid.innerHTML = htmlError;
   if (macbooksGrid) macbooksGrid.innerHTML = htmlError;
   if (ipadsGrid) ipadsGrid.innerHTML = htmlError;
+  if (macbooksNewGrid) macbooksNewGrid.innerHTML = htmlError;
+  if (ipadsNewGrid) ipadsNewGrid.innerHTML = htmlError;
 }
 
 function mostrarSkeletons() {
@@ -769,6 +849,8 @@ function mostrarSkeletons() {
   const outletGrid = document.querySelector("#outlet .grid");
   const macbooksGrid = document.querySelector("#macbooks .grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
+  const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
+  const ipadsNewGrid = document.querySelector("#ipads-new .grid");
 
   const htmlSkeleton = `
     <article class="rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 animate-pulse">
@@ -800,6 +882,8 @@ function mostrarSkeletons() {
   if (outletGrid) outletGrid.innerHTML = repeatSkeletons;
   if (macbooksGrid) macbooksGrid.innerHTML = repeatSkeletons;
   if (ipadsGrid) ipadsGrid.innerHTML = repeatSkeletons;
+  if (macbooksNewGrid) macbooksNewGrid.innerHTML = repeatSkeletons;
+  if (ipadsNewGrid) ipadsNewGrid.innerHTML = repeatSkeletons;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
