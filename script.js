@@ -776,19 +776,13 @@ async function cargarProductos() {
   try {
     const [resIphones, resMacbooks, resIpads] = await Promise.all([
       fetch(urlIphones),
-      fetch(urlMacbooks).catch(() => ({ json: () => [] })), // en caso de que la URL de macbooks falle
-      fetch(urlIpads).catch(() => ({ json: () => [] })) // en caso de que la URL de ipads falle
+      fetch(urlMacbooks),
+      fetch(urlIpads)
     ]);
 
-    const dataIphones = await resIphones.json();
-    let dataMacbooks = [];
-    if (resMacbooks.ok) {
-        dataMacbooks = await resMacbooks.json();
-    }
-    let dataIpads = [];
-    if (resIpads.ok) {
-        dataIpads = await resIpads.json();
-    }
+    const dataIphones = resIphones.ok ? await resIphones.json() : [];
+    const dataMacbooks = resMacbooks.ok ? await resMacbooks.json() : [];
+    const dataIpads = resIpads.ok ? await resIpads.json() : [];
 
     const iphonesArr = Array.isArray(dataIphones) ? dataIphones : [];
     const macbooksArr = Array.isArray(dataMacbooks) ? dataMacbooks : [];
