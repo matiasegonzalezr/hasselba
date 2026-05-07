@@ -769,9 +769,9 @@ async function cargarProductos() {
   const urlIphones =
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
   const urlMacbooks =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBook";
-  const urlIpads =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPad";
+  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/macbook";
+const urlIpads =
+  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/ipad";
 
   try {
     const [resIphones, resMacbooks, resIpads] = await Promise.all([
