@@ -111,6 +111,7 @@
                 <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
                     <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-black/5 dark:border-white/5 rounded-2xl shadow-xl p-2 flex flex-col gap-1 w-48">
                         <a href="#macbooks" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">PreOwned</a>
+                        <a href="#macbooks-new" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">New</a>
                     </div>
                 </div>
             </div>
@@ -119,6 +120,7 @@
                 <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
                     <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-black/5 dark:border-white/5 rounded-2xl shadow-xl p-2 flex flex-col gap-1 w-48">
                         <a href="#ipads" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">PreOwned</a>
+                        <a href="#ipads-new" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">New</a>
                     </div>
                 </div>
             </div>
@@ -193,6 +195,7 @@
                 </button>
                 <div id="acc-macbook" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
                     <a href="#macbooks" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">PreOwned</a>
+                    <a href="#macbooks-new" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">New</a>
                 </div>
             </div>
 
@@ -203,6 +206,7 @@
                 </button>
                 <div id="acc-ipad" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
                     <a href="#ipads" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">PreOwned</a>
+                    <a href="#ipads-new" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">New</a>
                 </div>
             </div>
 
@@ -329,13 +333,23 @@
                 </a>
                 <a href="#macbooks"
                     class="reveal rounded-3xl bg-[#f8f8f8] dark:bg-[#1c1c1e] border border-black/15 dark:border-white/15 p-5 hover:shadow-sm transition" style="transition-delay: 400ms;">
-                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">MacBook</span>
+                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">MacBook PreOwned</span>
                     <p class="text-sm text-black/55 dark:text-white/55">Usados seleccionados</p>
                 </a>
                 <a href="#ipads"
                     class="reveal rounded-3xl bg-[#f8f8f8] dark:bg-[#1c1c1e] border border-black/15 dark:border-white/15 p-5 hover:shadow-sm transition" style="transition-delay: 500ms;">
-                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">iPad</span>
+                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">iPad PreOwned</span>
                     <p class="text-sm text-black/55 dark:text-white/55">Usados seleccionados</p>
+                </a>
+                <a href="#macbooks-new"
+                    class="reveal rounded-3xl bg-[#f8f8f8] dark:bg-[#1c1c1e] border border-black/15 dark:border-white/15 p-5 hover:shadow-sm transition" style="transition-delay: 600ms;">
+                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">MacBook New</span>
+                    <p class="text-sm text-black/55 dark:text-white/55">Selladas con garantía.</p>
+                </a>
+                <a href="#ipads-new"
+                    class="reveal rounded-3xl bg-[#f8f8f8] dark:bg-[#1c1c1e] border border-black/15 dark:border-white/15 p-5 hover:shadow-sm transition" style="transition-delay: 700ms;">
+                    <span class="block text-lg font-semibold text-black dark:text-white mb-1">iPad New</span>
+                    <p class="text-sm text-black/55 dark:text-white/55">Sellados con garantía.</p>
                 </a>
             </div>
 
@@ -466,11 +480,27 @@
                     </div>
                     <span>→</span>
                 </a>
+                <a href="#macbooks-new"
+                    class="reveal rounded-2xl border border-black/10 dark:border-white/10 p-5 flex justify-between items-center hover:bg-black/5 dark:bg-white/5 transition" style="transition-delay: 500ms;">
+                    <div>
+                        <p class="text-lg font-semibold text-black dark:text-white">MacBook New</p>
+                        <p class="text-sm text-black/50 dark:text-white/50">Equipos nuevos y sellados</p>
+                    </div>
+                    <span>→</span>
+                </a>
                 <a href="#ipads"
                     class="reveal rounded-2xl border border-black/10 dark:border-white/10 p-5 flex justify-between items-center hover:bg-black/5 dark:bg-white/5 transition" style="transition-delay: 500ms;">
                     <div>
                         <p class="text-lg font-semibold text-black dark:text-white">iPad PreOwned</p>
                         <p class="text-sm text-black/50 dark:text-white/50">Usados seleccionados</p>
+                    </div>
+                    <span>→</span>
+                </a>
+                <a href="#ipads-new"
+                    class="reveal rounded-2xl border border-black/10 dark:border-white/10 p-5 flex justify-between items-center hover:bg-black/5 dark:bg-white/5 transition" style="transition-delay: 600ms;">
+                    <div>
+                        <p class="text-lg font-semibold text-black dark:text-white">iPad New</p>
+                        <p class="text-sm text-black/50 dark:text-white/50">Equipos nuevos y sellados</p>
                     </div>
                     <span>→</span>
                 </a>
@@ -731,7 +761,6 @@
     </section>
 
     <!-- IPADS PREOWNED -->
-   <!-- IPADS PREOWNED -->
 <section id="ipads" class="py-16 px-5 bg-[#f5f5f7] dark:bg-black">
     <div class="max-w-3xl mx-auto">
         <div class="reveal mb-8">
@@ -1005,7 +1034,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=4"></script>
     <script src="reviews.js"></script>
 
 
