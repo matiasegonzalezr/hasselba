@@ -381,6 +381,11 @@ function construirCard(p) {
       }</p>`
     : "";
 
+  const detalleGeneral =
+    detalle && !esOutlet
+      ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${detalle}</p>`
+      : "";
+
   const estadoDetalle = esMacbook && estado
     ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${estado}</p>`
     : "";
@@ -449,6 +454,7 @@ function construirCard(p) {
       </div>
 
       ${outletDetalle}
+      ${detalleGeneral}
       ${estadoDetalle}
 
       <div class="flex items-end justify-between gap-3">
@@ -769,20 +775,26 @@ async function cargarProductos() {
   const urlIphones =
     "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
   const urlMacbooks =
-  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/macbook";
-const urlIpads =
-  "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/ipad";
+    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBook";
+  const urlIpads =
+    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPad";
 
   try {
     const [resIphones, resMacbooks, resIpads] = await Promise.all([
       fetch(urlIphones),
-      fetch(urlMacbooks),
-      fetch(urlIpads)
+      fetch(urlMacbooks).catch(() => ({ json: () => [] })), // en caso de que la URL de macbooks falle
+      fetch(urlIpads).catch(() => ({ json: () => [] })) // en caso de que la URL de ipads falle
     ]);
 
-    const dataIphones = resIphones.ok ? await resIphones.json() : [];
-    const dataMacbooks = resMacbooks.ok ? await resMacbooks.json() : [];
-    const dataIpads = resIpads.ok ? await resIpads.json() : [];
+    const dataIphones = await resIphones.json();
+    let dataMacbooks = [];
+    if (resMacbooks.ok) {
+        dataMacbooks = await resMacbooks.json();
+    }
+    let dataIpads = [];
+    if (resIpads.ok) {
+        dataIpads = await resIpads.json();
+    }
 
     const iphonesArr = Array.isArray(dataIphones) ? dataIphones : [];
     const macbooksArr = Array.isArray(dataMacbooks) ? dataMacbooks : [];
