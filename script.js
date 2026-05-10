@@ -502,10 +502,12 @@ function renderProductos() {
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = "";
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = "";
 
+  const { modelos } = obtenerFiltrosActivos();
+
   const preowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort(aplicarOrden);
+    .sort(modelos.length > 0 ? (a, b) => Number(b.USD || 0) - Number(a.USD || 0) : aplicarOrden);
 
   const nuevos = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-new")
