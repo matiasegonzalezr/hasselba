@@ -346,7 +346,7 @@ function construirCard(p) {
     if (color) subTitulo += ` · ${color}`;
   }
 
-  const precioTexto = precio ? `USD ${precio}` : "Consultar";
+  const precioTexto = precio ? `USD ${precio}` : "Lo quiero!";
 
   const precioNumerico = Number(precio || 0);
   const precioPesos =
