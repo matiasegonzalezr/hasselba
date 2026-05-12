@@ -494,7 +494,7 @@ function construirCard(p, isCarousel = false) {
             ${precioTexto}
           </p>
 
-          <p class="text-sm font-medium text-[#1F8F5F] mt-1">
+<p class="text-sm text-black/45 dark:text-white/45 mt-1">
             ${precioPesos ? formatearPesos(precioPesos) : ""}
           </p>
           
