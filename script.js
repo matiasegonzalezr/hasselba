@@ -67,6 +67,11 @@ function normalizarTexto(texto) {
     .trim();
 }
 
+function formatearPesos(valor) {
+  if (!valor) return "";
+  return "$" + Math.round(valor).toLocaleString("es-AR");
+}
+
 function cambiarOrden(valor) {
   ordenGlobal = valor;
   renderProductos();
@@ -289,7 +294,7 @@ function resolverRutaImagen(valor) {
   return `img/${img}`;
 }
 
-function construirCard(p) {
+function construirCard(p, isCarousel = false) {
   const categoria = (p.CATEGORIA || "").toLowerCase().trim();
   const esMacbook = categoria.includes("macbook");
   const esIpad = categoria.includes("ipad");
@@ -305,6 +310,14 @@ function construirCard(p) {
   const grade = p.GRADE || "";
   const detalle = p.DETALLE || "";
   const estado = p.ESTADO || "";
+
+  const hotsale = String(p.HOTSALE || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") === "si";
+  const precioAntes = p.PRECIO_ANTES || "";
+  const hotsaleTexto = p.HOTSALE_TEXTO || "";
 
   const id = `${modelo}-${gb}-${color}`
     .replace(/\s+/g, "-")
@@ -346,11 +359,24 @@ function construirCard(p) {
     if (color) subTitulo += ` · ${color}`;
   }
 
-  const precioTexto = precio ? `USD ${precio}` : "Lo quiero!";
+  const precioTexto = precio ? `USD ${precio}` : "Consultar";
 
   const precioNumerico = Number(precio || 0);
   const precioPesos =
     precioNumerico && dolarWeb ? Math.round(precioNumerico * dolarWeb) : 0;
+
+  let cuotasHtml = "";
+  if (hotsale && precioPesos > 0) {
+    const cuota3 = precioPesos * 1.18 / 3;
+    const cuota6 = precioPesos * 1.30 / 6;
+
+    cuotasHtml = `
+      <div class="mt-2 pt-2 border-t border-black/5 dark:border-white/5">
+        <p class="text-xs text-black/60 dark:text-white/60">3 cuotas de <strong class="text-black dark:text-white font-medium">${formatearPesos(cuota3)}</strong></p>
+        <p class="text-xs text-black/60 dark:text-white/60">6 cuotas de <strong class="text-black dark:text-white font-medium">${formatearPesos(cuota6)}</strong></p>
+      </div>
+    `;
+  }
 
   let nombreProducto = esMacbook ? `la ${modelo}` : `el ${modelo}`;
   if (esMacbook) {
@@ -405,10 +431,13 @@ function construirCard(p) {
     ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Outlet</span>`
     : "";
 
+  const carouselClasses = isCarousel ? "min-w-[85vw] sm:min-w-[320px] shrink-0 snap-center" : "";
+
   return `
-    <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4">
+    <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 ${carouselClasses}">
       <div class="mb-4 relative">
-        <div class="overflow-hidden rounded-2xl aspect-square">
+        <div class="overflow-hidden rounded-2xl aspect-square relative">
+          ${hotsale ? `<span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase">Hot Sale</span>` : ""}
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
             ${imagenesFinales
               .map(
@@ -456,21 +485,25 @@ function construirCard(p) {
       ${outletDetalle}
       ${detalleGeneral}
       ${estadoDetalle}
+      ${hotsaleTexto ? `<p class="text-sm font-medium text-red-600 dark:text-red-400 mb-4">${hotsaleTexto}</p>` : ""}
 
       <div class="flex items-end justify-between gap-3">
         <div>
+          ${hotsale && precioAntes ? `<p class="text-sm text-black/40 dark:text-white/40 line-through leading-none mb-1">USD ${precioAntes}</p>` : ""}
           <p class="text-xl font-semibold text-black dark:text-white leading-none">
             ${precioTexto}
           </p>
 
           <p class="text-sm font-medium text-[#1F8F5F] mt-1">
-            ${precioPesos ? `$${precioPesos.toLocaleString("es-AR")}` : ""}
+            ${precioPesos ? formatearPesos(precioPesos) : ""}
           </p>
+          
+          ${cuotasHtml}
         </div>
 
         <a href="${waLink}" target="_blank"
           class="px-4 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black text-xs font-medium">
-          Lo quiero! →
+          Consultar
         </a>
       </div>
     </article>
@@ -478,6 +511,8 @@ function construirCard(p) {
 }
 
 function renderProductos() {
+  const hotsaleSection = document.getElementById("hotsale-section");
+  const hotsaleGrid = document.getElementById("hotsale-grid");
   const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
@@ -494,6 +529,7 @@ function renderProductos() {
   const macbooksNewVerMas = document.getElementById("macbooks-new-vermas");
   const ipadsNewVerMas = document.getElementById("ipads-new-vermas");
 
+  if (hotsaleGrid) hotsaleGrid.innerHTML = "";
   if (preownedGrid) preownedGrid.innerHTML = "";
   if (newGrid) newGrid.innerHTML = "";
   if (outletGrid) outletGrid.innerHTML = "";
@@ -574,13 +610,27 @@ function renderProductos() {
     </div>
   `;
 
-  if (preownedGrid) preownedGrid.innerHTML = preownedVisibles.length ? preownedVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(construirCard).join("") : htmlEmptyState;
-  if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(construirCard).join("") : htmlEmptyState;
+  if (hotsaleSection && hotsaleGrid) {
+    const hotsaleProducts = productosGlobales
+      .filter((p) => String(p.HOTSALE || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === "si")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (hotsaleProducts.length > 0) {
+      hotsaleSection.classList.remove("hidden");
+      hotsaleGrid.innerHTML = hotsaleProducts.map(p => construirCard(p, true)).join("");
+    } else {
+      hotsaleSection.classList.add("hidden");
+      hotsaleGrid.innerHTML = "";
+    }
+  }
+
+  if (preownedGrid) preownedGrid.innerHTML = preownedVisibles.length ? preownedVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
 
   // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
   setTimeout(initReveals, 50);
@@ -673,7 +723,7 @@ function renderProductos() {
     if (resultadosWrap && gridResultados) {
       resultadosWrap.classList.remove("hidden");
       gridResultados.innerHTML = resultados.length
-        ? resultados.map(construirCard).join("")
+        ? resultados.map(p => construirCard(p)).join("")
         : `<p class="text-sm text-black/50 dark:text-white/50 col-span-full">No encontramos resultados.</p>`;
     }
   } else {
