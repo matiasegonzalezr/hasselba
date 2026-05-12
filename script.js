@@ -470,7 +470,7 @@ function construirCard(p) {
 
         <a href="${waLink}" target="_blank"
           class="px-4 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black text-xs font-medium">
-          Consultar
+          Lo quiero!
         </a>
       </div>
     </article>
