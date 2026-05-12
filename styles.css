@@ -165,3 +165,104 @@ article{
   opacity: 1;
   transform: translateY(0);
 }
+
+/* CAMBIO 1: Checkboxes custom */
+.filtro-modelo, .filtro-bateria, .filtro-precio {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 5px !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.25) !important;
+  background-color: transparent !important;
+  transition: all 150ms ease !important;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+  display: inline-block;
+}
+
+@media (prefers-color-scheme: dark) {
+  .filtro-modelo, .filtro-bateria, .filtro-precio {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+}
+
+.filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked {
+  background-color: #000 !important;
+  border-color: #000 !important;
+}
+
+.filtro-modelo:checked::after, .filtro-bateria:checked::after, .filtro-precio:checked::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 4px;
+  height: 8px;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked {
+    background-color: #fff !important;
+    border-color: #fff !important;
+  }
+  .filtro-modelo:checked::after, .filtro-bateria:checked::after, .filtro-precio:checked::after {
+    border-bottom: 2px solid #000;
+    border-right: 2px solid #000;
+  }
+}
+
+/* CAMBIO 2: Hover state en las cards de producto */
+article.rounded-3xl {
+  transition: transform 200ms ease, box-shadow 200ms ease !important;
+}
+
+article.rounded-3xl:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  article.rounded-3xl:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* CAMBIO 3: Overlay de filtros en mobile */
+.filtros-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 49;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.filtros-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* CAMBIO 5 (Nuevo): Animación de entrada del bottom sheet */
+@media (max-width: 1023px) {
+  #modal-filtros {
+    transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1) !important;
+  }
+}
+
+/* CAMBIO 5: Select de orden en dark mode */
+@media (prefers-color-scheme: dark) {
+  #orden-select {
+    color: #ffffff !important;
+    background-color: transparent !important;
+  }
+  #orden-select option {
+    background-color: #1c1c1e !important;
+    color: #ffffff !important;
+  }
+}
