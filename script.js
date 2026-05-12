@@ -187,15 +187,18 @@ function toggleAccordion(id) {
 
 function toggleModalFiltros() {
   const modal = document.getElementById("modal-filtros");
+  const overlay = document.getElementById("overlay-filtros");
   if (!modal) return;
   if (modal.classList.contains("translate-y-full")) {
     modal.classList.remove("translate-y-full");
     modal.classList.add("translate-y-0");
     document.body.style.overflow = "hidden";
+    if (overlay) overlay.classList.add("active");
   } else {
     modal.classList.add("translate-y-full");
     modal.classList.remove("translate-y-0");
     document.body.style.overflow = "";
+    if (overlay) overlay.classList.remove("active");
   }
 }
 
@@ -494,7 +497,7 @@ function construirCard(p, isCarousel = false) {
             ${precioTexto}
           </p>
 
-<p class="text-sm text-black/45 dark:text-white/45 mt-1">
+          <p class="text-sm font-medium text-[#1F8F5F] mt-1">
             ${precioPesos ? formatearPesos(precioPesos) : ""}
           </p>
           
