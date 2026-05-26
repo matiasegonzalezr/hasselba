@@ -1,3 +1,4 @@
+```css
 /* FUENTES */
 
 @font-face {
@@ -47,9 +48,11 @@ body {
 body {
   font-family: 'Myriad Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
+
   background-color: #f5f5f7;
   color: #1a1a1a;
-  overflow-x: clip;
+
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -74,9 +77,12 @@ body {
 .iphones-nuevos-container {
   width: 100%;
   max-width: 1280px;
+
   margin: 0 auto;
+
   padding-left: 24px;
   padding-right: 24px;
+
   overflow: visible;
 }
 
@@ -91,28 +97,71 @@ body {
 
 .glass {
   background: rgba(255, 255, 255, 0.72);
+
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   .glass {
     background: rgba(15, 15, 15, 0.72);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 }
 
-/* LAYOUT GENERAL */
+/* =========================
+   LAYOUT GENERAL
+========================= */
 
 .catalog-layout,
 .preowned-layout,
 .layout-grid {
-  overflow: visible !important;
+  display: grid;
+
+  grid-template-columns: 280px minmax(0, 1fr);
+
+  gap: 24px;
+
+  width: 100%;
+  max-width: 100%;
+
   align-items: flex-start;
+
+  overflow-x: hidden;
 }
 
-/* SIDEBAR FILTROS */
+.catalog-layout > *,
+.preowned-layout > *,
+.layout-grid > * {
+  min-width: 0;
+}
+
+/* =========================
+   GRID PRODUCTOS
+========================= */
+
+.products-grid,
+#products-grid,
+#preowned-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  );
+
+  gap: 24px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================
+   SIDEBAR FILTROS
+========================= */
 
 .sidebar-filtros,
 #sidebar-filtros,
@@ -128,14 +177,21 @@ aside.filtros {
   top: 24px;
 
   isolation: isolate;
+
   transform: translateZ(0);
+
+  align-self: start;
 }
 
-/* FILTROS HORIZONTALES */
+/* =========================
+   FILTROS HORIZONTALES
+========================= */
 
 #preowned-filtros-wrap {
   -webkit-overflow-scrolling: touch;
+
   scroll-behavior: smooth;
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -148,7 +204,9 @@ aside.filtros {
   transition: opacity 0.2s ease;
 }
 
-/* FIX UNIVERSAL MEDIA */
+/* =========================
+   FIX UNIVERSAL MEDIA
+========================= */
 
 img,
 video,
@@ -158,18 +216,27 @@ iframe {
   display: block;
 }
 
-/* IMÁGENES CARDS */
+/* =========================
+   IMÁGENES CARDS
+========================= */
 
 article img {
   width: 100%;
+
   aspect-ratio: 1 / 1;
+
   object-fit: cover;
+
   display: block;
+
   border-radius: 24px;
+
   background: #ededf0;
 }
 
-/* FIX SLIDERS SAFARI */
+/* =========================
+   FIX SLIDERS SAFARI
+========================= */
 
 [id^="slider-"] {
   width: 100%;
@@ -178,25 +245,54 @@ article img {
 
 [id^="slider-"] > div {
   flex: 0 0 100%;
+
   min-width: 100%;
   max-width: 100%;
 }
 
-/* IMPORTANTE:
-   overflow:hidden SOLO donde realmente haga falta.
-   Antes estaba rompiendo bordes/render/sticky.
-*/
+/* =========================
+   CARDS
+========================= */
 
 article {
   position: relative;
+
   border-radius: 32px;
+
+  min-width: 0;
+
+  overflow: hidden;
 }
 
-/* ANIMACIONES */
+article.rounded-3xl {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease !important;
+
+  will-change: auto;
+}
+
+article.rounded-3xl:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  article.rounded-3xl:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
 
 .reveal {
   opacity: 0;
+
   transform: translateY(24px);
+
   transition:
     opacity 0.7s ease,
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
@@ -204,10 +300,13 @@ article {
 
 .reveal.reveal-active {
   opacity: 1;
+
   transform: translateY(0);
 }
 
-/* CHECKBOXES CUSTOM */
+/* =========================
+   CHECKBOXES CUSTOM
+========================= */
 
 .filtro-modelo,
 .filtro-bateria,
@@ -287,29 +386,9 @@ article {
   }
 }
 
-/* HOVER CARDS */
-
-article.rounded-3xl {
-  transition:
-    transform 200ms ease,
-    box-shadow 200ms ease !important;
-
-  will-change: auto;
-}
-
-article.rounded-3xl:hover {
-  transform: translateY(-2px);
-
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-@media (prefers-color-scheme: dark) {
-  article.rounded-3xl:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  }
-}
-
-/* OVERLAY FILTROS MOBILE */
+/* =========================
+   OVERLAY FILTROS MOBILE
+========================= */
 
 .filtros-overlay {
   position: fixed;
@@ -332,7 +411,9 @@ article.rounded-3xl:hover {
   pointer-events: auto;
 }
 
-/* BOTTOM SHEET MOBILE */
+/* =========================
+   BOTTOM SHEET MOBILE
+========================= */
 
 @media (max-width: 1023px) {
   #modal-filtros {
@@ -341,7 +422,40 @@ article.rounded-3xl:hover {
   }
 }
 
-/* SELECT DARK MODE */
+/* =========================
+   MOBILE LAYOUT
+========================= */
+
+@media (max-width: 1023px) {
+  .catalog-layout,
+  .preowned-layout,
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-filtros,
+  #sidebar-filtros,
+  aside.filtros {
+    width: 100%;
+    min-width: 100%;
+
+    position: relative;
+    top: unset;
+  }
+
+  .products-grid,
+  #products-grid,
+  #preowned-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(220px, 1fr)
+    );
+  }
+}
+
+/* =========================
+   SELECT DARK MODE
+========================= */
 
 @media (prefers-color-scheme: dark) {
   #orden-select {
@@ -354,3 +468,4 @@ article.rounded-3xl:hover {
     color: #ffffff !important;
   }
 }
+```
