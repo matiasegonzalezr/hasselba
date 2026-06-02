@@ -439,7 +439,7 @@ function construirCard(p, isCarousel = false) {
   return `
     <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 ${carouselClasses}">
       <div class="mb-4 relative">
-        <div class="overflow-hidden rounded-2xl aspect-square relative">
+        <a href="${waLink}" target="_blank" class="block overflow-hidden rounded-2xl aspect-square relative cursor-pointer">
           ${hotsale ? `<span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase">Hot Sale</span>` : ""}
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
             ${imagenesFinales
@@ -452,17 +452,17 @@ function construirCard(p, isCarousel = false) {
               )
               .join("")}
           </div>
-        </div>
+        </a>
 
         ${
           imagenesFinales.length > 1
             ? `
-            <button onclick="moverSlide('${id}', -1)"
+            <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', -1)"
               class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
               ‹
             </button>
 
-            <button onclick="moverSlide('${id}', 1)"
+            <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', 1)"
               class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
               ›
             </button>
