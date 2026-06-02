@@ -83,8 +83,29 @@ function renderReviews(reviews, rating, totalRatings) {
         </div>
 
         <!-- Dots -->
-        <div id="reviews-dots" class="flex justify-center gap-2 mt-6">
-            ${bestReviews.map((_, i) => `
+        <!-- Dots -->
+<div id="reviews-dots" class="flex justify-center gap-2 mt-6">
+    ${Array.from({
+        length: Math.max(
+            1,
+            bestReviews.length -
+            (
+                window.innerWidth >= 1024 ? 3 :
+                window.innerWidth >= 640 ? 2 : 1
+            ) + 1
+        )
+    }, (_, i) => `
+        <button
+            onclick="goToReview(${i})"
+            class="review-dot w-2 h-2 rounded-full transition-all duration-300 ${
+                i === 0
+                    ? 'bg-black dark:bg-white w-4'
+                    : 'bg-black/20 dark:bg-white/20'
+            }"
+            aria-label="Página ${i + 1}">
+        </button>
+    `).join("")}
+</div>
                 <button 
                     onclick="goToReview(${i})" 
                     class="review-dot w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-black dark:bg-white w-4' : 'bg-black/20 dark:bg-white/20'}"
