@@ -83,7 +83,6 @@ function renderReviews(reviews, rating, totalRatings) {
         </div>
 
         <!-- Dots -->
-        <!-- Dots -->
 <div id="reviews-dots" class="flex justify-center gap-2 mt-6">
     ${Array.from({
         length: Math.max(
@@ -106,13 +105,6 @@ function renderReviews(reviews, rating, totalRatings) {
         </button>
     `).join("")}
 </div>
-                <button 
-                    onclick="goToReview(${i})" 
-                    class="review-dot w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-black dark:bg-white w-4' : 'bg-black/20 dark:bg-white/20'}"
-                    aria-label="Reseña ${i + 1}">
-                </button>
-            `).join("")}
-        </div>
     `;
 
     iniciarCarruselReviews(bestReviews.length);
