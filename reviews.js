@@ -171,7 +171,7 @@ function moverCarruselReviews() {
     track.style.transform = `translateX(-${porcentaje}%)`;
 
     dots.forEach((dot, i) => {
-        const activo = i === reviewActual;
+const activo = i === Math.min(reviewActual, maxSlide);
 
         dot.className = `review-dot rounded-full transition-all duration-300 ${
             activo
