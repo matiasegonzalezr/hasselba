@@ -136,24 +136,33 @@ function goToReview(index) {
 function moverCarruselReviews() {
     const track = document.getElementById("reviews-track");
     const dots = document.querySelectorAll(".review-dot");
+
     if (!track) return;
 
-    // En desktop (lg) muestra 3 a la vez, en tablet 2, en mobile 1
     let slidesVisibles = 1;
-    if (window.innerWidth >= 1024) slidesVisibles = 3;
-    else if (window.innerWidth >= 640) slidesVisibles = 2;
+
+    if (window.innerWidth >= 1024) {
+        slidesVisibles = 3;
+    } else if (window.innerWidth >= 640) {
+        slidesVisibles = 2;
+    }
 
     const maxSlide = Math.max(0, reviewTotal - slidesVisibles);
-    const slideIndex = Math.min(reviewActual, maxSlide);
-    const porcentaje = (100 / slidesVisibles) * slideIndex;
+
+    if (reviewActual > maxSlide) {
+        reviewActual = maxSlide;
+    }
+
+    const porcentaje = (100 / slidesVisibles) * reviewActual;
 
     track.style.transform = `translateX(-${porcentaje}%)`;
 
     dots.forEach((dot, i) => {
         const activo = i === reviewActual;
+
         dot.className = `review-dot rounded-full transition-all duration-300 ${
-            activo 
-                ? 'bg-black dark:bg-white w-4 h-2' 
+            activo
+                ? 'bg-black dark:bg-white w-4 h-2'
                 : 'bg-black/20 dark:bg-white/20 w-2 h-2'
         }`;
     });
