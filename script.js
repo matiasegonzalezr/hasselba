@@ -206,12 +206,11 @@ function obtenerFiltrosActivos() {
   const modelos = Array.from(document.querySelectorAll('.filtro-modelo:checked')).map(cb => cb.value);
   const baterias = Array.from(document.querySelectorAll('.filtro-bateria:checked')).map(cb => parseInt(cb.value));
   const precios = Array.from(document.querySelectorAll('.filtro-precio:checked')).map(cb => cb.value);
-  const almacenamientos = Array.from(document.querySelectorAll('.filtro-almacenamiento:checked')).map(cb => cb.value);
-  return { modelos, baterias, precios, almacenamientos };
+  return { modelos, baterias, precios };
 }
 
 function filtrarPreowned(lista) {
-  const { modelos, baterias, precios, almacenamientos } = obtenerFiltrosActivos();
+  const { modelos, baterias, precios } = obtenerFiltrosActivos();
   return lista.filter((p) => {
     if (modelos.length > 0 && !modelos.includes(obtenerFamilia(p.MODELO || ""))) return false;
     if (baterias.length > 0) {
@@ -230,10 +229,6 @@ function filtrarPreowned(lista) {
         return false;
       });
       if (!cumplePrecio) return false;
-    }
-    if (almacenamientos.length > 0) {
-      const gbProducto = String(p.GB || "").replace(/[^0-9]/g, "");
-      if (!almacenamientos.includes(gbProducto)) return false;
     }
     return true;
   });
@@ -259,7 +254,7 @@ function inicializarFiltrosSidebar(productos) {
     </label>
   `).join("");
 
-  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio, .filtro-almacenamiento');
+  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio');
   checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       mostrarTodosPreowned = 6;
@@ -319,13 +314,7 @@ function construirCard(p, isCarousel = false) {
   const detalle = p.DETALLE || "";
   const estado = p.ESTADO || "";
 
-  const hotsale = String(p.HOTSALE || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") === "si";
   const precioAntes = p.PRECIO_ANTES || "";
-  const hotsaleTexto = p.HOTSALE_TEXTO || "";
 
   const id = `${modelo}-${gb}-${color}`
     .replace(/\s+/g, "-")
@@ -373,18 +362,6 @@ function construirCard(p, isCarousel = false) {
   const precioPesos =
     precioNumerico && dolarWeb ? Math.round(precioNumerico * dolarWeb) : 0;
 
-  let cuotasHtml = "";
-  if (hotsale && precioPesos > 0) {
-    const cuota3 = precioPesos * 1.18 / 3;
-    const cuota6 = precioPesos * 1.30 / 6;
-
-    cuotasHtml = `
-      <div class="mt-2 pt-2 border-t border-black/5 dark:border-white/5">
-        <p class="text-xs text-black/60 dark:text-white/60">3 cuotas de <strong class="text-black dark:text-white font-medium">${formatearPesos(cuota3)}</strong></p>
-        <p class="text-xs text-black/60 dark:text-white/60">6 cuotas de <strong class="text-black dark:text-white font-medium">${formatearPesos(cuota6)}</strong></p>
-      </div>
-    `;
-  }
 
   let nombreProducto = esMacbook ? `la ${modelo}` : `el ${modelo}`;
   if (esMacbook) {
@@ -445,7 +422,6 @@ function construirCard(p, isCarousel = false) {
     <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 ${carouselClasses}">
       <div class="mb-4 relative">
         <a href="${waLink}" target="_blank" class="block overflow-hidden rounded-2xl aspect-square relative cursor-pointer">
-          ${hotsale ? `<span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] font-bold tracking-wider uppercase">Hot Sale</span>` : ""}
           <div id="slider-${id}" class="flex h-full w-full max-w-full transition-transform duration-300 ease-out">
             ${imagenesFinales
               .map(
@@ -493,11 +469,10 @@ function construirCard(p, isCarousel = false) {
       ${outletDetalle}
       ${detalleGeneral}
       ${estadoDetalle}
-      ${hotsaleTexto ? `<p class="text-sm font-medium text-red-600 dark:text-red-400 mb-4">${hotsaleTexto}</p>` : ""}
 
       <div class="flex items-end justify-between gap-3">
         <div>
-          ${hotsale && precioAntes ? `<p class="text-sm text-black/40 dark:text-white/40 line-through leading-none mb-1">USD ${precioAntes}</p>` : ""}
+          ${precioAntes ? `<p class="text-sm text-black/40 dark:text-white/40 line-through leading-none mb-1">USD ${precioAntes}</p>` : ""}
           <p class="text-xl font-semibold text-black dark:text-white leading-none">
             ${precioTexto}
           </p>
@@ -505,8 +480,6 @@ function construirCard(p, isCarousel = false) {
           <p class="text-sm font-medium text-[#1F8F5F] mt-1">
             ${precioPesos ? formatearPesos(precioPesos) : ""}
           </p>
-          
-          ${cuotasHtml}
         </div>
 
         <a href="${waLink}" target="_blank"
@@ -519,8 +492,6 @@ function construirCard(p, isCarousel = false) {
 }
 
 function renderProductos() {
-  const hotsaleSection = document.getElementById("hotsale-section");
-  const hotsaleGrid = document.getElementById("hotsale-grid");
   const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
@@ -537,7 +508,6 @@ function renderProductos() {
   const macbooksNewVerMas = document.getElementById("macbooks-new-vermas");
   const ipadsNewVerMas = document.getElementById("ipads-new-vermas");
 
-  if (hotsaleGrid) hotsaleGrid.innerHTML = "";
   if (preownedGrid) preownedGrid.innerHTML = "";
   if (newGrid) newGrid.innerHTML = "";
   if (outletGrid) outletGrid.innerHTML = "";
@@ -617,20 +587,6 @@ function renderProductos() {
       <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Consultar por WhatsApp</a>
     </div>
   `;
-
-  if (hotsaleSection && hotsaleGrid) {
-    const hotsaleProducts = productosGlobales
-      .filter((p) => String(p.HOTSALE || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === "si")
-      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
-
-    if (hotsaleProducts.length > 0) {
-      hotsaleSection.classList.remove("hidden");
-      hotsaleGrid.innerHTML = hotsaleProducts.map(p => construirCard(p, true)).join("");
-    } else {
-      hotsaleSection.classList.add("hidden");
-      hotsaleGrid.innerHTML = "";
-    }
-  }
 
   if (preownedGrid) preownedGrid.innerHTML = preownedVisibles.length ? preownedVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
