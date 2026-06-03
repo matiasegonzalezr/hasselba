@@ -206,11 +206,12 @@ function obtenerFiltrosActivos() {
   const modelos = Array.from(document.querySelectorAll('.filtro-modelo:checked')).map(cb => cb.value);
   const baterias = Array.from(document.querySelectorAll('.filtro-bateria:checked')).map(cb => parseInt(cb.value));
   const precios = Array.from(document.querySelectorAll('.filtro-precio:checked')).map(cb => cb.value);
-  return { modelos, baterias, precios };
+  const almacenamientos = Array.from(document.querySelectorAll('.filtro-almacenamiento:checked')).map(cb => cb.value);
+  return { modelos, baterias, precios, almacenamientos };
 }
 
 function filtrarPreowned(lista) {
-  const { modelos, baterias, precios } = obtenerFiltrosActivos();
+  const { modelos, baterias, precios, almacenamientos } = obtenerFiltrosActivos();
   return lista.filter((p) => {
     if (modelos.length > 0 && !modelos.includes(obtenerFamilia(p.MODELO || ""))) return false;
     if (baterias.length > 0) {
@@ -229,6 +230,10 @@ function filtrarPreowned(lista) {
         return false;
       });
       if (!cumplePrecio) return false;
+    }
+    if (almacenamientos.length > 0) {
+      const gbProducto = String(p.GB || "").replace(/[^0-9]/g, "");
+      if (!almacenamientos.includes(gbProducto)) return false;
     }
     return true;
   });
@@ -254,7 +259,7 @@ function inicializarFiltrosSidebar(productos) {
     </label>
   `).join("");
 
-  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio');
+  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio, .filtro-almacenamiento');
   checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       mostrarTodosPreowned = 6;
