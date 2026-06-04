@@ -334,9 +334,17 @@ function construirCard(p, isCarousel = false) {
     ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${ciclos} ciclos</span>`
     : "";
 
-  const gradeTag = grade
-    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Grade ${grade}</span>`
-    : "";
+  const gradeTexto =
+  grade === "A+" ? "Excelente" :
+  grade === "A"  ? "Muy bueno" :
+  grade === "B"  ? "Bueno" :
+  grade;
+
+const gradeTag = grade
+  ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">
+       Grade ${grade} · ${gradeTexto}
+     </span>`
+  : "";
 
   let subTitulo = gb;
   if (esMacbook) {
