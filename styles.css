@@ -469,3 +469,29 @@ article.rounded-3xl:hover {
   }
 }
 ```
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 58px;
+  height: 58px;
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+
+  transition: all .3s ease;
+}
+
+.whatsapp-float.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (min-width: 769px) {
+  .whatsapp-float {
+    display: none;
+  }
+}
