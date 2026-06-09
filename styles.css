@@ -1,4 +1,3 @@
-```css
 /* FUENTES */
 
 @font-face {
@@ -468,23 +467,24 @@ article.rounded-3xl:hover {
     color: #ffffff !important;
   }
 }
-```
 
-
+/* =========================
+   WHATSAPP FAB
+========================= */
 
 .whatsapp-fab {
-  display: none; /* oculto en desktop */
-  position: fixed;
-  bottom: 24px;
-  right: 20px;
-  z-index: 9999;
-  background-color: #25D366;
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+  background-color: #25D366 !important;
+  border-radius: 50% !important;
+  width: 56px !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
   transition: transform 0.2s ease;
 }
 
@@ -492,9 +492,10 @@ article.rounded-3xl:hover {
   transform: scale(1.08);
 }
 
-/* Solo visible en mobile */
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .whatsapp-fab {
-    display: flex;
+    display: none !important;
   }
 }
+
+
