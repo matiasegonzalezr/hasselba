@@ -1067,3 +1067,18 @@ function initReveals() {
   const reveals = document.querySelectorAll('.reveal:not(.reveal-active)');
   reveals.forEach(el => revealObserver.observe(el));
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const whatsappBtn = document.querySelector(".whatsapp-float");
+  const hero = document.querySelector("section"); // o el selector de tu hero
+
+  if (!whatsappBtn || !hero) return;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > hero.offsetHeight) {
+      whatsappBtn.classList.add("show");
+    } else {
+      whatsappBtn.classList.remove("show");
+    }
+  });
+});
