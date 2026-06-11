@@ -590,8 +590,8 @@ function renderProductos() {
   const htmlEmptyState = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
       <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
-      <p class="text-lg font-semibold text-black dark:text-white mb-2">No encontramos equipos exactos.</p>
-      <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Intentá con otros filtros o escribinos por WhatsApp para ver si te lo podemos conseguir.</p>
+      <p class="text-lg font-semibold text-black dark:text-white mb-2">Por encargo.</p>
+      <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">No manejamos stock permanente de MacBooks nuevas, pero las conseguimos. Contanos qué modelo buscás y te cotizamos en 24hs.</p>
       <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Consultar por WhatsApp</a>
     </div>
   `;
