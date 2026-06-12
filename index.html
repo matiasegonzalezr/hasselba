@@ -268,77 +268,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </section>
 
     <!-- HERO -->
-    <section id="hero" class="pt-24 md:pt-32 pb-16 bg-[#f5f5f7] dark:bg-black" style="padding-left: max(20px, env(safe-area-inset-left) + 16px); padding-right: max(20px, env(safe-area-inset-right) + 16px);">
-        <div class="max-w-6xl mx-auto">
+    <!-- HERO FULL-WIDTH -->
+    <section id="hero" class="relative overflow-hidden" style="margin-top: 64px;">
 
-            <div class="grid lg:grid-cols-2 gap-10 items-center mb-10">
+        <!-- Imagen de fondo -->
+        <img src="img/img-HERO.webp"
+             alt="Local Hassel BA – iPhone en Berazategui"
+             class="absolute inset-0 w-full h-full object-cover">
 
-                <div class="reveal">
-                    <p class="text-[11px] uppercase tracking-[0.28em] text-black/45 dark:text-white/45 mb-3">Hassel BA</p>
+        <!-- Overlay: oscuro a la izquierda, transparente a la derecha -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
 
-                    <!-- SEO: H1 optimizado con keyword principal -->
-                    <h1 class="text-4xl md:text-6xl font-semibold text-black dark:text-white leading-[0.95] mb-5">
-                        Comprá tu iPhone<br> en Berazategui.
-                    </h1>
+        <!-- Contenido -->
+        <div class="relative z-10 max-w-6xl mx-auto px-5 py-24 md:py-36 flex flex-col justify-center min-h-[520px] md:min-h-[620px]">
+            <div class="reveal max-w-lg">
+                <p class="text-[11px] uppercase tracking-[0.28em] text-white/60 mb-3">Hassel BA</p>
 
-                    <p class="text-base md:text-lg text-black/60 dark:text-white/60 max-w-xl mb-8">
-                        Equipos seleccionados, atención personalizada y servicio técnico especializado. Hassel BA, todo para tus dispositivos Apple desde 2020.
-                    </p>
+                <!-- SEO: H1 optimizado con keyword principal -->
+                <h1 class="text-4xl md:text-6xl font-semibold text-white leading-[0.95] mb-5">
+                    Comprá tu iPhone<br> en Berazategui.
+                </h1>
 
-                    <div class="flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8">
-                        <a href="#preowned"
-    class="inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">
-    Ver iPhones disponibles
-</a>
+                <p class="text-base md:text-lg text-white/70 max-w-md mb-8">
+                    Equipos seleccionados, atención personalizada y servicio técnico especializado. Hassel BA, todo para tus dispositivos Apple desde 2020.
+                </p>
 
-                        <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20asesoramiento%20para%20elegir%20un%20iPhone."
-                            target="_blank"
-                            class="inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#1F8F5F] text-white text-sm font-medium hover:opacity-90 transition">
-                            Hablar por WhatsApp
-                        </a>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="#preowned"
+                        class="inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition">
+                        Ver iPhones disponibles
+                    </a>
+                    <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Quiero%20asesoramiento%20para%20elegir%20un%20iPhone."
+                        target="_blank"
+                        class="inline-flex items-center justify-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-[#1F8F5F] text-white text-sm font-medium hover:opacity-90 transition">
+                        Hablar por WhatsApp
+                    </a>
                 </div>
-
-                <!-- HERO ESTÁTICO -->
-                <div class="reveal relative" style="transition-delay: 200ms;">
-                    <div class="relative overflow-hidden rounded-[32px] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm">
-                        <img src="img/img-HERO.webp"
-                            alt="Local Hassel BA – iPhone en Berazategui"
-                            class="w-full h-[420px] md:h-[520px] object-cover">
-                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
-                    </div>
-                </div>
-
-                <!-- CARRUSEL (desactivado)
-                <div class="reveal relative" style="transition-delay: 200ms;">
-                    <button onclick="heroPrev()"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur flex items-center justify-center shadow">
-                        ‹
-                    </button>
-                    <button onclick="heroNext()"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur flex items-center justify-center shadow">
-                        ›
-                    </button>
-                    <div class="relative overflow-hidden rounded-[32px] border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm">
-                        <div id="hero-slider" class="flex transition-transform duration-700 ease-in-out">
-                            <img src="img/frente-local-hassel.jpg" alt="Local Hassel BA – iPhone en Berazategui" class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/IMG_9926 (1).jpg" alt="Accesorios iPhone en Hassel BA Berazategui" class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/local-hero-5.jpg" alt="Fundas y accesorios iPhone – Hassel BA" class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/local-hero-4.jpg" alt="Interior del local Hassel BA Berazategui" class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                            <img src="img/local-hero-7.jpg" alt="Equipos iPhone seleccionados – Hassel BA" class="w-full h-[420px] md:h-[520px] object-cover shrink-0">
-                        </div>
-                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
-                    </div>
-                    <div id="hero-dots" class="flex items-center justify-center gap-2 mt-4">
-                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black" aria-label="Slide 1"></button>
-                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20 dark:bg-white/20" aria-label="Slide 2"></button>
-                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20 dark:bg-white/20" aria-label="Slide 3"></button>
-                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20 dark:bg-white/20" aria-label="Slide 4"></button>
-                        <button class="hero-dot w-2.5 h-2.5 rounded-full bg-black/20 dark:bg-white/20" aria-label="Slide 5"></button>
-                    </div>
-                </div>
-                FIN CARRUSEL -->
             </div>
+        </div>
+
+        <!-- CARRUSEL (desactivado)
+        img/frente-local-hassel.jpg | img/IMG_9926 (1).jpg | img/local-hero-5.jpg | img/local-hero-4.jpg | img/local-hero-7.jpg
+        FIN CARRUSEL -->
+
+        <div class="max-w-6xl mx-auto px-5">
 
             <!-- NÚMEROS DE CONFIANZA -->
            <div class="grid grid-cols-3 gap-4 mb-10">
