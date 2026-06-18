@@ -269,20 +269,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- HERO -->
     <!-- HERO FULL-WIDTH -->
+<!-- HERO FULL-WIDTH -->
     <section id="hero" class="relative overflow-hidden" style="margin-top: 64px;">
 
-        <!-- Imagen de fondo -->
+        <!-- Imagen de fondo optimizada -->
         <img src="img/img-HERO.webp" 
-     <!--   <img src="img/hero-camiseta.webp" -->
              alt="Local Hassel BA – iPhone en Berazategui"
-             class="absolute inset-0 w-full h-full object-cover">
+             class="absolute inset-0 w-full h-full object-cover"
+             fetchpriority="high"
+             loading="eager">
 
         <!-- Overlay: oscuro a la izquierda, transparente a la derecha -->
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
 
         <!-- Contenido -->
         <div class="relative z-10 max-w-6xl mx-auto px-5 py-24 md:py-36 flex flex-col justify-center min-h-[520px] md:min-h-[620px]">
-            <div class="reveal max-w-lg">
+            <!-- ACÁ SE QUITÓ LA CLASE "reveal" -->
+            <div class="max-w-lg">
                 <p class="text-[11px] uppercase tracking-[0.28em] text-white/60 mb-3">Hassel BA</p>
 
                 <!-- SEO: H1 optimizado con keyword principal -->
@@ -308,28 +311,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
 
-        <!-- CARRUSEL (desactivado)
-        img/frente-local-hassel.jpg | img/IMG_9926 (1).jpg | img/local-hero-5.jpg | img/local-hero-4.jpg | img/local-hero-7.jpg
-        FIN CARRUSEL -->
-
         <div class="max-w-6xl mx-auto px-5">
-
-            <!-- NÚMEROS DE CONFIANZA -->
-           <div class="grid grid-cols-3 gap-4 mb-10">
-    <div class="reveal rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center" style="transition-delay: 100ms;">
-        <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">+3000</p>
-        <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">iPhones vendidos</p>
-    </div>
-    <div class="reveal rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center" style="transition-delay: 200ms;">
-        <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">+6</p>
-        <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">Años en el mercado</p>
-    </div>
-    <div class="reveal rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center" style="transition-delay: 300ms;">
-        <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">Bera Centro</p>
-        <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">Entrega inmediata</p>
-    </div>
-</div>
-
+            <!-- NÚMEROS DE CONFIANZA (SE QUITÓ REVEAL Y LOS DELAYS) -->
+            <div class="grid grid-cols-3 gap-4 mb-10">
+                <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center">
+                    <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">+3000</p>
+                    <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">iPhones vendidos</p>
+                </div>
+                <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center">
+                    <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">+6</p>
+                    <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">Años en el mercado</p>
+                </div>
+                <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-5 flex flex-col items-center justify-center text-center">
+                    <p class="w-full text-2xl md:text-3xl font-semibold text-black dark:text-white text-center leading-none">Bera Centro</p>
+                    <p class="w-full text-xs text-black/50 dark:text-white/50 mt-2 text-center leading-tight">Entrega inmediata</p>
+                </div>
+            </div>
         </div>
     </section>
 
