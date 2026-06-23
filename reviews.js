@@ -181,4 +181,19 @@ const activo = i === Math.min(reviewActual, maxSlide);
     });
 }
 
-document.addEventListener("DOMContentLoaded", initGoogleReviews);
+// Lazy load: carga Google Maps solo cuando el usuario llega a la sección de reviews
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("google-reviews-container");
+    if (!container) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                observer.disconnect();
+                initGoogleReviews();
+            }
+        });
+    }, { rootMargin: "200px" }); // empieza a cargar 200px antes de que sea visible
+
+    observer.observe(container);
+});
