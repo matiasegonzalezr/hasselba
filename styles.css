@@ -4,24 +4,28 @@
   font-family: 'Triomphe';
   src: url('./fonts/triomphe-regular-autoinstr.ttf') format('truetype');
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Triomphe';
   src: url('./fonts/triomphe-bold-autoinstr.ttf') format('truetype');
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Myriad Pro';
   src: url('./fonts/Myriad Pro Regular.ttf') format('truetype');
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Myriad Pro';
   src: url('./fonts/Myriad Pro Bold.ttf') format('truetype');
   font-weight: 700;
+  font-display: swap;
 }
 
 /* BASE / RESET */
@@ -497,5 +501,3 @@ article.rounded-3xl:hover {
     display: none !important;
   }
 }
-
-
