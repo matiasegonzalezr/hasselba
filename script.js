@@ -492,9 +492,11 @@ const gradeTag = grade
             ${precioTexto}
           </p>
 
-          <p class="text-sm font-medium text-[#1F8F5F] mt-1">
-            ${precioPesos ? formatearPesos(precioPesos) : ""}
-          </p>
+         <p class="text-sm font-medium text-[#1F8F5F] mt-1">
+  ${precioPesos
+    ? formatearPesos(precioPesos)
+    : (precioNumerico ? `<a href="${waLink}" target="_blank" class="underline">Consultar en pesos</a>` : "")}
+</p>
         </div>
 
         <a href="${waLink}" target="_blank"
