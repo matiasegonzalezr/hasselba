@@ -17,24 +17,31 @@ let dolarBlueVenta = 0;
 let dolarWeb = 0;
 
 async function cargarDolar() {
+  const dolarHeader = document.getElementById("dolar-header");
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s de tolerancia
+
   try {
-    const res = await fetch("https://dolarapi.com/v1/dolares/blue");
+    const res = await fetch("https://dolarapi.com/v1/dolares/blue", { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
 
     dolarBlueVenta = Number(data.venta || 0);
     dolarWeb = dolarBlueVenta + 15;
 
-    const dolarHeader = document.getElementById("dolar-header");
-    if (dolarHeader && dolarWeb > 0) {
-      dolarHeader.textContent = `Cotización USD $${dolarWeb.toLocaleString("es-AR")}`;
+    if (dolarHeader) {
+      dolarHeader.textContent = dolarWeb > 0
+        ? `Cotización USD $${dolarWeb.toLocaleString("es-AR")}`
+        : "Cotización: consultar";
     }
   } catch (error) {
+    clearTimeout(timeoutId);
     console.error("Error cargando dólar:", error);
-
-    const dolarHeader = document.getElementById("dolar-header");
-    if (dolarHeader) {
-      dolarHeader.textContent = "USD no disponible";
-    }
+    dolarWeb = 0;
+    if (dolarHeader) dolarHeader.textContent = "Cotización: consultar";
+  } finally {
+    // Si los productos ya se habían pintado antes de que resuelva esto, re-renderizo
+    if (productosGlobales.length) renderProductos();
   }
 }
 
