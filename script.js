@@ -1082,3 +1082,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function limpiarFiltrosPreowned() {
+  document.querySelectorAll('.filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked')
+    .forEach(cb => cb.checked = false);
+  mostrarTodosPreowned = 4;
+  renderProductos();
+}
