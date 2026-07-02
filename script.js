@@ -596,7 +596,24 @@ function renderProductos() {
     </div>
   `;
 
-  if (preownedGrid) preownedGrid.innerHTML = preownedVisibles.length ? preownedVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+if (preownedGrid) {
+  if (preownedVisibles.length) {
+    preownedGrid.innerHTML = preownedVisibles.map(p => construirCard(p)).join("");
+  } else if (preowned.length > 0) {
+    // Hay stock real, pero el filtro no matcheó nada
+    preownedGrid.innerHTML = `
+      <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+        <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
+        <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay equipos con estos filtros.</p>
+        <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá ajustando los filtros o mirá todo el stock disponible.</p>
+        <button onclick="limpiarFiltrosPreowned()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
+      </div>
+    `;
+  } else {
+    // No hay stock real en PreOwned
+    preownedGrid.innerHTML = htmlEmptyState;
+  }
+}
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
