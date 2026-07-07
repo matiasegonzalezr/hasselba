@@ -607,7 +607,7 @@ function renderProductos() {
   const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
-  const macbooksGrid = document.querySelector("#macbooks .grid");
+  const macbooksGrid = document.querySelector("#macbooks-grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
@@ -992,7 +992,7 @@ function mostrarErrorVisual() {
   const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
-  const macbooksGrid = document.querySelector("#macbooks .grid");
+  const macbooksGrid = document.querySelector("#macbooks-grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
@@ -1022,7 +1022,7 @@ function mostrarSkeletons() {
   const preownedGrid = document.querySelector("#preowned-grid");
   const newGrid = document.querySelector("#iphone-new .grid");
   const outletGrid = document.querySelector("#outlet .grid");
-  const macbooksGrid = document.querySelector("#macbooks .grid");
+  const macbooksGrid = document.querySelector("#macbooks-grid");
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
