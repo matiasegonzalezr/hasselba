@@ -50,6 +50,12 @@ function obtenerFamilia(modelo) {
   return match ? `iPhone ${match[1]}` : "Otros";
 }
 
+function obtenerFamiliaMac(modelo) {
+  if (/pro/i.test(modelo || "")) return "MacBook Pro";
+  if (/air/i.test(modelo || "")) return "MacBook Air";
+  return "Otros";
+}
+
 function obtenerOrdenModelo(modelo) {
   const match = (modelo || "").match(/iPhone\s(\d+)/i);
   const numero = match ? parseInt(match[1], 10) : 0;
@@ -268,6 +274,95 @@ function inicializarFiltrosSidebar(productos) {
       renderProductos();
     });
   });
+}
+
+function ordenarNumerico(valores) {
+  return valores.sort((a, b) => {
+    const numA = parseFloat((a.match(/[\d.]+/) || ["0"])[0]);
+    const numB = parseFloat((b.match(/[\d.]+/) || ["0"])[0]);
+    return numA - numB;
+  });
+}
+
+function inicializarFiltrosSidebarMac(productos) {
+  const contenedorModelos = document.getElementById("filtros-mac-modelo");
+  const contenedorChip = document.getElementById("filtros-mac-chip");
+  const contenedorRam = document.getElementById("filtros-mac-ram");
+  const contenedorSsd = document.getElementById("filtros-mac-ssd");
+
+  if (!contenedorModelos || !contenedorChip || !contenedorRam || !contenedorSsd) return;
+
+  let familias = [...new Set(productos.map((p) => obtenerFamiliaMac(p.MODELO || "")))]
+    .filter((f) => f && f !== "Otros")
+    .sort();
+
+  let chips = [...new Set(productos.map((p) => (p.CHIP || "").trim()))].filter(Boolean);
+  let rams = ordenarNumerico([...new Set(productos.map((p) => (p.RAM || "").trim()))].filter(Boolean));
+  let ssds = ordenarNumerico([...new Set(productos.map((p) => (p.SSD || "").trim()))].filter(Boolean));
+
+  const renderGrupo = (valores, claseFiltro) =>
+    valores.map(valor => `
+      <label class="flex items-center gap-3 text-sm text-black/80 dark:text-white/80 cursor-pointer hover:text-black dark:text-white transition">
+        <input type="checkbox" value="${valor}" class="${claseFiltro} accent-black w-4 h-4 rounded border-black/20 dark:border-white/20">
+        <span>${valor}</span>
+      </label>
+    `).join("");
+
+  contenedorModelos.innerHTML = renderGrupo(familias, "filtro-mac-modelo");
+  contenedorChip.innerHTML = renderGrupo(chips, "filtro-mac-chip");
+  contenedorRam.innerHTML = renderGrupo(rams, "filtro-mac-ram");
+  contenedorSsd.innerHTML = renderGrupo(ssds, "filtro-mac-ssd");
+
+  const checkboxesMac = document.querySelectorAll('.filtro-mac-modelo, .filtro-mac-chip, .filtro-mac-ram, .filtro-mac-ssd');
+  checkboxesMac.forEach(cb => {
+    cb.addEventListener('change', () => {
+      mostrarTodosMacbooks = 6;
+      renderProductos();
+    });
+  });
+}
+
+function obtenerFiltrosActivosMac() {
+  const modelos = Array.from(document.querySelectorAll('.filtro-mac-modelo:checked')).map(cb => cb.value);
+  const chips = Array.from(document.querySelectorAll('.filtro-mac-chip:checked')).map(cb => cb.value);
+  const rams = Array.from(document.querySelectorAll('.filtro-mac-ram:checked')).map(cb => cb.value);
+  const ssds = Array.from(document.querySelectorAll('.filtro-mac-ssd:checked')).map(cb => cb.value);
+  return { modelos, chips, rams, ssds };
+}
+
+function filtrarMacbooks(lista) {
+  const { modelos, chips, rams, ssds } = obtenerFiltrosActivosMac();
+  return lista.filter((p) => {
+    if (modelos.length > 0 && !modelos.includes(obtenerFamiliaMac(p.MODELO || ""))) return false;
+    if (chips.length > 0 && !chips.includes((p.CHIP || "").trim())) return false;
+    if (rams.length > 0 && !rams.includes((p.RAM || "").trim())) return false;
+    if (ssds.length > 0 && !ssds.includes((p.SSD || "").trim())) return false;
+    return true;
+  });
+}
+
+function toggleModalFiltrosMac() {
+  const modal = document.getElementById("modal-filtros-mac");
+  const overlay = document.getElementById("overlay-filtros-mac");
+  if (!modal) return;
+  if (modal.classList.contains("translate-y-full")) {
+    modal.classList.remove("translate-y-full");
+    modal.classList.add("translate-y-0");
+    document.body.style.overflow = "hidden";
+    if (overlay) overlay.classList.add("active");
+  } else {
+    modal.classList.add("translate-y-full");
+    modal.classList.remove("translate-y-0");
+    document.body.style.overflow = "";
+    if (overlay) overlay.classList.remove("active");
+  }
+}
+
+function limpiarFiltrosMacbooks() {
+  document.querySelectorAll('.filtro-mac-modelo:checked, .filtro-mac-chip:checked, .filtro-mac-ram:checked, .filtro-mac-ssd:checked')
+    .forEach(cb => cb.checked = false);
+  mostrarTodosMacbooks = 4;
+  renderProductos();
 }
 
 const sliders = {};
@@ -587,11 +682,12 @@ function renderProductos() {
     });
 
   const preownedFiltrados = filtrarPreowned(preowned);
+  const macbooksFiltrados = filtrarMacbooks(macbooks);
 
   const preownedVisibles = limitarProductos(preownedFiltrados, mostrarTodosPreowned);
   const nuevosVisibles = limitarProductos(nuevos, mostrarTodosNew);
   const outletVisibles = limitarProductos(outlet, mostrarTodosOutlet);
-  const macbooksVisibles = limitarProductos(macbooks, mostrarTodosMacbooks);
+  const macbooksVisibles = limitarProductos(macbooksFiltrados, mostrarTodosMacbooks);
   const macbooksNewVisibles = limitarProductos(macbooksNew, mostrarTodosMacbooksNew);
   const ipadsVisibles = limitarProductos(ipads, mostrarTodosIpads);
   const ipadsNewVisibles = limitarProductos(ipadsNew, mostrarTodosIpadsNew);
@@ -625,7 +721,23 @@ if (preownedGrid) {
 }
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
-  if (macbooksGrid) macbooksGrid.innerHTML = macbooksVisibles.length ? macbooksVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (macbooksGrid) {
+    if (macbooksVisibles.length) {
+      macbooksGrid.innerHTML = macbooksVisibles.map(p => construirCard(p)).join("");
+    } else if (macbooks.length > 0) {
+      // Hay stock real, pero el filtro no matcheó nada
+      macbooksGrid.innerHTML = `
+        <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
+          <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay equipos con estos filtros.</p>
+          <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá ajustando los filtros o mirá todo el stock disponible.</p>
+          <button onclick="limpiarFiltrosMacbooks()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
+        </div>
+      `;
+    } else {
+      macbooksGrid.innerHTML = htmlEmptyState;
+    }
+  }
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
@@ -668,10 +780,10 @@ if (preownedGrid) {
 
   if (macbooksVerMas) {
     macbooksVerMas.innerHTML =
-      macbooks.length > 4
+      macbooksFiltrados.length > 4
         ? `
         <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosMacbooks >= macbooks.length ? "Ver menos" : "Ver más"}
+          ${mostrarTodosMacbooks >= macbooksFiltrados.length ? "Ver menos" : "Ver más"}
         </button>
       `
         : "";
@@ -772,8 +884,9 @@ function toggleVerMas(categoria) {
     const macbooks = productosGlobales
       .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned")
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+    const macbooksFiltrados = filtrarMacbooks(macbooks);
 
-    if (mostrarTodosMacbooks >= macbooks.length) {
+    if (mostrarTodosMacbooks >= macbooksFiltrados.length) {
       mostrarTodosMacbooks = 4;
     } else {
       mostrarTodosMacbooks += 4;
@@ -859,6 +972,12 @@ async function cargarProductos() {
     inicializarFiltrosSidebar(
       productosGlobales.filter(
         (p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned"
+      )
+    );
+
+    inicializarFiltrosSidebarMac(
+      productosGlobales.filter(
+        (p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned"
       )
     );
 
