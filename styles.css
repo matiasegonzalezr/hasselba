@@ -79,7 +79,7 @@ body {
 
 .iphones-nuevos-container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1700px;
 
   margin: 0 auto;
 
@@ -124,9 +124,9 @@ body {
 .layout-grid {
   display: grid;
 
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
 
-  gap: 24px;
+  gap: 20px;
 
   width: 100%;
   max-width: 100%;
@@ -153,7 +153,7 @@ body {
 
   grid-template-columns: repeat(
     auto-fill,
-    minmax(280px, 1fr)
+    minmax(240px, 1fr)
   );
 
   gap: 24px;
@@ -169,8 +169,8 @@ body {
 .sidebar-filtros,
 #sidebar-filtros,
 aside.filtros {
-  width: 280px;
-  min-width: 280px;
+  width: 220px;
+  min-width: 220px;
 
   border-radius: 32px;
 
