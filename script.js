@@ -426,7 +426,7 @@ function construirCard(p, isCarousel = false) {
     .filter(Boolean)
     .map(resolverRutaImagen);
 
-  const imagenesFinales = imagenes.length ? imagenes : ["img/iphone.jpg"];
+  const imagenesFinales = imagenes.length ? imagenes : ["img/fotonodisponible.png"];
 
   const bateriaTag = bateria
     ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${bateria} batería</span>`
@@ -537,7 +537,7 @@ const gradeTag = grade
               .map(
                 (img) => `
               <div class="relative basis-full min-w-full w-full h-full aspect-square shrink-0 overflow-hidden">
-                <img src="${img}" alt="${modelo}" loading="lazy" class="w-full h-full aspect-square object-cover" onerror="this.onerror=null; this.src='img/IMG_9926 (1).jpg';">
+                <img src="${img}" alt="${modelo}" loading="lazy" class="w-full h-full aspect-square object-cover" onerror="this.onerror=null; this.src='img/fotonodisponible.png';">
               </div>
             `
               )
