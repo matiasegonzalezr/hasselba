@@ -148,7 +148,8 @@ body {
 
 .products-grid,
 #products-grid,
-#preowned-grid {
+#preowned-grid,
+#macbooks-grid {
   display: grid;
 
   grid-template-columns: repeat(
@@ -448,7 +449,8 @@ article.rounded-3xl:hover {
 
   .products-grid,
   #products-grid,
-  #preowned-grid {
+  #preowned-grid,
+  #macbooks-grid {
     grid-template-columns: repeat(
       auto-fill,
       minmax(220px, 1fr)
