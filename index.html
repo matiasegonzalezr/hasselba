@@ -68,7 +68,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   "name": "Hassel BA",
   "url": "https://hasselba.com/",
   "telephone": "+5491136404202",
-  "description": "Venta de iPhones nuevos, usados y outlet en Berazategui. Servicio técnico Apple y plan canje. Desde 2020.",
+  "description": "Venta de iPhones, MacBook, iPad y accesorios Apple en Berazategui. Servicio técnico Apple y plan canje. Desde 2020.",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Calle 14 571",
@@ -169,6 +169,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
             </div>
+            <a href="#accesorios" class="py-2 hover:text-black dark:text-white transition">Accesorios Apple</a>
             <a href="#service-form" class="py-2 hover:text-black dark:text-white transition">Servicio Técnico</a>
         </nav>
 
@@ -178,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div class="hidden sm:flex items-center bg-black/5 dark:bg-white/5 rounded-full px-3 py-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-black/50 dark:text-white/50 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input id="buscador-stock" type="text" placeholder="Buscar iPhone"
+                <input id="buscador-stock" type="text" placeholder="Buscar productos"
                     class="bg-transparent outline-none text-sm ml-2 w-32">
             </div>
 
@@ -197,7 +198,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         class="hidden fixed top-[60px] left-0 w-full z-40 px-4 py-3 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-b border-black/5 dark:border-white/5 sm:hidden">
         <div class="flex items-center bg-black/5 dark:bg-white/5 rounded-full px-3 py-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-black/50 dark:text-white/50 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input id="buscador-stock-mobile" type="text" placeholder="Buscar iPhone, color, GB..."
+            <input id="buscador-stock-mobile" type="text" placeholder="Buscar productos, color, GB..."
                 class="bg-transparent outline-none text-sm ml-2 w-full">
         </div>
     </div>
@@ -254,6 +255,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <a href="#ipads-new" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">New</a>
                 </div>
             </div>
+
+            <a href="#accesorios" onclick="toggleMenu()" class="text-2xl font-semibold py-2 border-b border-black/5 dark:border-white/5">Accesorios Apple</a>
 
             <a href="#service-form" onclick="toggleMenu()" class="text-2xl font-semibold py-2 border-b border-black/5 dark:border-white/5">Servicio Técnico</a>
         </div>
@@ -880,6 +883,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div id="ipads-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+    <!-- ACCESORIOS APPLE -->
+    <section id="accesorios" class="py-16 px-5 bg-white dark:bg-zinc-900">
+        <div class="max-w-[1700px] mx-auto">
+            <div class="reveal mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 dark:text-white/45 mb-2">Apple</p>
+                    <h2 class="text-2xl font-semibold text-black dark:text-white mb-2">Accesorios Apple</h2>
+                    <p class="text-sm text-black/55 dark:text-white/55">Accesorios originales para tus dispositivos Apple.</p>
+                </div>
+            </div>
+
+            <div id="accesorios-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                <!-- Accesorios inyectados por JS -->
+            </div>
+
+            <div id="accesorios-vermas" class="mt-6"></div>
         </div>
     </section>
 
