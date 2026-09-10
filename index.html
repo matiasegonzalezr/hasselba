@@ -277,11 +277,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section id="hero" class="relative overflow-hidden" style="margin-top: 64px;">
 
         <!-- Imagen de fondo optimizada -->
-        <img src="img/HERO_IPHONE_18_PRO.png" 
-             alt="Local Hassel BA – iPhone en Berazategui"
-             class="absolute inset-0 w-full h-full object-cover"
-             fetchpriority="high"
-             loading="eager">
+        <picture>
+            <source media="(max-width: 767px)" srcset="img/HERO_IPHONE_18_PRO_MOBILE.png">
+            <img src="img/HERO_IPHONE_18_PRO.png" 
+                 alt="Local Hassel BA – iPhone en Berazategui"
+                 class="absolute inset-0 w-full h-full object-cover"
+                 fetchpriority="high"
+                 loading="eager">
+        </picture>
 
         <!-- Overlay: oscuro a la izquierda, transparente a la derecha -->
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
