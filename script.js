@@ -10,6 +10,10 @@ let mostrarTodosMacbooksNew = 4;
 let mostrarTodosIpadsNew = 4;
 let mostrarTodosAccesorios = 4;
 
+// Filtro por TIPO de accesorio ("todos" o el TIPO normalizado)
+let tipoAccesorioActivo = "todos";
+let tiposAccesorios = []; // [{ clave, etiqueta }]
+
 let ordenGlobal = "mas-nuevos";
 
 let terminoBusqueda = "";
@@ -136,7 +140,8 @@ function productoCoincideBusqueda(p, termino) {
     p.CHIP,
     p.RAM,
     p.SSD,
-    p.ESTADO
+    p.ESTADO,
+    p.TIPO
   ]
     .filter(Boolean)
     .join(" ");
@@ -692,10 +697,12 @@ function renderProductos() {
       return precioB - precioA;
     });
 
-  const accesorios = productosGlobales
+  const accesoriosBusqueda = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
     .sort((a, b) => Number(a.USD || 0) - Number(b.USD || 0));
+
+  const accesorios = accesoriosBusqueda.filter(coincideTipoAccesorio);
 
   const preownedFiltrados = filtrarPreowned(preowned);
   const macbooksFiltrados = filtrarMacbooks(macbooks);
@@ -767,7 +774,25 @@ if (preownedGrid) {
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
-  if (accesoriosGrid) accesoriosGrid.innerHTML = accesoriosVisibles.length ? accesoriosVisibles.map(p => construirCard(p)).join("") : htmlEmptyStateAccesorios;
+  if (accesoriosGrid) {
+    if (accesoriosVisibles.length) {
+      accesoriosGrid.innerHTML = accesoriosVisibles.map(p => construirCard(p)).join("");
+    } else if (accesoriosBusqueda.length === 0 && tipoAccesorioActivo === "todos") {
+      accesoriosGrid.innerHTML = htmlEmptyStateAccesorios;
+    } else {
+      // Hay accesorios, pero el filtro (o filtro + búsqueda) no matchea nada
+      accesoriosGrid.innerHTML = `
+        <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+          <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
+          <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay accesorios con este filtro.</p>
+          <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá con otra categoría o mirá todo el stock disponible.</p>
+          <button onclick="limpiarFiltrosAccesorios()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
+        </div>
+      `;
+    }
+  }
+
+  renderFiltrosAccesorios(accesoriosGrid);
 
   // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
   setTimeout(initReveals, 50);
@@ -970,7 +995,8 @@ function toggleVerMas(categoria) {
   if (categoria === "accesorios") {
     const accesorios = productosGlobales
       .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
-      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+      .filter(coincideTipoAccesorio);
 
     if (mostrarTodosAccesorios >= accesorios.length) {
       mostrarTodosAccesorios = 4;
@@ -1039,6 +1065,8 @@ async function cargarProductos() {
         (p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned"
       )
     );
+
+    inicializarFiltrosAccesorios();
 
     renderProductos();
   } catch (error) {
@@ -1295,5 +1323,90 @@ function limpiarFiltrosPreowned() {
   document.querySelectorAll('.filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked')
     .forEach(cb => cb.checked = false);
   mostrarTodosPreowned = 4;
+  renderProductos();
+}
+
+// ==========================
+// FILTROS DE ACCESORIOS (por columna TIPO del Sheet)
+// ==========================
+
+function escaparHTML(texto) {
+  return String(texto || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function coincideTipoAccesorio(p) {
+  if (tipoAccesorioActivo === "todos") return true;
+  return normalizarTexto(p.TIPO) === tipoAccesorioActivo;
+}
+
+// Arma la lista de tipos a partir de lo que haya cargado en la columna TIPO
+function inicializarFiltrosAccesorios() {
+  const vistos = new Map();
+
+  productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
+    .forEach((p) => {
+      const etiqueta = (p.TIPO || "").toString().trim();
+      const clave = normalizarTexto(etiqueta);
+      if (clave && !vistos.has(clave)) vistos.set(clave, etiqueta);
+    });
+
+  tiposAccesorios = Array.from(vistos, ([clave, etiqueta]) => ({ clave, etiqueta }));
+
+  // Si el tipo activo ya no existe (ej. se borró del Sheet), vuelvo a "todos"
+  if (tipoAccesorioActivo !== "todos" && !vistos.has(tipoAccesorioActivo)) {
+    tipoAccesorioActivo = "todos";
+  }
+}
+
+function renderFiltrosAccesorios(accesoriosGrid) {
+  let contenedor = document.getElementById("accesorios-filtros");
+
+  // Si el index.html no tiene el contenedor, lo creo arriba del grid
+  if (!contenedor && accesoriosGrid && accesoriosGrid.parentNode) {
+    contenedor = document.createElement("div");
+    contenedor.id = "accesorios-filtros";
+    accesoriosGrid.parentNode.insertBefore(contenedor, accesoriosGrid);
+  }
+  if (!contenedor) return;
+
+  if (!tiposAccesorios.length) {
+    contenedor.innerHTML = "";
+    return;
+  }
+
+  const claseBase = "px-4 py-2 rounded-full border text-sm font-medium transition whitespace-nowrap";
+  const claseActivo = "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white";
+  const claseInactivo = "bg-white text-black border-black/10 hover:border-black/30 dark:bg-zinc-900 dark:text-white dark:border-white/10 dark:hover:border-white/30";
+
+  const botones = [
+    `<button type="button" onclick="filtrarAccesoriosPorTipo('todos')" class="${claseBase} ${tipoAccesorioActivo === "todos" ? claseActivo : claseInactivo}">Todos</button>`,
+    ...tiposAccesorios.map((t, i) =>
+      `<button type="button" onclick="filtrarAccesoriosPorTipo(${i})" class="${claseBase} ${tipoAccesorioActivo === t.clave ? claseActivo : claseInactivo}">${escaparHTML(t.etiqueta)}</button>`
+    )
+  ];
+
+  contenedor.className = "flex flex-wrap gap-2 mb-6";
+  contenedor.innerHTML = botones.join("");
+}
+
+function filtrarAccesoriosPorTipo(indice) {
+  tipoAccesorioActivo = indice === "todos" ? "todos" : (tiposAccesorios[indice]?.clave || "todos");
+  mostrarTodosAccesorios = 4;
+  renderProductos();
+}
+
+// Alias por si se llama desde otro lado
+function filtrarAccesorios(indice) {
+  filtrarAccesoriosPorTipo(indice);
+}
+
+function limpiarFiltrosAccesorios() {
+  tipoAccesorioActivo = "todos";
+  mostrarTodosAccesorios = 4;
   renderProductos();
 }
