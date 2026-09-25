@@ -8,6 +8,8 @@ let mostrarTodosMacbooks = 4;
 let mostrarTodosIpads = 4;
 let mostrarTodosMacbooksNew = 4;
 let mostrarTodosIpadsNew = 4;
+let mostrarTodosWatchNew = 4;
+let mostrarTodosWatch = 4;
 let mostrarTodosAccesorios = 4;
 
 // Filtro por TIPO de accesorio ("todos" o el TIPO normalizado)
@@ -45,7 +47,6 @@ async function cargarDolar() {
     dolarWeb = 0;
     if (dolarHeader) dolarHeader.textContent = "Cotización: consultar";
   } finally {
-    // Si los productos ya se habían pintado antes de que resuelva esto, re-renderizo
     if (productosGlobales.length) renderProductos();
   }
 }
@@ -62,15 +63,17 @@ function obtenerFamiliaMac(modelo) {
 }
 
 function obtenerOrdenModelo(modelo) {
-  const match = (modelo || "").match(/iPhone\s(\d+)/i);
+  const mod = (modelo || "").toString();
+  const match = mod.match(/(\d+)/);
   const numero = match ? parseInt(match[1], 10) : 0;
 
   let tipo = 0;
 
-  if (/pro max/i.test(modelo)) tipo = 5;
-  else if (/pro/i.test(modelo)) tipo = 4;
-  else if (/plus/i.test(modelo)) tipo = 3;
-  else if (/mini/i.test(modelo)) tipo = 2;
+  if (/pro max/i.test(mod)) tipo = 5;
+  else if (/pro/i.test(mod)) tipo = 4;
+  else if (/plus/i.test(mod)) tipo = 3;
+  else if (/mini/i.test(mod)) tipo = 2;
+  else if (/ultra/i.test(mod)) tipo = 6;
   else tipo = 1;
 
   return numero * 10 + tipo;
@@ -96,36 +99,38 @@ function cambiarOrden(valor) {
 }
 
 function aplicarOrden(a, b) {
+  if (!a || !b) return 0;
   if (ordenGlobal === "menor-precio") {
-    const precioA = Number(a.USD || 0) || 99999; // Mandar sin precio al final
+    const precioA = Number(a.USD || 0) || 99999;
     const precioB = Number(b.USD || 0) || 99999;
     return precioA - precioB;
   }
   if (ordenGlobal === "mejor-bateria") {
-    const batA = parseInt(a.BATERIA || "0");
-    const batB = parseInt(b.BATERIA || "0");
+    const batA = parseInt(a.BATERIA || "0", 10);
+    const batB = parseInt(b.BATERIA || "0", 10);
     
-    const ciclosA = parseInt(a.CICLOS || "9999");
-    const ciclosB = parseInt(b.CICLOS || "9999");
+    const ciclosA = parseInt(a.CICLOS || "9999", 10);
+    const ciclosB = parseInt(b.CICLOS || "9999", 10);
 
     const esMacbookA = (a.CATEGORIA || "").toLowerCase().includes("macbook");
     const esMacbookB = (b.CATEGORIA || "").toLowerCase().includes("macbook");
 
     if (esMacbookA && esMacbookB) {
-      return ciclosA - ciclosB; // menor cantidad de ciclos es mejor
+      return ciclosA - ciclosB;
     }
     
     if (!esMacbookA && !esMacbookB) {
-      return batB - batA; // mayor porcentaje de batería es mejor
+      return batB - batA;
     }
     return 0;
   }
 
   // mas-nuevos (default)
-  return obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO);
+  return obtenerOrdenModelo(b.MODELO || b.PRODUCTO) - obtenerOrdenModelo(a.MODELO || a.PRODUCTO);
 }
 
 function productoCoincideBusqueda(p, termino) {
+  if (!p) return false;
   if (!termino) return true;
 
   const base = [
@@ -150,7 +155,7 @@ function productoCoincideBusqueda(p, termino) {
 }
 
 function limitarProductos(lista, cantidadVisible) {
-  return lista.slice(0, cantidadVisible);
+  return (lista || []).slice(0, cantidadVisible);
 }
 
 function toggleBuscadorMobile() {
@@ -209,6 +214,7 @@ function toggleModalFiltros() {
   const modal = document.getElementById("modal-filtros");
   const overlay = document.getElementById("overlay-filtros");
   if (!modal) return;
+
   if (modal.classList.contains("translate-y-full")) {
     modal.classList.remove("translate-y-full");
     modal.classList.add("translate-y-0");
@@ -224,20 +230,25 @@ function toggleModalFiltros() {
 
 function obtenerFiltrosActivos() {
   const modelos = Array.from(document.querySelectorAll('.filtro-modelo:checked')).map(cb => cb.value);
-  const baterias = Array.from(document.querySelectorAll('.filtro-bateria:checked')).map(cb => parseInt(cb.value));
+  const baterias = Array.from(document.querySelectorAll('.filtro-bateria:checked')).map(cb => parseInt(cb.value, 10));
   const precios = Array.from(document.querySelectorAll('.filtro-precio:checked')).map(cb => cb.value);
-  return { modelos, baterias, precios };
+  const almacenamientos = Array.from(document.querySelectorAll('.filtro-almacenamiento:checked')).map(cb => cb.value);
+  return { modelos, baterias, precios, almacenamientos };
 }
 
 function filtrarPreowned(lista) {
-  const { modelos, baterias, precios } = obtenerFiltrosActivos();
-  return lista.filter((p) => {
-    if (modelos.length > 0 && !modelos.includes(obtenerFamilia(p.MODELO || ""))) return false;
+  const { modelos, baterias, precios, almacenamientos } = obtenerFiltrosActivos();
+  return (lista || []).filter((p) => {
+    if (modelos.length > 0 && !modelos.includes(obtenerFamilia(p.MODELO || p.PRODUCTO || ""))) return false;
     if (baterias.length > 0) {
-      const batVal = parseInt(p.BATERIA || "0");
+      const batVal = parseInt(p.BATERIA || "0", 10);
       const minBat = Math.min(...baterias);
       if (minBat === 100 && batVal < 100) return false;
       if (minBat < 100 && batVal <= minBat) return false;
+    }
+    if (almacenamientos.length > 0) {
+      const gbVal = (p.GB || "").toString().replace(/[^\d]/g, "");
+      if (!almacenamientos.includes(gbVal)) return false;
     }
     if (precios.length > 0) {
       const pPrecio = Number(p.USD || 99999);
@@ -258,7 +269,7 @@ function inicializarFiltrosSidebar(productos) {
   const contenedorModelos = document.getElementById("filtros-modelos");
   if (!contenedorModelos) return;
 
-  let familias = [...new Set(productos.map((p) => obtenerFamilia(p.MODELO || "")))];
+  let familias = [...new Set((productos || []).map((p) => obtenerFamilia(p.MODELO || p.PRODUCTO || "")))];
   familias = familias.filter((familia) => familia && familia !== "Otros");
 
   familias.sort((a, b) => {
@@ -274,7 +285,7 @@ function inicializarFiltrosSidebar(productos) {
     </label>
   `).join("");
 
-  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio');
+  const checkboxes = document.querySelectorAll('.filtro-modelo, .filtro-bateria, .filtro-precio, .filtro-almacenamiento');
   checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       mostrarTodosPreowned = 6;
@@ -284,7 +295,7 @@ function inicializarFiltrosSidebar(productos) {
 }
 
 function ordenarNumerico(valores) {
-  return valores.sort((a, b) => {
+  return (valores || []).sort((a, b) => {
     const numA = parseFloat((a.match(/[\d.]+/) || ["0"])[0]);
     const numB = parseFloat((b.match(/[\d.]+/) || ["0"])[0]);
     return numA - numB;
@@ -299,13 +310,13 @@ function inicializarFiltrosSidebarMac(productos) {
 
   if (!contenedorModelos || !contenedorChip || !contenedorRam || !contenedorSsd) return;
 
-  let familias = [...new Set(productos.map((p) => obtenerFamiliaMac(p.MODELO || "")))]
+  let familias = [...new Set((productos || []).map((p) => obtenerFamiliaMac(p.MODELO || p.PRODUCTO || "")))]
     .filter((f) => f && f !== "Otros")
     .sort();
 
-  let chips = [...new Set(productos.map((p) => (p.CHIP || "").trim()))].filter(Boolean);
-  let rams = ordenarNumerico([...new Set(productos.map((p) => (p.RAM || "").trim()))].filter(Boolean));
-  let ssds = ordenarNumerico([...new Set(productos.map((p) => (p.SSD || "").trim()))].filter(Boolean));
+  let chips = [...new Set((productos || []).map((p) => (p.CHIP || "").trim()))].filter(Boolean);
+  let rams = ordenarNumerico([...new Set((productos || []).map((p) => (p.RAM || "").trim()))].filter(Boolean));
+  let ssds = ordenarNumerico([...new Set((productos || []).map((p) => (p.SSD || "").trim()))].filter(Boolean));
 
   const renderGrupo = (valores, claseFiltro) =>
     valores.map(valor => `
@@ -339,8 +350,8 @@ function obtenerFiltrosActivosMac() {
 
 function filtrarMacbooks(lista) {
   const { modelos, chips, rams, ssds } = obtenerFiltrosActivosMac();
-  return lista.filter((p) => {
-    if (modelos.length > 0 && !modelos.includes(obtenerFamiliaMac(p.MODELO || ""))) return false;
+  return (lista || []).filter((p) => {
+    if (modelos.length > 0 && !modelos.includes(obtenerFamiliaMac(p.MODELO || p.PRODUCTO || ""))) return false;
     if (chips.length > 0 && !chips.includes((p.CHIP || "").trim())) return false;
     if (rams.length > 0 && !rams.includes((p.RAM || "").trim())) return false;
     if (ssds.length > 0 && !ssds.includes((p.SSD || "").trim())) return false;
@@ -352,6 +363,7 @@ function toggleModalFiltrosMac() {
   const modal = document.getElementById("modal-filtros-mac");
   const overlay = document.getElementById("overlay-filtros-mac");
   if (!modal) return;
+
   if (modal.classList.contains("translate-y-full")) {
     modal.classList.remove("translate-y-full");
     modal.classList.add("translate-y-0");
@@ -392,12 +404,13 @@ function moverSlide(id, direccion) {
 }
 
 function resolverRutaImagen(valor) {
-  const img = (valor || "").trim();
+  const img = (valor || "").toString().trim();
   if (!img) return "";
 
   if (
     img.startsWith("http://") ||
     img.startsWith("https://") ||
+    img.startsWith("data:") ||
     img.startsWith("img/")
   ) {
     return img;
@@ -407,12 +420,15 @@ function resolverRutaImagen(valor) {
 }
 
 function construirCard(p, isCarousel = false) {
+  if (!p) return "";
+
   const categoria = (p.CATEGORIA || "").toLowerCase().trim();
   const esMacbook = categoria.includes("macbook");
   const esIpad = categoria.includes("ipad");
+  const esWatch = categoria.includes("watch");
   const esAccesorio = categoria.includes("accesorio");
 
-  const modelo = esAccesorio ? (p.PRODUCTO || "") : (p.MODELO || "");
+  const modelo = p.MODELO || p.PRODUCTO || "Producto Hassel";
   const gb = esMacbook ? (p.SSD || "") : (p.GB || "");
   const color = p.COLOR || "";
   const bateria = p.BATERIA || "";
@@ -431,13 +447,13 @@ function construirCard(p, isCarousel = false) {
     .replace(/[^\w-]/g, "");
 
   const imagenes = [p.IMAGEN_1, p.IMAGEN_2, p.IMAGEN_3]
-    .filter(Boolean)
-    .map(resolverRutaImagen);
+    .map(resolverRutaImagen)
+    .filter(Boolean);
 
   const imagenesFinales = imagenes.length ? imagenes : ["img/fotonodisponible.png"];
 
   const bateriaTag = bateria
-    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${bateria} batería</span>`
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${bateria}${bateria.includes('%') ? '' : '%'} batería</span>`
     : "";
 
   const ciclosTag = ciclos
@@ -445,18 +461,16 @@ function construirCard(p, isCarousel = false) {
     : "";
 
   const gradeTexto =
-  grade === "A+" ? "Excelente" :
-  grade === "A"  ? "Muy bueno" :
-  grade === "B"  ? "Bueno" :
-  grade;
+    grade === "A+" ? "Excelente" :
+    grade === "A"  ? "Muy bueno" :
+    grade === "B"  ? "Bueno" :
+    grade;
 
-const gradeTag = grade
-  ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">
-       Grade ${grade} · ${gradeTexto}
-     </span>`
-  : "";
+  const gradeTag = grade
+    ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">Grade ${grade}${gradeTexto ? ` · ${gradeTexto}` : ''}</span>`
+    : "";
 
-  const estadoTag = esAccesorio && estado
+  const estadoTag = (esAccesorio || esWatch) && estado
     ? `<span class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5">${estado}</span>`
     : "";
 
@@ -474,8 +488,13 @@ const gradeTag = grade
     if (gb) parts.push(gb);
     if (color) parts.push(color);
     subTitulo = parts.join(" · ");
+  } else if (esWatch) {
+    const parts = [];
+    if (gb) parts.push(gb);
+    if (color) parts.push(color);
+    subTitulo = parts.join(" · ");
   } else {
-    if (color) subTitulo += ` · ${color}`;
+    if (color) subTitulo = subTitulo ? `${subTitulo} · ${color}` : color;
   }
 
   const precioTexto = precio ? `USD ${precio}` : "Consultar";
@@ -484,8 +503,11 @@ const gradeTag = grade
   const precioPesos =
     precioNumerico && dolarWeb ? Math.round(precioNumerico * dolarWeb) : 0;
 
+  let articuloEl = "el";
+  if (esMacbook) articuloEl = "la";
+  if (esIpad) articuloEl = "el";
 
-  let nombreProducto = esAccesorio ? modelo : (esMacbook ? `la ${modelo}` : `el ${modelo}`);
+  let nombreProducto = esAccesorio ? modelo : `${articuloEl} ${modelo}`;
   if (esMacbook) {
     if (chip) nombreProducto += ` ${chip}`;
     if (ram) nombreProducto += ` ${ram} RAM`;
@@ -497,11 +519,10 @@ const gradeTag = grade
     if (gb) nombreProducto += ` ${gb}`;
   }
   if (color) nombreProducto += ` ${color}`;
-  
-  nombreProducto = nombreProducto.replace(/\s+/g, " ");
 
-  const mensaje = `Hola Hassel! Quiero consultar por ${nombreProducto} que vi en la web. ¿L${esMacbook ? "a" : "o"} tienen disponible?`;
+  nombreProducto = nombreProducto.replace(/\s+/g, " ").trim();
 
+  const mensaje = `Hola Hassel! Quiero consultar por ${nombreProducto} que vi en la web. ¿Lo tienen disponible?`;
   const waLink = `https://wa.me/5491136404202?text=${encodeURIComponent(mensaje)}`;
 
   const esNuevo = categoria.endsWith("-new");
@@ -519,7 +540,7 @@ const gradeTag = grade
       ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${detalle}</p>`
       : "";
 
-  const estadoDetalle = esMacbook && estado
+  const estadoDetalle = (esMacbook || esWatch) && estado
     ? `<p class="text-sm text-black/50 dark:text-white/50 mb-4">${estado}</p>`
     : "";
 
@@ -561,12 +582,12 @@ const gradeTag = grade
           imagenesFinales.length > 1
             ? `
             <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', -1)"
-              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold">
               ‹
             </button>
 
             <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', 1)"
-              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white">
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold">
               ›
             </button>
           `
@@ -600,15 +621,15 @@ const gradeTag = grade
             ${precioTexto}
           </p>
 
-         <p class="text-sm font-medium text-[#1F8F5F] mt-1">
-  ${precioPesos
-    ? formatearPesos(precioPesos)
-    : (precioNumerico ? `<a href="${waLink}" target="_blank" class="underline">Consultar en pesos</a>` : "")}
-</p>
+          <p class="text-sm font-medium text-[#1F8F5F] mt-1">
+            ${precioPesos
+              ? formatearPesos(precioPesos)
+              : (precioNumerico ? `<a href="${waLink}" target="_blank" class="underline">Consultar en pesos</a>` : "")}
+          </p>
         </div>
 
         <a href="${waLink}" target="_blank"
-          class="px-4 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black text-xs font-medium">
+          class="px-4 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black text-xs font-medium shrink-0">
           Consultar
         </a>
       </div>
@@ -624,6 +645,8 @@ function renderProductos() {
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
+  const watchNewGrid = document.querySelector("#watch-new .grid");
+  const watchGrid = document.querySelector("#watch .grid");
   const accesoriosGrid = document.querySelector("#accesorios-grid");
 
   const preownedVerMas = document.getElementById("preowned-vermas");
@@ -633,6 +656,8 @@ function renderProductos() {
   const ipadsVerMas = document.getElementById("ipads-vermas");
   const macbooksNewVerMas = document.getElementById("macbooks-new-vermas");
   const ipadsNewVerMas = document.getElementById("ipads-new-vermas");
+  const watchNewVerMas = document.getElementById("watch-new-vermas");
+  const watchVerMas = document.getElementById("watch-vermas");
   const accesoriosVerMas = document.getElementById("accesorios-vermas");
 
   if (preownedGrid) preownedGrid.innerHTML = "";
@@ -642,6 +667,8 @@ function renderProductos() {
   if (ipadsGrid) ipadsGrid.innerHTML = "";
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = "";
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = "";
+  if (watchNewGrid) watchNewGrid.innerHTML = "";
+  if (watchGrid) watchGrid.innerHTML = "";
   if (accesoriosGrid) accesoriosGrid.innerHTML = "";
 
   const { modelos } = obtenerFiltrosActivos();
@@ -664,38 +691,32 @@ function renderProductos() {
   const macbooks = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => {
-      const precioA = Number(a.USD || 0);
-      const precioB = Number(b.USD || 0);
-      return precioB - precioA;
-    });
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const macbooksNew = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => {
-      const precioA = Number(a.USD || 0);
-      const precioB = Number(b.USD || 0);
-      return precioB - precioA;
-    });
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const ipads = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => {
-      const precioA = Number(a.USD || 0);
-      const precioB = Number(b.USD || 0);
-      return precioB - precioA;
-    });
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const ipadsNew = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => {
-      const precioA = Number(a.USD || 0);
-      const precioB = Number(b.USD || 0);
-      return precioB - precioA;
-    });
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+
+  const watchNew = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-new")
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+
+  const watchPreowned = productosGlobales
+    .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-preowned")
+    .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const accesoriosBusqueda = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
@@ -714,54 +735,51 @@ function renderProductos() {
   const macbooksNewVisibles = limitarProductos(macbooksNew, mostrarTodosMacbooksNew);
   const ipadsVisibles = limitarProductos(ipads, mostrarTodosIpads);
   const ipadsNewVisibles = limitarProductos(ipadsNew, mostrarTodosIpadsNew);
+  const watchNewVisibles = limitarProductos(watchNew, mostrarTodosWatchNew);
+  const watchPreownedVisibles = limitarProductos(watchPreowned, mostrarTodosWatch);
   const accesoriosVisibles = limitarProductos(accesorios, mostrarTodosAccesorios);
 
   const htmlEmptyState = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-      <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
-      <p class="text-lg font-semibold text-black dark:text-white mb-2">Por encargo.</p>
-      <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">No manejamos stock permanente de MacBooks nuevas, pero las conseguimos. Contanos qué modelo buscás y te cotizamos en 24hs.</p>
+      <p class="text-lg font-semibold text-black dark:text-white mb-2">Sin stock disponible por el momento.</p>
+      <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Escribinos y te asesoramos para conseguir el modelo exacto que estás buscando.</p>
       <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20equipo%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Consultar por WhatsApp</a>
     </div>
   `;
 
   const htmlEmptyStateAccesorios = `
     <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-      <iconify-icon icon="lucide:search-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
       <p class="text-lg font-semibold text-black dark:text-white mb-2">Sin stock por el momento.</p>
       <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Contanos qué accesorio buscás y te avisamos apenas lo tengamos.</p>
       <a href="https://wa.me/5491136404202?text=Hola%20Hassel!%20Estoy%20buscando%20un%20accesorio%20y%20no%20lo%20encuentro%20en%20la%20web." target="_blank" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Consultar por WhatsApp</a>
     </div>
   `;
 
-if (preownedGrid) {
-  if (preownedVisibles.length) {
-    preownedGrid.innerHTML = preownedVisibles.map(p => construirCard(p)).join("");
-  } else if (preowned.length > 0) {
-    // Hay stock real, pero el filtro no matcheó nada
-    preownedGrid.innerHTML = `
-      <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-        <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
-        <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay equipos con estos filtros.</p>
-        <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá ajustando los filtros o mirá todo el stock disponible.</p>
-        <button onclick="limpiarFiltrosPreowned()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
-      </div>
-    `;
-  } else {
-    // No hay stock real en PreOwned
-    preownedGrid.innerHTML = htmlEmptyState;
+  if (preownedGrid) {
+    if (preownedVisibles.length) {
+      preownedGrid.innerHTML = preownedVisibles.map(p => construirCard(p)).join("");
+    } else if (preowned.length > 0) {
+      preownedGrid.innerHTML = `
+        <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
+          <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay equipos con estos filtros.</p>
+          <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá ajustando los filtros o mirá todo el stock disponible.</p>
+          <button onclick="limpiarFiltrosPreowned()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
+        </div>
+      `;
+    } else {
+      preownedGrid.innerHTML = htmlEmptyState;
+    }
   }
-}
+
   if (newGrid) newGrid.innerHTML = nuevosVisibles.length ? nuevosVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (outletGrid) outletGrid.innerHTML = outletVisibles.length ? outletVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  
   if (macbooksGrid) {
     if (macbooksVisibles.length) {
       macbooksGrid.innerHTML = macbooksVisibles.map(p => construirCard(p)).join("");
     } else if (macbooks.length > 0) {
-      // Hay stock real, pero el filtro no matcheó nada
       macbooksGrid.innerHTML = `
         <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-          <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
           <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay equipos con estos filtros.</p>
           <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá ajustando los filtros o mirá todo el stock disponible.</p>
           <button onclick="limpiarFiltrosMacbooks()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
@@ -771,19 +789,21 @@ if (preownedGrid) {
       macbooksGrid.innerHTML = htmlEmptyState;
     }
   }
+
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = macbooksNewVisibles.length ? macbooksNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsGrid) ipadsGrid.innerHTML = ipadsVisibles.length ? ipadsVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = ipadsNewVisibles.length ? ipadsNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (watchNewGrid) watchNewGrid.innerHTML = watchNewVisibles.length ? watchNewVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+  if (watchGrid) watchGrid.innerHTML = watchPreownedVisibles.length ? watchPreownedVisibles.map(p => construirCard(p)).join("") : htmlEmptyState;
+
   if (accesoriosGrid) {
     if (accesoriosVisibles.length) {
       accesoriosGrid.innerHTML = accesoriosVisibles.map(p => construirCard(p)).join("");
     } else if (accesoriosBusqueda.length === 0 && tipoAccesorioActivo === "todos") {
       accesoriosGrid.innerHTML = htmlEmptyStateAccesorios;
     } else {
-      // Hay accesorios, pero el filtro (o filtro + búsqueda) no matchea nada
       accesoriosGrid.innerHTML = `
         <div class="col-span-full py-12 flex flex-col items-center justify-center text-center">
-          <iconify-icon icon="lucide:filter-x" class="text-4xl text-black/20 dark:text-white/20 mb-4"></iconify-icon>
           <p class="text-lg font-semibold text-black dark:text-white mb-2">No hay accesorios con este filtro.</p>
           <p class="text-sm text-black/50 dark:text-white/50 mb-6 max-w-sm">Probá con otra categoría o mirá todo el stock disponible.</p>
           <button onclick="limpiarFiltrosAccesorios()" class="px-5 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-medium">Ver todos</button>
@@ -793,95 +813,95 @@ if (preownedGrid) {
   }
 
   renderFiltrosAccesorios(accesoriosGrid);
-
-  // Inicializar animaciones reveal en las tarjetas nuevas si las tuvieran
   setTimeout(initReveals, 50);
 
   if (preownedVerMas) {
     preownedVerMas.innerHTML =
       preownedFiltrados.length > 4
-        ? `
-        <button onclick="toggleVerMas('preowned')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosPreowned >= preownedFiltrados.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('preowned')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosPreowned >= preownedFiltrados.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (newVerMas) {
     newVerMas.innerHTML =
       nuevos.length > 4
-        ? `
-        <button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosNew >= nuevos.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('iphone-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosNew >= nuevos.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (outletVerMas) {
     outletVerMas.innerHTML =
       outlet.length > 4
-        ? `
-        <button onclick="toggleVerMas('outlet')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosOutlet >= outlet.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('outlet')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosOutlet >= outlet.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (macbooksVerMas) {
     macbooksVerMas.innerHTML =
       macbooksFiltrados.length > 4
-        ? `
-        <button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosMacbooks >= macbooksFiltrados.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('macbooks')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosMacbooks >= macbooksFiltrados.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (macbooksNewVerMas) {
     macbooksNewVerMas.innerHTML =
       macbooksNew.length > 4
-        ? `
-        <button onclick="toggleVerMas('macbooks-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosMacbooksNew >= macbooksNew.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('macbooks-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosMacbooksNew >= macbooksNew.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (ipadsVerMas) {
     ipadsVerMas.innerHTML =
       ipads.length > 4
-        ? `
-        <button onclick="toggleVerMas('ipads')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosIpads >= ipads.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('ipads')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosIpads >= ipads.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (ipadsNewVerMas) {
     ipadsNewVerMas.innerHTML =
       ipadsNew.length > 4
-        ? `
-        <button onclick="toggleVerMas('ipads-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosIpadsNew >= ipadsNew.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('ipads-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosIpadsNew >= ipadsNew.length ? "Ver menos" : "Ver más"}
+          </button>`
+        : "";
+  }
+
+  if (watchNewVerMas) {
+    watchNewVerMas.innerHTML =
+      watchNew.length > 4
+        ? `<button onclick="toggleVerMas('watch-new')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosWatchNew >= watchNew.length ? "Ver menos" : "Ver más"}
+          </button>`
+        : "";
+  }
+
+  if (watchVerMas) {
+    watchVerMas.innerHTML =
+      watchPreowned.length > 4
+        ? `<button onclick="toggleVerMas('watch')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosWatch >= watchPreowned.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
   if (accesoriosVerMas) {
     accesoriosVerMas.innerHTML =
       accesorios.length > 4
-        ? `
-        <button onclick="toggleVerMas('accesorios')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
-          ${mostrarTodosAccesorios >= accesorios.length ? "Ver menos" : "Ver más"}
-        </button>
-      `
+        ? `<button onclick="toggleVerMas('accesorios')" class="w-full px-5 py-3 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 text-black dark:text-white text-sm font-medium">
+            ${mostrarTodosAccesorios >= accesorios.length ? "Ver menos" : "Ver más"}
+          </button>`
         : "";
   }
 
@@ -891,7 +911,7 @@ if (preownedGrid) {
   if (terminoBusqueda.trim() !== "") {
     const resultados = productosGlobales
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-      .sort((a, b) => obtenerOrdenModelo(b.MODELO) - obtenerOrdenModelo(a.MODELO));
+      .sort((a, b) => obtenerOrdenModelo(b.MODELO || b.PRODUCTO) - obtenerOrdenModelo(a.MODELO || a.PRODUCTO));
 
     if (resultadosWrap && gridResultados) {
       resultadosWrap.classList.remove("hidden");
@@ -900,7 +920,7 @@ if (preownedGrid) {
         : `<p class="text-sm text-black/50 dark:text-white/50 col-span-full">No encontramos resultados.</p>`;
     }
   } else {
-    resultadosWrap?.classList.add("hidden");
+    if (resultadosWrap) resultadosWrap.classList.add("hidden");
   }
 }
 
@@ -992,6 +1012,30 @@ function toggleVerMas(categoria) {
     }
   }
 
+  if (categoria === "watch-new") {
+    const watchNew = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-new")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosWatchNew >= watchNew.length) {
+      mostrarTodosWatchNew = 4;
+    } else {
+      mostrarTodosWatchNew += 4;
+    }
+  }
+
+  if (categoria === "watch") {
+    const watchPreowned = productosGlobales
+      .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-preowned")
+      .filter((p) => productoCoincideBusqueda(p, terminoBusqueda));
+
+    if (mostrarTodosWatch >= watchPreowned.length) {
+      mostrarTodosWatch = 4;
+    } else {
+      mostrarTodosWatch += 4;
+    }
+  }
+
   if (categoria === "accesorios") {
     const accesorios = productosGlobales
       .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
@@ -1011,48 +1055,70 @@ function toggleVerMas(categoria) {
 async function cargarProductos() {
   mostrarSkeletons();
 
-  const urlIphones =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iphone";
-  const urlMacbooks =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/MacBook";
-  const urlIpads =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/iPad";
-  const urlAccesorios =
-    "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA/Accesorios";
+  const baseUrl = "https://opensheet.elk.sh/1wLegO19-06hNTsL-Fta_nwkGSCcF3omBYVTqpCCKUZA";
+  
+  const fetchSafe = async (sheetName) => {
+    try {
+      const res = await fetch(`${baseUrl}/${sheetName}`);
+      if (!res.ok) return [];
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.warn(`No se pudieron cargar datos de la pestaña ${sheetName}:`, e);
+      return [];
+    }
+  };
 
   try {
-    const [resIphones, resMacbooks, resIpads, resAccesorios] = await Promise.all([
-      fetch(urlIphones),
-      fetch(urlMacbooks).catch(() => ({ json: () => [] })), // en caso de que la URL de macbooks falle
-      fetch(urlIpads).catch(() => ({ json: () => [] })), // en caso de que la URL de ipads falle
-      fetch(urlAccesorios).catch(() => ({ json: () => [] })) // en caso de que la URL de accesorios falle
+    const [dataIphones, dataMacbooks, dataIpads, dataWatch, dataAccesorios] = await Promise.all([
+      fetchSafe("iphone"),
+      fetchSafe("MacBook"),
+      fetchSafe("iPad"),
+      fetchSafe("Watch"),
+      fetchSafe("Accesorios")
     ]);
 
-    const dataIphones = await resIphones.json();
-    let dataMacbooks = [];
-    if (resMacbooks.ok) {
-        dataMacbooks = await resMacbooks.json();
-    }
-    let dataIpads = [];
-    if (resIpads.ok) {
-        dataIpads = await resIpads.json();
-    }
-    let dataAccesorios = [];
-    if (resAccesorios.ok) {
-        dataAccesorios = await resAccesorios.json();
-    }
+    // Normalizar categorías base por defecto
+    dataIphones.forEach(item => {
+      if (!item.CATEGORIA) item.CATEGORIA = "iphone-preowned";
+    });
 
-    const iphonesArr = Array.isArray(dataIphones) ? dataIphones : [];
-    const macbooksArr = Array.isArray(dataMacbooks) ? dataMacbooks : [];
-    const ipadsArr = Array.isArray(dataIpads) ? dataIpads : [];
-    const accesoriosArr = Array.isArray(dataAccesorios) ? dataAccesorios : [];
+    dataMacbooks.forEach(item => {
+      if (!item.CATEGORIA) item.CATEGORIA = "macbook-preowned";
+    });
 
-    // Por defecto asumo que vienen sin categoria "macbook-preowned"
-    macbooksArr.forEach(m => m.CATEGORIA = m.CATEGORIA || "macbook-preowned");
-    ipadsArr.forEach(i => i.CATEGORIA = i.CATEGORIA || "ipad-preowned");
-    accesoriosArr.forEach(a => a.CATEGORIA = a.CATEGORIA || "accesorios");
+    dataIpads.forEach(item => {
+      if (!item.CATEGORIA) item.CATEGORIA = "ipad-preowned";
+    });
 
-    productosGlobales = [...iphonesArr, ...macbooksArr, ...ipadsArr, ...accesoriosArr];
+    dataWatch.forEach(item => {
+      const cat = normalizarTexto(item.CATEGORIA);
+      const tipo = normalizarTexto(item.TIPO);
+      if (cat === "watch-new" || tipo === "watch-new" || tipo === "new") {
+        item.CATEGORIA = "watch-new";
+      } else {
+        item.CATEGORIA = "watch-preowned";
+      }
+    });
+
+    dataAccesorios.forEach(item => {
+      if (!item.CATEGORIA) item.CATEGORIA = "accesorios";
+    });
+
+    // Unificar catálogo y soportar categorías especiales definidas en TIPO o CATEGORIA
+    productosGlobales = [...dataIphones, ...dataMacbooks, ...dataIpads, ...dataWatch, ...dataAccesorios].map(p => {
+      const catNorm = normalizarTexto(p.CATEGORIA);
+      const tipoNorm = normalizarTexto(p.TIPO);
+      
+      if (catNorm === "watch" || catNorm === "apple watch" || catNorm === "applewatch") {
+        if (tipoNorm === "watch-new" || tipoNorm === "new" || tipoNorm === "sellado") {
+          p.CATEGORIA = "watch-new";
+        } else {
+          p.CATEGORIA = "watch-preowned";
+        }
+      }
+      return p;
+    });
 
     inicializarFiltrosSidebar(
       productosGlobales.filter(
@@ -1070,7 +1136,7 @@ async function cargarProductos() {
 
     renderProductos();
   } catch (error) {
-    console.error("Error cargando productos:", error);
+    console.error("Error general cargando productos:", error);
     mostrarErrorVisual();
   }
 }
@@ -1083,6 +1149,8 @@ function mostrarErrorVisual() {
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
+  const watchNewGrid = document.querySelector("#watch-new .grid");
+  const watchGrid = document.querySelector("#watch .grid");
   const accesoriosGrid = document.querySelector("#accesorios-grid");
 
   const htmlError = `
@@ -1104,6 +1172,8 @@ function mostrarErrorVisual() {
   if (ipadsGrid) ipadsGrid.innerHTML = htmlError;
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = htmlError;
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = htmlError;
+  if (watchNewGrid) watchNewGrid.innerHTML = htmlError;
+  if (watchGrid) watchGrid.innerHTML = htmlError;
   if (accesoriosGrid) accesoriosGrid.innerHTML = htmlError;
 }
 
@@ -1115,6 +1185,8 @@ function mostrarSkeletons() {
   const ipadsGrid = document.querySelector("#ipads .grid");
   const macbooksNewGrid = document.querySelector("#macbooks-new .grid");
   const ipadsNewGrid = document.querySelector("#ipads-new .grid");
+  const watchNewGrid = document.querySelector("#watch-new .grid");
+  const watchGrid = document.querySelector("#watch .grid");
   const accesoriosGrid = document.querySelector("#accesorios-grid");
 
   const htmlSkeleton = `
@@ -1149,6 +1221,8 @@ function mostrarSkeletons() {
   if (ipadsGrid) ipadsGrid.innerHTML = repeatSkeletons;
   if (macbooksNewGrid) macbooksNewGrid.innerHTML = repeatSkeletons;
   if (ipadsNewGrid) ipadsNewGrid.innerHTML = repeatSkeletons;
+  if (watchNewGrid) watchNewGrid.innerHTML = repeatSkeletons;
+  if (watchGrid) watchGrid.innerHTML = repeatSkeletons;
   if (accesoriosGrid) accesoriosGrid.innerHTML = repeatSkeletons;
 }
 
@@ -1181,7 +1255,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function enviarServiceWhatsApp() {
   const nombre = document.getElementById("service-nombre")?.value.trim() || "";
-  const whatsapp = document.getElementById("service-whatsapp")?.value.trim() || "";
   const modelo = document.getElementById("service-modelo")?.value.trim() || "";
   const mensaje = document.getElementById("service-mensaje")?.value.trim() || "";
 
@@ -1193,7 +1266,6 @@ function enviarServiceWhatsApp() {
   const texto = `Hola Hassel, quiero consultar por servicio técnico.
 
 Nombre: ${nombre}
-WhatsApp: ${whatsapp}
 Modelo: ${modelo}
 Falla: ${mensaje}`;
 
@@ -1225,6 +1297,7 @@ function siguienteHeroSlide() {
   if (!slider) return;
 
   const totalSlides = slider.children.length;
+  if (!totalSlides) return;
   heroSlideActual = (heroSlideActual + 1) % totalSlides;
   actualizarHeroSlider(heroSlideActual);
 }
@@ -1241,7 +1314,6 @@ function iniciarHeroSlider() {
     });
   });
 
-  // Swipe support
   let touchStartX = 0;
   let touchEndX = 0;
   slider.addEventListener('touchstart', e => {
@@ -1258,7 +1330,10 @@ function iniciarHeroSlider() {
 
 function reiniciarHeroSlider() {
   clearInterval(heroSliderInterval);
-  heroSliderInterval = setInterval(siguienteHeroSlide, 4500);
+  const slider = document.getElementById("hero-slider");
+  if (slider) {
+    heroSliderInterval = setInterval(siguienteHeroSlide, 4500);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1270,6 +1345,7 @@ function heroNext() {
   if (!slider) return;
 
   const totalSlides = slider.children.length;
+  if (!totalSlides) return;
   heroSlideActual = (heroSlideActual + 1) % totalSlides;
   actualizarHeroSlider(heroSlideActual);
   reiniciarHeroSlider();
@@ -1280,6 +1356,7 @@ function heroPrev() {
   if (!slider) return;
 
   const totalSlides = slider.children.length;
+  if (!totalSlides) return;
   heroSlideActual = (heroSlideActual - 1 + totalSlides) % totalSlides;
   actualizarHeroSlider(heroSlideActual);
   reiniciarHeroSlider();
@@ -1305,8 +1382,8 @@ function initReveals() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const whatsappBtn = document.querySelector(".whatsapp-float");
-  const hero = document.querySelector("section"); // o el selector de tu hero
+  const whatsappBtn = document.querySelector(".whatsapp-fab") || document.querySelector(".whatsapp-float");
+  const hero = document.querySelector("section");
 
   if (!whatsappBtn || !hero) return;
 
@@ -1320,14 +1397,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function limpiarFiltrosPreowned() {
-  document.querySelectorAll('.filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked')
+  document.querySelectorAll('.filtro-modelo:checked, .filtro-bateria:checked, .filtro-precio:checked, .filtro-almacenamiento:checked')
     .forEach(cb => cb.checked = false);
   mostrarTodosPreowned = 4;
   renderProductos();
 }
 
 // ==========================
-// FILTROS DE ACCESORIOS (por columna TIPO del Sheet)
+// FILTROS DE ACCESORIOS
 // ==========================
 
 function escaparHTML(texto) {
@@ -1343,7 +1420,6 @@ function coincideTipoAccesorio(p) {
   return normalizarTexto(p.TIPO) === tipoAccesorioActivo;
 }
 
-// Arma la lista de tipos a partir de lo que haya cargado en la columna TIPO
 function inicializarFiltrosAccesorios() {
   const vistos = new Map();
 
@@ -1357,7 +1433,6 @@ function inicializarFiltrosAccesorios() {
 
   tiposAccesorios = Array.from(vistos, ([clave, etiqueta]) => ({ clave, etiqueta }));
 
-  // Si el tipo activo ya no existe (ej. se borró del Sheet), vuelvo a "todos"
   if (tipoAccesorioActivo !== "todos" && !vistos.has(tipoAccesorioActivo)) {
     tipoAccesorioActivo = "todos";
   }
@@ -1366,7 +1441,6 @@ function inicializarFiltrosAccesorios() {
 function renderFiltrosAccesorios(accesoriosGrid) {
   let contenedor = document.getElementById("accesorios-filtros");
 
-  // Si el index.html no tiene el contenedor, lo creo arriba del grid
   if (!contenedor && accesoriosGrid && accesoriosGrid.parentNode) {
     contenedor = document.createElement("div");
     contenedor.id = "accesorios-filtros";
@@ -1400,7 +1474,6 @@ function filtrarAccesoriosPorTipo(indice) {
   renderProductos();
 }
 
-// Alias por si se llama desde otro lado
 function filtrarAccesorios(indice) {
   filtrarAccesoriosPorTipo(indice);
 }
