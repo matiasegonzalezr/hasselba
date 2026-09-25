@@ -169,6 +169,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
             </div>
+            <div class="group relative py-2">
+                <span class="cursor-pointer hover:text-black dark:text-white transition">Apple Watch</span>
+                <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
+                    <div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-black/5 dark:border-white/5 rounded-2xl shadow-xl p-2 flex flex-col gap-1 w-48">
+                        <a href="#watch" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">PreOwned</a>
+                        <a href="#watch-new" class="px-4 py-2.5 hover:bg-black/5 dark:bg-white/5 rounded-xl transition text-black/90 dark:text-white/90">New</a>
+                    </div>
+                </div>
+            </div>
             <a href="#accesorios" class="py-2 hover:text-black dark:text-white transition">Accesorios</a>
             <a href="#service-form" class="py-2 hover:text-black dark:text-white transition">Servicio Técnico</a>
         </nav>
@@ -253,6 +262,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div id="acc-ipad" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
                     <a href="#ipads" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">PreOwned</a>
                     <a href="#ipads-new" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:text-white">New</a>
+                </div>
+            </div>
+
+            <div class="border-b border-black/5 dark:border-white/5 pb-2">
+                <button onclick="toggleAccordion('acc-watch')" class="flex justify-between items-center w-full text-2xl font-semibold py-2 text-left">
+                    Apple Watch
+                    <span id="icon-acc-watch" class="text-2xl font-light transition-transform duration-300">+</span>
+                </button>
+                <div id="acc-watch" class="hidden flex-col gap-3 pt-3 pb-2 px-2">
+                    <a href="#watch" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white">PreOwned</a>
+                    <a href="#watch-new" onclick="toggleMenu()" class="text-lg text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white">New</a>
                 </div>
             </div>
 
@@ -885,6 +905,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             <div id="ipads-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+
+    <!-- APPLE WATCH NEW -->
+    <section id="watch-new" class="py-16 px-5 bg-white dark:bg-zinc-900">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 dark:text-white/45 mb-2">Apple Watch</p>
+                <h2 class="text-2xl font-semibold text-black dark:text-white mb-2">New</h2>
+                <p class="text-sm text-black/55 dark:text-white/55">Equipos nuevos, listos para entregar.</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                <!-- Apple Watch New inyectados por JS -->
+            </div>
+
+            <div id="watch-new-vermas" class="mt-5"></div>
+        </div>
+    </section>
+
+    <!-- APPLE WATCH PREOWNED -->
+    <section id="watch" class="py-16 px-5 bg-[#f5f5f7] dark:bg-black">
+        <div class="max-w-5xl mx-auto">
+            <div class="reveal mb-8">
+                <p class="text-[11px] uppercase tracking-[0.25em] text-black/45 dark:text-white/45 mb-2">Apple Watch</p>
+                <h2 class="text-2xl font-semibold text-black dark:text-white mb-2">PreOwned</h2>
+                <p class="text-sm text-black/55 dark:text-white/55">Apple Watch usados y seleccionados.</p>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                <!-- Apple Watch PreOwned inyectados por JS -->
+            </div>
+
+            <div id="watch-vermas" class="mt-5"></div>
         </div>
     </section>
 
