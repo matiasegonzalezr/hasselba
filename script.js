@@ -624,6 +624,13 @@ function construirCard(p, isCarousel = false) {
 
   const carouselClasses = isCarousel ? "min-w-[85vw] sm:min-w-[320px] shrink-0 snap-center" : "";
 
+  // Insignia / Círculo rojo de MM para Apple Watch en la esquina inferior izquierda
+  const badgeWatchMM = esWatch && gb
+    ? `<div class="absolute left-2.5 bottom-2.5 z-10 bg-red-600 text-white text-[11px] font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-md pointer-events-none uppercase tracking-tight border-2 border-white dark:border-zinc-900">
+        ${gb}
+       </div>`
+    : "";
+
   return `
     <article class="reveal rounded-3xl bg-white dark:bg-zinc-900 border border-black/8 dark:border-white/8 p-4 ${carouselClasses}">
       <div class="mb-4 relative">
@@ -639,18 +646,19 @@ function construirCard(p, isCarousel = false) {
               )
               .join("")}
           </div>
+          ${badgeWatchMM}
         </a>
 
         ${
           imagenesFinales.length > 1
             ? `
             <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', -1)"
-              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold">
+              class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold z-20">
               ‹
             </button>
 
             <button onclick="event.preventDefault(); event.stopPropagation(); moverSlide('${id}', 1)"
-              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold">
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-black/10 dark:border-white/10 text-black dark:text-white flex items-center justify-center font-bold z-20">
               ›
             </button>
           `
@@ -1141,7 +1149,6 @@ async function cargarProductos() {
       fetchSafe("Accesorios")
     ]);
 
-    // Asignar categorías base en caso de venirse vacías
     dataIphones.forEach(item => {
       if (!item.CATEGORIA) item.CATEGORIA = "iphone-preowned";
     });
@@ -1158,7 +1165,6 @@ async function cargarProductos() {
       if (!item.CATEGORIA) item.CATEGORIA = "accesorios";
     });
 
-    // Clasificar y normalizar todas las entradas cargadas
     productosGlobales = [...dataIphones, ...dataMacbooks, ...dataIpads, ...dataWatch, ...dataAccesorios].map(p => {
       const catNorm = normalizarTexto(p.CATEGORIA);
       const tipoNorm = normalizarTexto(p.TIPO);
@@ -1536,3 +1542,4 @@ function limpiarFiltrosAccesorios() {
   mostrarTodosAccesorios = 4;
   renderProductos();
 }
+
