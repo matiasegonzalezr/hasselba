@@ -23,6 +23,69 @@ let terminoBusqueda = "";
 let dolarBlueVenta = 0;
 let dolarWeb = 0;
 
+// Helper para leer propiedades ignorando mayúsculas, minúsculas y tildes
+function getVal(obj, ...possibleKeys) {
+  if (!obj) return "";
+  for (const k of possibleKeys) {
+    if (obj[k] !== undefined && obj[k] !== null && String(obj[k]).trim() !== "") {
+      return String(obj[k]).trim();
+    }
+    const foundKey = Object.keys(obj).find(
+      key => normalizarTexto(key) === normalizarTexto(k)
+    );
+    if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== null && String(obj[foundKey]).trim() !== "") {
+      return String(obj[foundKey]).trim();
+    }
+  }
+  return "";
+}
+
+// Normaliza las filas leídas desde Google Sheets a propiedades estándar
+function normalizarFilaSheet(item) {
+  if (!item) return {};
+  const modelo = getVal(item, "MODELO", "Modelo", "PRODUCTO", "Producto", "Product");
+  const gb = getVal(item, "GB", "Gb", "Tamaño", "Tamano", "Capacidad", "Almacenamiento");
+  const categoria = getVal(item, "CATEGORIA", "Categoría", "Categoria", "Category");
+  const tipo = getVal(item, "TIPO", "Tipo");
+  const color = getVal(item, "COLOR", "Color");
+  const usd = getVal(item, "USD", "Usd", "Precio", "PRECIO");
+  const img1 = getVal(item, "IMAGEN_1", "Imagen_1", "Imagen 1", "IMAGEN 1");
+  const img2 = getVal(item, "IMAGEN_2", "Imagen_2", "Imagen 2", "IMAGEN 2");
+  const img3 = getVal(item, "IMAGEN_3", "Imagen_3", "Imagen 3", "IMAGEN 3");
+  const detalle = getVal(item, "DETALLE", "Detalle");
+  const estado = getVal(item, "ESTADO", "Estado");
+  const chip = getVal(item, "CHIP", "Chip");
+  const ram = getVal(item, "RAM", "Ram");
+  const ssd = getVal(item, "SSD", "Ssd");
+  const bateria = getVal(item, "BATERIA", "Bateria", "Batería");
+  const grade = getVal(item, "GRADE", "Grade");
+  const ciclos = getVal(item, "CICLOS", "Ciclos");
+  const precioAntes = getVal(item, "PRECIO_ANTES", "Precio_Antes", "Precio Antes");
+
+  return {
+    ...item,
+    MODELO: modelo,
+    PRODUCTO: modelo,
+    GB: gb,
+    CATEGORIA: categoria,
+    TIPO: tipo,
+    COLOR: color,
+    USD: usd,
+    IMAGEN_1: img1,
+    IMAGEN_2: img2,
+    IMAGEN_3: img3,
+    DETALLE: detalle,
+    ESTADO: estado,
+    CHIP: chip,
+    RAM: ram,
+    SSD: ssd,
+    BATERIA: bateria,
+    GRADE: grade,
+    CICLOS: ciclos,
+    PRECIO_ANTES: precioAntes
+  };
+}
+
 async function cargarDolar() {
   const dolarHeader = document.getElementById("dolar-header");
   const controller = new AbortController();
@@ -1062,7 +1125,7 @@ async function cargarProductos() {
       const res = await fetch(`${baseUrl}/${sheetName}`);
       if (!res.ok) return [];
       const data = await res.json();
-      return Array.isArray(data) ? data : [];
+      return Array.isArray(data) ? data.map(normalizarFilaSheet) : [];
     } catch (e) {
       console.warn(`No se pudieron cargar datos de la pestaña ${sheetName}:`, e);
       return [];
@@ -1078,7 +1141,7 @@ async function cargarProductos() {
       fetchSafe("Accesorios")
     ]);
 
-    // Normalizar categorías base por defecto
+    // Asignar categorías base en caso de venirse vacías
     dataIphones.forEach(item => {
       if (!item.CATEGORIA) item.CATEGORIA = "iphone-preowned";
     });
@@ -1091,27 +1154,17 @@ async function cargarProductos() {
       if (!item.CATEGORIA) item.CATEGORIA = "ipad-preowned";
     });
 
-    dataWatch.forEach(item => {
-      const cat = normalizarTexto(item.CATEGORIA);
-      const tipo = normalizarTexto(item.TIPO);
-      if (cat === "watch-new" || tipo === "watch-new" || tipo === "new") {
-        item.CATEGORIA = "watch-new";
-      } else {
-        item.CATEGORIA = "watch-preowned";
-      }
-    });
-
     dataAccesorios.forEach(item => {
       if (!item.CATEGORIA) item.CATEGORIA = "accesorios";
     });
 
-    // Unificar catálogo y soportar categorías especiales definidas en TIPO o CATEGORIA
+    // Clasificar y normalizar todas las entradas cargadas
     productosGlobales = [...dataIphones, ...dataMacbooks, ...dataIpads, ...dataWatch, ...dataAccesorios].map(p => {
       const catNorm = normalizarTexto(p.CATEGORIA);
       const tipoNorm = normalizarTexto(p.TIPO);
       
-      if (catNorm === "watch" || catNorm === "apple watch" || catNorm === "applewatch") {
-        if (tipoNorm === "watch-new" || tipoNorm === "new" || tipoNorm === "sellado") {
+      if (catNorm.includes("watch") || tipoNorm.includes("watch") || normalizarTexto(p.MODELO).includes("watch")) {
+        if (catNorm === "watch-new" || tipoNorm === "watch-new" || catNorm.includes("new") || tipoNorm.includes("new") || catNorm.includes("sellado") || tipoNorm.includes("sellado")) {
           p.CATEGORIA = "watch-new";
         } else {
           p.CATEGORIA = "watch-preowned";
