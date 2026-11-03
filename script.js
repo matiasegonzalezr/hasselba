@@ -40,6 +40,14 @@ function getVal(obj, ...possibleKeys) {
   return "";
 }
 
+// Si en el Sheet escribís solo el número, completa la unidad:
+// "64" -> "64 GB", "256" -> "256 GB", "2" -> "2 TB". Si ya trae unidad ("1TB", "256 GB") lo deja igual.
+function completarAlmacenamiento(valor) {
+  const v = String(valor || "").trim();
+  if (!/^\d+$/.test(v)) return v;
+  return parseInt(v, 10) <= 8 ? `${v} TB` : `${v} GB`;
+}
+
 // Normaliza las filas leídas desde Google Sheets a propiedades estándar
 function normalizarFilaSheet(item) {
   if (!item) return {};
@@ -1246,6 +1254,14 @@ async function cargarProductos() {
 
     dataAccesorios.forEach(item => {
       if (!item.CATEGORIA) item.CATEGORIA = "accesorios";
+    });
+
+    // Almacenamiento: si cargaste solo el número, se completa con GB (Watch queda afuera porque ahí va en mm)
+    [...dataIphones, ...dataIpads].forEach(item => {
+      item.GB = completarAlmacenamiento(item.GB);
+    });
+    dataMacbooks.forEach(item => {
+      item.SSD = completarAlmacenamiento(item.SSD);
     });
 
     productosGlobales = [...dataIphones, ...dataMacbooks, ...dataIpads, ...dataWatch, ...dataAccesorios].map(p => {
