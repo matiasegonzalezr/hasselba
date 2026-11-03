@@ -125,21 +125,106 @@ function obtenerFamiliaMac(modelo) {
   return "Otros";
 }
 
-function obtenerOrdenModelo(modelo) {
-  const mod = (modelo || "").toString();
-  const match = mod.match(/(\d+)/);
-  const numero = match ? parseInt(match[1], 10) : 0;
+// ==========================
+// ORDEN POR JERARQUÍA DE MODELOS
+// ==========================
+// Dentro de cada categoría el orden es:
+//   1) Generación (la más nueva primero: 17, 16, 15...)
+//   2) Variante dentro de la generación (Pro Max > Pro > Air/Plus > base > mini)
+//   3) Mismo modelo: precio de mayor a menor
+// Todas las claves se comparan de MAYOR a MENOR.
 
-  let tipo = 0;
+function precioNumerico(p) {
+  return Number(p && p.USD) || 0;
+}
 
-  if (/pro max/i.test(mod)) tipo = 5;
-  else if (/pro/i.test(mod)) tipo = 4;
-  else if (/plus/i.test(mod)) tipo = 3;
-  else if (/mini/i.test(mod)) tipo = 2;
-  else if (/ultra/i.test(mod)) tipo = 6;
-  else tipo = 1;
+// iPhone: [generación, variante]
+function claveIphone(m) {
+  let gen = 0; // SE y desconocidos van al final
+  const num = m.match(/^(?:iphone\s*)?(\d{1,2})(?!\d)/);
+  const x = m.match(/^(?:iphone\s*)?x([sr])?\b/);
+  if (num) gen = parseInt(num[1], 10);
+  else if (x) gen = x[1] ? 10.5 : 10; // X, XS, XR
 
-  return numero * 10 + tipo;
+  let variante = 2; // base
+  if (/\bmax\b/.test(m)) variante = 5; // Pro Max, XS Max
+  else if (/\bpro\b/.test(m)) variante = 4;
+  else if (/\b(air|plus)\b/.test(m)) variante = 3;
+  else if (/\bmini\b/.test(m)) variante = 1;
+  else if (/^(?:iphone\s*)?\d{1,2}e\b/.test(m)) variante = 1.5; // 16e, 17e
+
+  return [gen, variante];
+}
+
+// MacBook: [generación de chip (M1, M2...), nivel de chip (Max > Pro > base), familia (Pro > Air)]
+function claveMac(m, chip) {
+  const textoChip = chip || m; // si no hay columna CHIP lo buscamos en el modelo
+  const mc = textoChip.match(/\bm(\d{1,2})\b/);
+  const gen = mc ? parseInt(mc[1], 10) : 0; // Intel y desconocidos al final
+
+  let nivelChip = 1; // base
+  if (chip) {
+    if (/ultra/.test(chip)) nivelChip = 4;
+    else if (/\bmax\b/.test(chip)) nivelChip = 3;
+    else if (/\bpro\b/.test(chip)) nivelChip = 2;
+  }
+
+  const familia = /\bpro\b/.test(m) ? 2 : /\bair\b/.test(m) ? 1 : 0;
+  return [gen, nivelChip, familia];
+}
+
+// iPad: [línea (Pro > Air > mini > base), generación]
+function claveIpad(m, chip) {
+  let linea = 1; // iPad base
+  if (/\bpro\b/.test(m)) linea = 4;
+  else if (/\bair\b/.test(m)) linea = 3;
+  else if (/\bmini\b/.test(m)) linea = 2;
+
+  const txt = `${chip} ${m}`;
+  const cm = txt.match(/\bm(\d{1,2})\b/);
+  const ca = txt.match(/\ba(\d{2})\b/);
+  const nm = m.match(/ipad(?:\s+(?:pro|air|mini))?\s+(\d{1,2})\b/);
+
+  let gen = 0;
+  if (cm) gen = 100 + parseInt(cm[1], 10); // chips M (más nuevos que los A)
+  else if (ca) gen = parseInt(ca[1], 10);  // chips A
+  else if (nm) gen = parseInt(nm[1], 10);  // "iPad 10", "iPad mini 6"
+
+  return [linea, gen];
+}
+
+// Apple Watch: [línea (Ultra > Series > SE), número de generación]
+function claveWatch(m) {
+  let linea = 2; // Series
+  if (/ultra/.test(m)) linea = 3;
+  else if (/\bse\b/.test(m)) linea = 1;
+
+  const n = m.match(/(?:series|ultra|se)\s*(\d{1,2})\b/);
+  return [linea, n ? parseInt(n[1], 10) : 1];
+}
+
+function claveJerarquia(p) {
+  const cat = normalizarTexto(p && p.CATEGORIA);
+  const m = normalizarTexto(p && (p.MODELO || p.PRODUCTO));
+  const chip = normalizarTexto(p && p.CHIP);
+
+  // El primer número separa categorías (útil cuando se mezclan en la búsqueda)
+  if (cat.startsWith("iphone")) return [5, ...claveIphone(m)];
+  if (cat.startsWith("macbook")) return [4, ...claveMac(m, chip)];
+  if (cat.startsWith("ipad")) return [3, ...claveIpad(m, chip)];
+  if (cat.startsWith("watch")) return [2, ...claveWatch(m)];
+  return [1];
+}
+
+function compararJerarquia(a, b) {
+  const A = claveJerarquia(a);
+  const B = claveJerarquia(b);
+  for (let i = 0; i < Math.max(A.length, B.length); i++) {
+    const diff = (B[i] || 0) - (A[i] || 0);
+    if (diff) return diff;
+  }
+  // Mismo modelo: el más caro primero
+  return precioNumerico(b) - precioNumerico(a);
 }
 
 function normalizarTexto(texto) {
@@ -189,7 +274,7 @@ function aplicarOrden(a, b) {
   }
 
   // mas-nuevos (default)
-  return obtenerOrdenModelo(b.MODELO || b.PRODUCTO) - obtenerOrdenModelo(a.MODELO || a.PRODUCTO);
+  return compararJerarquia(a, b);
 }
 
 function productoCoincideBusqueda(p, termino) {
@@ -742,12 +827,10 @@ function renderProductos() {
   if (watchGrid) watchGrid.innerHTML = "";
   if (accesoriosGrid) accesoriosGrid.innerHTML = "";
 
-  const { modelos } = obtenerFiltrosActivos();
-
   const preowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort(modelos.length > 0 ? (a, b) => Number(b.USD || 0) - Number(a.USD || 0) : aplicarOrden);
+    .sort(aplicarOrden);
 
   const nuevos = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "iphone-new")
@@ -762,37 +845,37 @@ function renderProductos() {
   const macbooks = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const macbooksNew = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "macbook-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const ipads = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const ipadsNew = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "ipad-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const watchNew = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-new")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const watchPreowned = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "watch-preowned")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
+    .sort(compararJerarquia);
 
   const accesoriosBusqueda = productosGlobales
     .filter((p) => (p.CATEGORIA || "").toLowerCase().trim() === "accesorios")
     .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-    .sort((a, b) => Number(a.USD || 0) - Number(b.USD || 0));
+    .sort((a, b) => Number(b.USD || 0) - Number(a.USD || 0));
 
   const accesorios = accesoriosBusqueda.filter(coincideTipoAccesorio);
 
@@ -982,7 +1065,7 @@ function renderProductos() {
   if (terminoBusqueda.trim() !== "") {
     const resultados = productosGlobales
       .filter((p) => productoCoincideBusqueda(p, terminoBusqueda))
-      .sort((a, b) => obtenerOrdenModelo(b.MODELO || b.PRODUCTO) - obtenerOrdenModelo(a.MODELO || a.PRODUCTO));
+      .sort(compararJerarquia);
 
     if (resultadosWrap && gridResultados) {
       resultadosWrap.classList.remove("hidden");
@@ -1542,4 +1625,3 @@ function limpiarFiltrosAccesorios() {
   mostrarTodosAccesorios = 4;
   renderProductos();
 }
-
